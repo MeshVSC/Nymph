@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nymph Bug Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Solar System Background -->
+    <div class="solar-system">
+        <div class="sun"></div>
+        
+        <div class="orbit orbit-1" id="orbit-1">
+            <div class="planet planet-1"></div>
+        </div>
+        <div class="orbit orbit-2" id="orbit-2">
+            <div class="planet planet-2"></div>
+        </div>
+        <div class="orbit orbit-3" id="orbit-3">
+            <div class="planet planet-3"></div>
+        </div>
+        <div class="orbit orbit-4" id="orbit-4">
+            <div class="planet planet-4"></div>
+        </div>
+        <div class="orbit orbit-5" id="orbit-5">
+            <div class="planet planet-5"></div>
+        </div>
+    </div>
+
+    <!-- Space Dust and Nebula Background -->
+    <div class="space-dust"></div>
+
+    <!-- Distant Galaxies -->
+    <div class="galaxies" id="galaxies"></div>
+
+    <!-- Twinkling Stars -->
+    <div class="stars" id="stars"></div>
+
+    <!-- Falling Stars (Meteors) -->
+    <div class="meteors" id="meteors"></div>
+
+    <!-- App Title (No Card) -->
+    <div class="app-title">
+        <h1>Bug Tracker</h1>
+        <div class="subtitle">Good Morning Zia!</div>
+    </div>
+
+    <!-- Dashboard Section -->
+    <div class="section active" id="dashboard-section">
+        <div class="widget-grid">
+            <!-- Quick Stats Row - 4 cards at 4×4 each = 16 width total -->
+            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+                <div class="activity-header">
+                    <div class="activity-title">Total Bugs</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="totalBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+                <div class="activity-header">
+                    <div class="activity-title">Open</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="openBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+                <div class="activity-header">
+                    <div class="activity-title">Resolved</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="resolvedBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+                <div class="activity-header">
+                    <div class="activity-title">Feature Request</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="featureRequests">0</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="widget widget-8x16 activity-widget" style="grid-row: 2; grid-column: 1 / span 2;">
+                <div class="activity-header">
+                    <div class="activity-title">Recent Activity</div>
+                    <div class="activity-more">⋯</div>
+                </div>
+                <div class="activity-list" id="recentActivity">
+                    <div class="activity-entry">
+                        <div class="activity-avatar">B</div>
+                        <div class="activity-info">
+                            <div class="activity-name">Login form validation</div>
+                            <div class="activity-desc">Bug Report</div>
+                        </div>
+                        <div class="activity-time">2h</div>
+                    </div>
+                    <div class="activity-entry">
+                        <div class="activity-avatar">F</div>
+                        <div class="activity-info">
+                            <div class="activity-name">Dark mode toggle</div>
+                            <div class="activity-desc">Feature Request</div>
+                        </div>
+                        <div class="activity-time">1d</div>
+                    </div>
+                    <div class="activity-entry">
+                        <div class="activity-avatar">✓</div>
+                        <div class="activity-info">
+                            <div class="activity-name">Password reset</div>
+                            <div class="activity-desc">Bug Fixed</div>
+                        </div>
+                        <div class="activity-time">3d</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bug Report Card -->
+            <div class="widget widget-mini action-card" onclick="showSection('bug-section'); updatePageTitle('bug-section');" style="grid-row: 3; grid-column: 3;">
+                <div class="action-title">Report Bug</div>
+                <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                    <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+            </div>
+
+            <!-- Feature Request Card -->
+            <div class="widget widget-mini action-card" onclick="showSection('feature-section'); updatePageTitle('feature-section');" style="grid-row: 3; grid-column: 4;">
+                <div class="action-title">Feature Request</div>
+                <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                    <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+            </div>
+
+            <!-- System Status -->
+            <div class="widget widget-8x16" style="grid-row: 2; grid-column: 3 / span 2;">
+                <div class="activity-header">
+                    <div class="activity-title">System Status</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="system-stats">
+                    <div class="system-row">
+                        <span class="system-label">Database</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 85%;"></div>
+                        </div>
+                        <span class="system-value">85%</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Storage</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 42%;"></div>
+                        </div>
+                        <span class="system-value">42%</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Memory</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 67%;"></div>
+                        </div>
+                        <span class="system-value">67%</span>
+                    </div>
+                </div>
+                <div class="system-footer">
+                    <span style="opacity: 0.6; font-size: 12px;">Last updated: Just now</span>
+                </div>
+            </div>
+
+            <!-- Stats Graph - 8x8 -->
+            <div class="widget" style="width: 400px; height: 400px; grid-column: 1 / span 2; grid-row: 3 / span 2;">
+                <div class="activity-header">
+                    <div class="activity-title">Stats</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stats-graph">
+                    <div class="graph-container">
+                        <!-- Total Bugs Bar -->
+                        <div class="stat-bar">
+                            <div class="stat-label">Total</div>
+                            <div class="bar-container">
+                                <div class="bar-fill total-bar" id="totalBar" style="height: 0%;"></div>
+                            </div>
+                            <div class="stat-value" id="totalValue">0</div>
+                        </div>
+                        
+                        <!-- Open Bugs Bar -->
+                        <div class="stat-bar">
+                            <div class="stat-label">Open</div>
+                            <div class="bar-container">
+                                <div class="bar-fill open-bar" id="openBar" style="height: 0%;"></div>
+                            </div>
+                            <div class="stat-value" id="openValue">0</div>
+                        </div>
+                        
+                        <!-- Resolved Bugs Bar -->
+                        <div class="stat-bar">
+                            <div class="stat-label">Resolved</div>
+                            <div class="bar-container">
+                                <div class="bar-fill resolved-bar" id="resolvedBar" style="height: 0%;"></div>
+                            </div>
+                            <div class="stat-value" id="resolvedValue">0</div>
+                        </div>
+                        
+                        <!-- Feature Requests Bar -->
+                        <div class="stat-bar">
+                            <div class="stat-label">Features</div>
+                            <div class="bar-container">
+                                <div class="bar-fill feature-bar" id="featureBar" style="height: 0%;"></div>
+                            </div>
+                            <div class="stat-value" id="featureValue">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bug Report Section -->
+    <div class="section" id="bug-section">
+        <div class="widget-grid">
+            <div class="widget widget-large form-container">
+                <div class="form-title">Report Bug</div>
+                <form id="bugForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="text" id="featureName" placeholder="Feature/Page Name" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="bugSeverity">
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium" selected>Medium Priority</option>
+                                <option value="High">High Priority</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea id="expectedBehavior" placeholder="Expected Behavior" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea id="actualBehavior" placeholder="Actual Behavior" required rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Bug Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feature Request Section -->
+    <div class="section" id="feature-section">
+        <div class="widget-grid">
+            <div class="widget widget-large form-container">
+                <div class="form-title">Feature Request</div>
+                <form id="featureForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="text" id="requestTitle" placeholder="Feature Title" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="requestPriority">
+                                <option value="Low">Low Priority</option>
+                                <option value="Medium" selected>Medium Priority</option>
+                                <option value="High">High Priority</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea id="requestDescription" placeholder="Feature Description" required rows="4"></textarea>
+                    </div>
+                    <div class="form-group full-width">
+                        <textarea id="requestReason" placeholder="Why is this needed?" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Feature Request</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Typography Settings Section -->
+    <div class="section" id="settings-section">
+        <div class="widget-grid">
+            <!-- Category 1: TITLE -->
+            <div class="widget widget-small">
+                <div class="setting-header">
+                    <h4>TITLE</h4>
+                    <span class="setting-example">"Bug Tracker"</span>
+                </div>
+                <div class="setting-controls">
+                    <div class="control-group">
+                        <label for="title-px">Size (px)</label>
+                        <input type="number" id="title-px" value="56" min="10" max="100">
+                    </div>
+                    <div class="control-group">
+                        <label for="title-weight">Weight</label>
+                        <input type="number" id="title-weight" value="300" min="100" max="900" step="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 2: SUBTITLE -->
+            <div class="widget widget-small">
+                <div class="setting-header">
+                    <h4>SUBTITLE</h4>
+                    <span class="setting-example">"Good Morning Zia!"</span>
+                </div>
+                <div class="setting-controls">
+                    <div class="control-group">
+                        <label for="subtitle-px">Size (px)</label>
+                        <input type="number" id="subtitle-px" value="28" min="10" max="60">
+                    </div>
+                    <div class="control-group">
+                        <label for="subtitle-weight">Weight</label>
+                        <input type="number" id="subtitle-weight" value="350" min="100" max="900" step="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 3: CARD TITLE -->
+            <div class="widget widget-small">
+                <div class="setting-header">
+                    <h4>CARD TITLE</h4>
+                    <span class="setting-example">"Recent Activity"</span>
+                </div>
+                <div class="setting-controls">
+                    <div class="control-group">
+                        <label for="cardtitle-px">Size (px)</label>
+                        <input type="number" id="cardtitle-px" value="24" min="10" max="40">
+                    </div>
+                    <div class="control-group">
+                        <label for="cardtitle-weight">Weight</label>
+                        <input type="number" id="cardtitle-weight" value="300" min="100" max="900" step="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 4: CARD SUBTITLE -->
+            <div class="widget widget-small">
+                <div class="setting-header">
+                    <h4>CARD SUBTITLE</h4>
+                    <span class="setting-example">"Login form validation"</span>
+                </div>
+                <div class="setting-controls">
+                    <div class="control-group">
+                        <label for="cardsubtitle-px">Size (px)</label>
+                        <input type="number" id="cardsubtitle-px" value="15" min="10" max="30">
+                    </div>
+                    <div class="control-group">
+                        <label for="cardsubtitle-weight">Weight</label>
+                        <input type="number" id="cardsubtitle-weight" value="400" min="100" max="900" step="50">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category 5: BUTTON TITLE -->
+            <div class="widget widget-small">
+                <div class="setting-header">
+                    <h4>BUTTON TITLE</h4>
+                    <span class="setting-example">"Report Bug"</span>
+                </div>
+                <div class="setting-controls">
+                    <div class="control-group">
+                        <label for="buttontitle-px">Size (px)</label>
+                        <input type="number" id="buttontitle-px" value="16" min="10" max="30">
+                    </div>
+                    <div class="control-group">
+                        <label for="buttontitle-weight">Weight</label>
+                        <input type="number" id="buttontitle-weight" value="500" min="100" max="900" step="50">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Independent Action Buttons - NOT in cards -->
+        <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 25px; z-index: 10;">
+            <button type="button" class="submit-btn" onclick="applyTypographySettings()" style="padding: 14px 28px; margin: 0; width: auto;">Apply</button>
+            <button type="button" class="reset-btn" onclick="resetTypographySettings()" style="padding: 14px 28px; margin: 0; width: auto;">Reset</button>
+        </div>
+    </div>
+
+    <!-- Top Navigation - Fixed at top -->
+    <div class="top-nav" id="topNav">
+        <div class="nav-item active" onclick="showSection('dashboard-section'); updatePageTitle('dashboard-section');">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <span class="nav-text">Dashboard</span>
+        </div>
+        <div class="nav-item" onclick="showSection('bug-section'); updatePageTitle('bug-section');">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
+            </svg>
+            <span class="nav-text">Bug Report</span>
+        </div>
+        <div class="nav-item" onclick="showSection('feature-section'); updatePageTitle('feature-section');">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
+            </svg>
+            <span class="nav-text">Features</span>
+        </div>
+        <div class="nav-item" onclick="showSection('settings-section'); updatePageTitle('settings-section');">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </svg>
+            <span class="nav-text">Settings</span>
+        </div>
+    </div>
+
+    <!-- Side Navigation - Vertical floating -->
+    <div class="side-nav" id="sideNav">
+        <div class="nav-item" onclick="showSection('dashboard-section'); updatePageTitle('dashboard-section');" title="Dashboard">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+        </div>
+        <div class="nav-item" onclick="showSection('bug-section'); updatePageTitle('bug-section');" title="Bug Report">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
+            </svg>
+        </div>
+        <div class="nav-item" onclick="showSection('feature-section'); updatePageTitle('feature-section');" title="Features">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
+            </svg>
+        </div>
+        <div class="nav-item" onclick="showSection('settings-section'); updatePageTitle('settings-section');" title="Settings">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="config.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

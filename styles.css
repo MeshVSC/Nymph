@@ -1,0 +1,1400 @@
+/* 
+=======================================================
+NYMPH BUG TRACKER - EXTRACTED STYLES
+=======================================================
+Extracted from single HTML file for better maintainability
+*/
+
+:root {
+    /* Colors */
+    --color-primary: #00ff88;
+    --color-primary-dark: #00cc6a;
+    --color-accent: #ffeb3b;
+    --color-accent-dark: #ffc107;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: rgba(255, 255, 255, 0.7);
+    --color-text-muted: rgba(255, 255, 255, 0.5);
+    
+    /* Background Colors */
+    --bg-space-gradient: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 25%, #2a1a4a 50%, #1a0a2a 75%, #0a0a1a 100%);
+    --bg-widget: rgba(255, 255, 255, 0.04);
+    --bg-widget-hover: rgba(255, 255, 255, 0.12);
+    --bg-overlay: rgba(255, 255, 255, 0.1);
+    --bg-input: rgba(255, 255, 255, 0.08);
+    --bg-input-focus: rgba(255, 255, 255, 0.15);
+    
+    /* Border Colors */
+    --border-widget: rgba(255, 255, 255, 0.08);
+    --border-widget-hover: rgba(255, 255, 255, 0.2);
+    --border-input: rgba(255, 255, 255, 0.15);
+    --border-overlay: rgba(255, 255, 255, 0.15);
+    
+    /* Layout & Spacing */
+    --grid-base-unit: 50px;
+    --grid-gap: 25px;
+    --widget-padding: 32px;
+    --widget-radius: 24px;
+    --widget-4x4-size: 200px;
+    --widget-4x8-height: 400px;
+    --widget-8x8-size: 400px;
+    --widget-mini-height: 100px;
+    --widget-action-height: 50px;
+    
+    /* Typography */
+    --font-family-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-family-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-size-title: 56px;
+    --font-size-subtitle: 28px;
+    --font-size-card-title: 24px;
+    --font-size-card-subtitle: 15px;
+    --font-size-button: 16px;
+    --font-size-widget-number: 48px;
+    --font-weight-title: 300;
+    --font-weight-subtitle: 350;
+    --font-weight-card-title: 300;
+    --font-weight-card-subtitle: 400;
+    --font-weight-button: 500;
+    --font-weight-widget-number: 200;
+    
+    /* Transitions */
+    --transition-default: all 0.3s ease;
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-widget-hover: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Z-Index Scale */
+    --z-background: -6;
+    --z-space-elements: -5;
+    --z-solar-system: -4;
+    --z-stars: -3;
+    --z-meteors: -2;
+    --z-content: 1;
+    --z-widgets: 10;
+    --z-navigation: 20;
+    
+    /* Animation Timing */
+    --animation-meteor-interval: 2000ms;
+    --animation-solar-pulse: 4s;
+    --animation-solar-rotate: 25s;
+    --animation-planet-base: 15s;
+    --animation-twinkle: 3s;
+    --animation-galaxy-pulse: 20s;
+    
+    /* Status Colors */
+    --status-success: #27ae60;
+    --status-warning: #ffeb3b;
+    --status-error: #e74c3c;
+    --status-info: #2196f3;
+    
+    /* Chart Colors */
+    --chart-total: linear-gradient(180deg, #00ff88 0%, #00cc6a 100%);
+    --chart-open: linear-gradient(180deg, #ffeb3b 0%, #ffc107 100%);
+    --chart-resolved: linear-gradient(180deg, #4caf50 0%, #2e7d32 100%);
+    --chart-feature: linear-gradient(180deg, #2196f3 0%, #1565c0 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*
+=======================================================
+TYPOGRAPHY STYLE GUIDE
+=======================================================
+Based on Apple's Smart Home Dashboard Interface
+
+TYPOGRAPHY CATEGORIES & EXAMPLES:
+
+1. TITLE (56px, weight 300)
+   Apple examples: "Laid-back Eco Home Vibes"  
+   Our examples: "Bug Tracker", "Settings", "Report Bug"
+   Usage: Main page titles
+   
+2. SUBTITLE (28px, weight 350)
+   Apple examples: "Good Morning Zia!", "Members"
+   Our examples: "Good Morning Zia!", "Customize font sizes and weights"
+   Usage: Secondary page text, welcome messages
+   
+3. CARD TITLE (24px, weight 300)
+   Apple examples: "Air Conditioner", "TV", "Ambient LED"
+   Our examples: "Recent Activity", "System Status"
+   Usage: Widget/card headers
+   
+4. CARD SUBTITLE (15px, weight 400)
+   Apple examples: "Living Room", "Singer SmartTV"
+   Our examples: "Login form validation", "Database", "Storage"
+   Usage: Descriptive text within cards
+   
+5. BUTTON TITLE (16px, weight 500)
+   Apple examples: "Fan", "Timer", "Mode", "Colors"
+   Our examples: "Report Bug", "Total Bugs", "Apply Changes"
+   Usage: Clickable elements, navigation items
+
+FONT FAMILIES:
+- Titles & Card Titles: SF Pro Display
+- All other text: SF Pro Text
+
+=======================================================
+DESIGN RULES
+=======================================================
+
+CARD STRUCTURE RULES:
+- NO CARDS WITHIN CARDS - Each widget is independent
+- NO NESTED CONTAINERS - Flat structure only
+- ALL WIDGETS SAME LEVEL - No hierarchical nesting
+- FORMS GO DIRECTLY IN WIDGETS - No wrapper cards
+
+CORNER RADIUS RULES:
+- ALL ELEMENTS USE 24px - Consistent corner curvature
+- Reference standard: Total Bugs card corner radius
+- Exceptions: Circles (50%), progress bars (2px)
+
+PROPORTIONAL GRID SYSTEM:
+- BASE UNIT = Menu bar height = 50px (1 unit)
+- Menu collapsed = 1×4 units, Menu expanded = 1×5 units
+- All widgets use proportional sizes: 1×1, 2×1, 1×2, 2×2, 4×4, etc.
+- NO fractional sizes allowed
+- Grid gap = 25px (0.5 base unit)
+
+RESPONSIVE LAYOUT RULES:
+- 4 width: 1 card per row (200px × 200px)
+- 8 width: 2 cards per row
+- 12 width: 3 cards per row
+- 16+ width: 4 cards per row
+- All cards: 4×4 (200px × 200px) for main widgets
+- Action buttons: 50px height (matches menu height)
+
+NAVIGATION RULES:
+- Fixed top menu: Shows when at top of page
+- Floating side menu: Fades in when scrolling down (after 100px)
+- Smooth transitions: 0.3s ease animations
+- Auto-switching: Based on scroll position
+
+GLOBAL RULES:
+- NEVER UPDATE ANYTHING JUST FOR ONE PAGE - Rules are global and changes must be applied overall
+- ALL PAGES FOLLOW SAME DESIGN SYSTEM - No exceptions or page-specific modifications
+- INTERNAL CARD GRID SYSTEM - Elements inside each card must follow same 4x4 grid structure
+- CARD CONTENT POSITIONING - Use grid rows: line 1, line 2 (empty), line 3, line 4 for proper spacing
+- COLUMN ALIGNMENT RULE - Columns 1-2 align left, Columns 3-4 align right
+- NO SCROLLBARS ALLOWED - If content doesn't fit, increase card size in necessary direction
+- AUTO-RESIZE CARDS - Cards must expand to accommodate content, never clip or scroll
+- MOST OUTWARD POSITIONING - Position elements as far outward as possible within their grid cell
+
+CURRENT PROPORTIONS:
+- Settings page cards: 4×4 (200px × 200px) ✓
+- Dashboard stat cards: 4×4 (200px × 200px) ✓
+- Report Bug/Feature Request: 4×2 (200px × 100px = 2 units high) ✓
+- Recent Activity: 8×16 (400px × 800px) ✓
+- System Status: 8×16 (400px × 800px) ✓
+- Action buttons: Independent widgets, not nested
+
+=======================================================
+*/
+
+body {
+    font-family: var(--font-family-display);
+    background: var(--bg-space-gradient);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    min-height: 200vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Space dust and nebula background layer */
+.space-dust {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -5;
+    background: 
+        /* Distant galaxies */
+        radial-gradient(ellipse 600px 300px at 15% 20%, rgba(138, 43, 226, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse 400px 200px at 85% 30%, rgba(255, 140, 0, 0.04) 0%, transparent 35%),
+        radial-gradient(ellipse 300px 150px at 25% 70%, rgba(255, 20, 147, 0.03) 0%, transparent 30%),
+        /* Nebula effects */
+        radial-gradient(ellipse 1200px 800px at 40% 60%, rgba(75, 0, 130, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 800px 400px at 80% 40%, rgba(255, 69, 0, 0.06) 0%, transparent 50%);
+}
+
+/* Solar System Background */
+.solar-system {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    z-index: -4;
+    opacity: 0.6;
+}
+
+.sun {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    background: 
+        /* Solar prominences (eruptions) */
+        radial-gradient(ellipse 20px 8px at 10% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 69, 0, 0.8) 50%, transparent 100%),
+        radial-gradient(ellipse 15px 6px at 90% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 140, 0, 0.7) 50%, transparent 100%),
+        radial-gradient(ellipse 18px 7px at 70% 90%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 99, 71, 0.6) 50%, transparent 100%),
+        /* Solar granules (surface texture) */
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.4) 3%, transparent 6%),
+        radial-gradient(circle at 35% 25%, rgba(255, 215, 0, 0.5) 2%, transparent 5%),
+        radial-gradient(circle at 55% 35%, rgba(255, 255, 255, 0.3) 2.5%, transparent 5.5%),
+        radial-gradient(circle at 25% 55%, rgba(255, 165, 0, 0.4) 2%, transparent 4%),
+        radial-gradient(circle at 75% 45%, rgba(255, 255, 255, 0.5) 2%, transparent 4.5%),
+        radial-gradient(circle at 45% 75%, rgba(255, 140, 0, 0.3) 3%, transparent 6%),
+        radial-gradient(circle at 85% 75%, rgba(255, 215, 0, 0.4) 2%, transparent 4%),
+        radial-gradient(circle at 65% 15%, rgba(255, 255, 255, 0.3) 2.5%, transparent 5%),
+        /* Sunspot regions */
+        radial-gradient(circle at 60% 60%, rgba(139, 0, 0, 0.6) 4%, transparent 8%),
+        radial-gradient(circle at 30% 70%, rgba(139, 69, 19, 0.4) 3%, transparent 6%),
+        /* Core brightness layers */
+        radial-gradient(circle, 
+            rgba(255, 255, 255, 1) 0%, 
+            rgba(255, 255, 255, 0.9) 8%, 
+            #fff700 18%, 
+            #ffb347 35%, 
+            #ff8c00 55%, 
+            #ff4500 75%, 
+            #dc143c 90%,
+            #8b0000 100%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 
+        /* Inner core glow */
+        inset 0 0 8px rgba(255, 255, 255, 0.8),
+        /* Corona layers */
+        0 0 15px rgba(255, 255, 255, 0.9),
+        0 0 30px rgba(255, 215, 0, 0.7),
+        0 0 45px rgba(255, 140, 0, 0.5),
+        0 0 60px rgba(255, 69, 0, 0.4),
+        0 0 80px rgba(255, 99, 71, 0.3),
+        0 0 120px rgba(255, 140, 0, 0.2),
+        0 0 160px rgba(255, 165, 0, 0.1),
+        /* Solar wind */
+        0 0 200px rgba(255, 215, 0, 0.05);
+    animation: solarPulse 4s ease-in-out infinite, solarRotate 25s linear infinite, solarFlare 8s ease-in-out infinite;
+}
+
+@keyframes solarPulse {
+    0%, 100% { 
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1) saturate(1);
+    }
+    50% { 
+        transform: translate(-50%, -50%) scale(1.08);
+        filter: brightness(1.2) saturate(1.1);
+    }
+}
+
+@keyframes solarRotate {
+    from { 
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    }
+    to { 
+        background-position: 
+            120% 60%, -80% -120%, 150% -80%, 
+            80% 120%, -120% 80%, 60% -150%, 150% 120%, -60% -80%, 120% -120%, 80% 150%, -150% -60%, 
+            100% 100%, -100% -100%, 0% 0%;
+    }
+}
+
+@keyframes solarFlare {
+    0%, 100% { 
+        filter: brightness(1) saturate(1) contrast(1);
+    }
+    25% { 
+        filter: brightness(1.3) saturate(1.2) contrast(1.1);
+    }
+    50% { 
+        filter: brightness(1.1) saturate(1.1) contrast(1.05);
+    }
+    75% { 
+        filter: brightness(1.4) saturate(1.3) contrast(1.15);
+    }
+}
+
+.orbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.orbit-1 { width: 150px; height: 150px; animation: rotate 20s linear infinite; }
+.orbit-2 { width: 220px; height: 220px; animation: rotate 30s linear infinite; }
+.orbit-3 { width: 300px; height: 300px; animation: rotate 45s linear infinite; }
+.orbit-4 { width: 400px; height: 400px; animation: rotate 60s linear infinite; }
+.orbit-5 { width: 520px; height: 520px; animation: rotate 80s linear infinite; }
+
+@keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.planet {
+    position: absolute;
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.planet-1 { 
+    width: 10px; 
+    height: 10px; 
+    background: 
+        /* Surface craters */
+        radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.8) 8%, transparent 15%),
+        radial-gradient(circle at 70% 60%, rgba(160, 82, 45, 0.6) 6%, transparent 12%),
+        radial-gradient(circle at 50% 80%, rgba(105, 105, 105, 0.4) 4%, transparent 8%),
+        /* Rocky texture */
+        radial-gradient(circle, #d2691e 0%, #cd853f 30%, #a0522d 60%, #8b4513 100%);
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+        0 0 15px rgba(210, 105, 30, 0.4);
+    animation: planetRotate1 15s linear infinite;
+}
+.planet-2 { 
+    width: 14px; 
+    height: 14px; 
+    background: 
+        /* Atmospheric bands */
+        linear-gradient(45deg, transparent 48%, rgba(255, 140, 0, 0.3) 50%, transparent 52%),
+        linear-gradient(-45deg, transparent 48%, rgba(255, 165, 0, 0.2) 50%, transparent 52%),
+        /* Gas giant swirls */
+        radial-gradient(ellipse at 30% 40%, rgba(255, 215, 0, 0.6) 20%, transparent 40%),
+        radial-gradient(ellipse at 70% 70%, rgba(255, 140, 0, 0.5) 15%, transparent 35%),
+        /* Main body */
+        radial-gradient(circle, #ffb347 0%, #ff8c00 40%, #ff4500 100%);
+    box-shadow: 
+        inset -3px -3px 6px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(255, 140, 0, 0.5);
+    animation: planetRotate2 18s linear infinite;
+}
+.planet-3 { 
+    width: 12px; 
+    height: 12px; 
+    background: 
+        /* Continents */
+        radial-gradient(circle at 25% 25%, rgba(34, 139, 34, 0.8) 12%, transparent 20%),
+        radial-gradient(circle at 75% 40%, rgba(139, 69, 19, 0.7) 8%, transparent 15%),
+        radial-gradient(circle at 60% 80%, rgba(34, 139, 34, 0.6) 10%, transparent 18%),
+        /* Clouds */
+        radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.3) 5%, transparent 10%),
+        radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.2) 4%, transparent 8%),
+        /* Ocean */
+        radial-gradient(circle, #4169e1 0%, #1e90ff 40%, #0066cc 100%);
+    box-shadow: 
+        inset -2px -2px 4px rgba(0, 0, 0, 0.3),
+        0 0 18px rgba(30, 144, 255, 0.6);
+    animation: planetRotate3 22s linear infinite;
+}
+.planet-4 { 
+    width: 16px; 
+    height: 16px; 
+    background: 
+        /* Polar ice caps */
+        radial-gradient(circle at 50% 10%, rgba(255, 255, 255, 0.8) 15%, transparent 25%),
+        radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.6) 12%, transparent 20%),
+        /* Surface features */
+        radial-gradient(circle at 30% 50%, rgba(139, 0, 0, 0.7) 8%, transparent 15%),
+        radial-gradient(circle at 70% 30%, rgba(160, 82, 45, 0.5) 6%, transparent 12%),
+        /* Rust surface */
+        radial-gradient(circle, #cd853f 0%, #d2691e 30%, #b22222 70%, #8b0000 100%);
+    box-shadow: 
+        inset -3px -3px 6px rgba(0, 0, 0, 0.4),
+        0 0 25px rgba(178, 34, 34, 0.4);
+    animation: planetRotate4 25s linear infinite;
+}
+.planet-5 { 
+    width: 20px; 
+    height: 20px; 
+    background: 
+        /* Ring system hint */
+        linear-gradient(0deg, transparent 40%, rgba(218, 165, 32, 0.3) 48%, rgba(255, 215, 0, 0.2) 50%, rgba(218, 165, 32, 0.3) 52%, transparent 60%),
+        /* Storm systems */
+        radial-gradient(circle at 60% 40%, rgba(255, 215, 0, 0.6) 15%, transparent 30%),
+        radial-gradient(circle at 30% 70%, rgba(184, 134, 11, 0.8) 12%, transparent 25%),
+        /* Atmospheric bands */
+        linear-gradient(90deg, 
+            #f0e68c 0%, #daa520 20%, #b8860b 40%, 
+            #daa520 60%, #f0e68c 80%, #daa520 100%);
+    box-shadow: 
+        inset -4px -4px 8px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(218, 165, 32, 0.5);
+    animation: planetRotate5 30s linear infinite;
+}
+
+@keyframes planetRotate1 {
+    from { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to { background-position: 100% 100%, -100% -100%, 50% -50%, 0% 0%; }
+}
+
+@keyframes planetRotate2 {
+    from { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to { background-position: -100% 0%, 100% 0%, 25% 75%, -75% -25%, 0% 0%; }
+}
+
+@keyframes planetRotate3 {
+    from { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to { background-position: 150% 150%, -150% -150%, 75% -75%, 100% 0%, -100% 0%, 0% 0%; }
+}
+
+@keyframes planetRotate4 {
+    from { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to { background-position: 0% 0%, 0% 0%, 120% 120%, -120% -120%, 0% 0%; }
+}
+
+@keyframes planetRotate5 {
+    from { background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%; }
+    to { background-position: 0% 0%, 80% 80%, -80% -80%, 200% 0%; }
+}
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -3;
+    opacity: 0.8;
+}
+
+.star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+.star.small {
+    width: 1px;
+    height: 1px;
+    opacity: 0.6;
+}
+
+.star.medium {
+    width: 2px;
+    height: 2px;
+    opacity: 0.8;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.star.large {
+    width: 3px;
+    height: 3px;
+    opacity: 1;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Falling Stars (Meteors) */
+.meteors {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.meteor {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: linear-gradient(45deg, white, transparent);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.meteor::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.4) 40%, 
+        rgba(255, 255, 255, 0.8) 80%, 
+        rgba(255, 255, 255, 1) 100%);
+    transform: rotate(45deg);
+    transform-origin: 100% 0;
+}
+
+@keyframes meteorFall {
+    0% {
+        transform: translateX(calc(100vw + 100px)) translateY(-100px);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-100px) translateY(calc(100vh + 100px));
+        opacity: 0;
+    }
+}
+
+/* Distant Galaxies */
+.galaxies {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -6;
+    opacity: 0.3;
+}
+
+.galaxy {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: galaxyPulse 20s ease-in-out infinite;
+}
+
+.galaxy.spiral {
+    background: radial-gradient(ellipse, 
+        rgba(138, 43, 226, 0.4) 0%, 
+        rgba(75, 0, 130, 0.3) 30%, 
+        rgba(72, 61, 139, 0.2) 60%, 
+        transparent 100%);
+}
+
+.galaxy.elliptical {
+    background: radial-gradient(circle, 
+        rgba(255, 140, 0, 0.3) 0%, 
+        rgba(255, 69, 0, 0.2) 40%, 
+        transparent 70%);
+}
+
+.galaxy.irregular {
+    background: radial-gradient(ellipse 150% 80%, 
+        rgba(30, 144, 255, 0.3) 0%, 
+        rgba(0, 191, 255, 0.2) 50%, 
+        transparent 100%);
+}
+
+@keyframes galaxyPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* TITLE STYLES */
+.app-title {
+    position: absolute;
+    top: 120px;
+    left: 20px;
+    z-index: 10;
+    color: white;
+}
+
+.app-title h1 {
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-title);
+    margin: 0;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+/* SUBTITLE STYLES */
+.app-title .subtitle {
+    font-family: var(--font-family-text);
+    font-size: var(--font-size-subtitle);
+    font-weight: var(--font-weight-subtitle);
+    color: var(--color-text-secondary);
+    margin-top: 16px;
+    letter-spacing: -0.01em;
+}
+
+/* Responsive Grid System - Base Unit = 50px */
+.widget-grid {
+    position: absolute;
+    top: 260px;
+    left: 20px;
+    right: 20px;
+    bottom: 60px;
+    display: grid;
+    gap: 25px;
+    padding: 20px 0;
+    grid-template-rows: repeat(auto-fit, 200px);
+}
+
+/* Responsive Breakpoints */
+/* Default - 1 card per row for all screens */
+.widget-grid {
+    grid-template-columns: repeat(1, 200px);
+    justify-content: center;
+}
+
+/* 4 width - 1 card per row (200px + 40px padding = 240px minimum) */
+@media (min-width: 240px) and (max-width: 464px) {
+    .widget-grid {
+        grid-template-columns: repeat(1, 200px);
+        justify-content: center;
+    }
+}
+
+/* 8 width - 2 cards per row (400px + 25px gap + 40px padding = 465px) */
+@media (min-width: 465px) and (max-width: 689px) {
+    .widget-grid {
+        grid-template-columns: repeat(2, 200px);
+        justify-content: center;
+    }
+}
+
+/* 12 width - 3 cards per row (600px + 50px gap + 40px padding = 690px) */
+@media (min-width: 690px) and (max-width: 914px) {
+    .widget-grid {
+        grid-template-columns: repeat(3, 200px);
+        justify-content: center;
+    }
+}
+
+/* 16+ width - 4 cards per row (800px + 75px gap + 40px padding = 915px) */
+@media (min-width: 915px) {
+    .widget-grid {
+        grid-template-columns: repeat(4, 200px);
+        justify-content: center;
+    }
+}
+
+/* Individual Widgets */
+.widget {
+    background: var(--bg-widget);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--border-widget);
+    border-radius: var(--widget-radius);
+    padding: var(--widget-padding);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: var(--transition-widget-hover);
+    position: relative;
+    overflow: visible;
+    color: var(--color-text-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: fit-content;
+    height: auto;
+}
+
+.widget:hover {
+    transform: translateY(-2px);
+    background: var(--bg-widget-hover);
+    border-color: var(--border-widget-hover);
+}
+
+/* Responsive Widget Sizes */
+.widget-4x4 {
+    width: 200px;
+    height: 200px;
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* Action buttons - responsive width */
+.widget-action {
+    height: 50px;
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* Wide widgets - span full width */
+.widget-wide {
+    grid-column: 1 / -1;
+    height: 50px;
+}
+
+/* Legacy Support - All become 4x4 responsive cards */
+.widget-small,
+.widget-medium,
+.widget-large {
+    width: 200px;
+    height: 200px;
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* Action buttons */
+.widget-tiny,
+.widget-4x1 {
+    height: 50px;
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* Wide elements */
+.widget-half {
+    grid-column: 1 / -1;
+    height: 200px;
+}
+
+.widget-mini {
+    height: 100px;
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+/* 8x16 widgets */
+.widget-8x16 {
+    width: 400px;
+    height: 800px;
+    grid-column: span 2;
+    grid-row: span 4;
+}
+
+/* Widget Content */
+.widget-icon {
+    font-size: 16px;
+    margin-bottom: 8px;
+    opacity: 0.6;
+}
+
+.widget-number {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 48px;
+    font-weight: 200;
+    margin-bottom: 2px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+}
+
+/* BUTTON TITLE STYLES */
+.widget-label {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    opacity: 0.8;
+    letter-spacing: -0.005em;
+}
+
+/* Legacy stat widget styles - keeping for compatibility */
+
+/* Internal Grid Column Alignment Rules */
+.internal-grid-col-1,
+.internal-grid-col-2 {
+    justify-self: start;
+}
+
+.internal-grid-col-3,
+.internal-grid-col-4 {
+    justify-self: end;
+}
+
+/* Activity Widget */
+.activity-widget {
+    padding: 28px;
+    height: auto;
+    min-height: fit-content;
+    overflow: visible;
+}
+
+.activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+/* CARD TITLE STYLES */
+.activity-title {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    opacity: 0.95;
+    letter-spacing: -0.01em;
+}
+
+.activity-more {
+    font-size: 20px;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-entry {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.activity-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ff6b6b, #ffa500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+/* CARD SUBTITLE STYLES */
+.activity-name {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    margin-bottom: 2px;
+    letter-spacing: -0.005em;
+}
+
+.activity-desc {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    opacity: 0.6;
+    letter-spacing: -0.005em;
+}
+
+.activity-time {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 200;
+    opacity: 0.5;
+    letter-spacing: -0.005em;
+}
+
+.widget h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    opacity: 0.9;
+}
+
+/* Status Indicator */
+.status-indicator {
+    color: #00ff88;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 16px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    font-weight: 300;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.submit-btn {
+    background: rgba(0, 255, 136, 0.15);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 12px;
+    width: 100%;
+}
+
+.submit-btn:hover {
+    background: rgba(0, 255, 136, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Top Navigation - Fixed at top */
+.top-nav {
+    position: fixed;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    z-index: 20;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.top-nav.hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-100%);
+}
+
+/* Side Navigation - Vertical floating */
+.side-nav {
+    position: fixed;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 20;
+    opacity: 0;
+    transform: translateY(-50%) translateX(100px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.side-nav.visible {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+    pointer-events: all;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    color: white;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-item:not(.active) .nav-text {
+    width: 0;
+    opacity: 0;
+}
+
+.nav-item.active .nav-text {
+    width: auto;
+    opacity: 1;
+}
+
+.nav-icon {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    fill: currentColor;
+}
+
+.nav-text {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Action Buttons */
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.action-icon {
+    font-size: 16px;
+}
+
+.action-arrow {
+    margin-left: auto;
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+/* Action Cards */
+.action-card {
+    cursor: pointer;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    flex-direction: row;
+}
+
+.power-icon {
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover .power-icon {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.action-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* CARD TITLE STYLES - Same as activity-title */
+.action-title {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 300;
+    opacity: 0.95;
+    letter-spacing: -0.01em;
+}
+
+/* System Stats */
+.system-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.system-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* CARD SUBTITLE STYLES */
+.system-label {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0.8;
+    min-width: 60px;
+    letter-spacing: -0.005em;
+}
+
+.system-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.system-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00cc6a);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.system-value {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 200;
+    opacity: 0.6;
+    min-width: 35px;
+    text-align: right;
+    letter-spacing: -0.005em;
+}
+
+.system-footer {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Form Enhancement */
+.form-container {
+    padding: 32px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.form-title {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 450;
+    margin-bottom: 20px;
+    opacity: 0.95;
+    letter-spacing: -0.02em;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-grid .form-group {
+    margin-bottom: 0;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* Typography Settings Styles */
+.typography-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.settings-header {
+    justify-content: center;
+    align-items: center;
+}
+
+.setting-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    gap: 4px;
+}
+
+.setting-header h4 {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+    color: white;
+}
+
+.setting-example {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    opacity: 0.6;
+    font-style: italic;
+}
+
+.setting-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-group label {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0.8;
+    margin-bottom: 0;
+}
+
+.control-group input[type="number"] {
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 24px;
+    padding: 10px 12px;
+    color: white;
+    font-size: 14px;
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 400;
+}
+
+.control-group input[type="number"]:focus {
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    outline: none;
+}
+
+.settings-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.reset-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Stat Display for redesigned stat cards - 4x4 grid positioning */
+.stat-display {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    flex: 1;
+    padding: 0;
+}
+
+.stat-display .widget-number {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 48px;
+    font-weight: 200;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-align: left;
+    grid-row: 4;
+    grid-column: 1;
+    justify-self: start;
+    align-self: end;
+    padding: 20px;
+}
+
+/* Bug Statistics Graph Styles */
+.stats-graph {
+    padding: 20px 28px;
+    height: calc(100% - 80px);
+}
+
+.graph-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 100%;
+    gap: 16px;
+}
+
+.stat-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    flex: 1;
+}
+
+.stat-label {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+}
+
+.bar-container {
+    flex: 1;
+    width: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    position: relative;
+    margin-bottom: 8px;
+    min-height: 180px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.bar-fill {
+    width: 100%;
+    border-radius: 12px;
+    transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    min-height: 4px;
+}
+
+.total-bar {
+    background: linear-gradient(180deg, #00ff88 0%, #00cc6a 100%);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+}
+
+.open-bar {
+    background: linear-gradient(180deg, #ffeb3b 0%, #ffc107 100%);
+    box-shadow: 0 0 12px rgba(255, 235, 59, 0.3);
+}
+
+.resolved-bar {
+    background: linear-gradient(180deg, #4caf50 0%, #2e7d32 100%);
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+}
+
+.feature-bar {
+    background: linear-gradient(180deg, #2196f3 0%, #1565c0 100%);
+    box-shadow: 0 0 12px rgba(33, 150, 243, 0.3);
+}
+
+.stat-value {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0.8;
+    letter-spacing: -0.005em;
+}
+
+/* Hide/Show Sections */
+.section {
+    display: none;
+}
+
+.section.active {
+    display: grid;
+}
