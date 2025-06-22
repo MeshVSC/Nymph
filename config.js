@@ -12,7 +12,7 @@ const NYMPH_CONFIG = {
         GAP: 25,                    // Gap between widgets in pixels
         MAX_WIDTH: 16,              // Maximum grid width in units
         WIDGET_SIZES: {
-            SMALL: { width: 200, height: 200 },      // 4×4
+            WIDGET_4x4: { width: 200, height: 200 }, // 4×4 (standard stat cards)
             MINI: { width: 200, height: 100 },       // 4×2  
             LARGE_8x16: { width: 400, height: 800 }, // 8×16
             LARGE_8x8: { width: 400, height: 400 },  // 8×8

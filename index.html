@@ -49,8 +49,8 @@
     <!-- Dashboard Section -->
     <div class="section active" id="dashboard-section">
         <div class="widget-grid">
-            <!-- Quick Stats Row - 4 cards at 4×4 each = 16 width total -->
-            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+            <!-- Stat Cards Row - 4×4 cards using widget-4x4 class (16 width total) -->
+            <div class="widget widget-4x4" style="grid-row: 1;">
                 <div class="activity-header">
                     <div class="activity-title">Total Bugs</div>
                     <div class="status-indicator">●</div>
@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+            <div class="widget widget-4x4" style="grid-row: 1;">
                 <div class="activity-header">
                     <div class="activity-title">Open</div>
                     <div class="status-indicator">●</div>
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+            <div class="widget widget-4x4" style="grid-row: 1;">
                 <div class="activity-header">
                     <div class="activity-title">Resolved</div>
                     <div class="status-indicator">●</div>
@@ -80,7 +80,7 @@
                 </div>
             </div>
 
-            <div class="widget" style="grid-row: 1; width: 200px; height: 200px;">
+            <div class="widget widget-4x4" style="grid-row: 1;">
                 <div class="activity-header">
                     <div class="activity-title">Feature Request</div>
                     <div class="status-indicator">●</div>
@@ -91,7 +91,7 @@
             </div>
 
             <!-- Recent Activity -->
-            <div class="widget widget-8x16 activity-widget" style="grid-row: 2; grid-column: 1 / span 2;">
+            <div class="widget activity-widget" style="width: 400px; height: 400px; grid-row: 2 / span 2; grid-column: 1 / span 2;">
                 <div class="activity-header">
                     <div class="activity-title">Recent Activity</div>
                     <div class="activity-more">⋯</div>
@@ -125,7 +125,7 @@
             </div>
 
             <!-- Bug Report Card -->
-            <div class="widget widget-mini action-card" onclick="showSection('bug-section'); updatePageTitle('bug-section');" style="grid-row: 3; grid-column: 3;">
+            <div class="widget widget-mini action-card" onclick="showSection('bug-section'); updatePageTitle('bug-section');" style="grid-row: 4; grid-column: 1;">
                 <div class="action-title">Report Bug</div>
                 <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
                     <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
@@ -134,7 +134,7 @@
             </div>
 
             <!-- Feature Request Card -->
-            <div class="widget widget-mini action-card" onclick="showSection('feature-section'); updatePageTitle('feature-section');" style="grid-row: 3; grid-column: 4;">
+            <div class="widget widget-mini action-card" onclick="showSection('feature-section'); updatePageTitle('feature-section');" style="grid-row: 5; grid-column: 1;">
                 <div class="action-title">Feature Request</div>
                 <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
                     <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
@@ -143,7 +143,7 @@
             </div>
 
             <!-- System Status -->
-            <div class="widget widget-8x16" style="grid-row: 2; grid-column: 3 / span 2;">
+            <div class="widget" style="width: 400px; height: 400px; grid-row: 2 / span 2; grid-column: 3 / span 2;">
                 <div class="activity-header">
                     <div class="activity-title">System Status</div>
                     <div class="status-indicator">●</div>
@@ -177,7 +177,7 @@
             </div>
 
             <!-- Stats Graph - 8x8 -->
-            <div class="widget" style="width: 400px; height: 400px; grid-column: 1 / span 2; grid-row: 3 / span 2;">
+            <div class="widget" style="width: 400px; height: 400px; grid-column: 1 / span 2; grid-row: 7 / span 2;">
                 <div class="activity-header">
                     <div class="activity-title">Stats</div>
                     <div class="status-indicator">●</div>

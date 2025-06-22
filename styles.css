@@ -708,12 +708,18 @@ body {
     border-color: var(--border-widget-hover);
 }
 
-/* Responsive Widget Sizes */
-.widget-4x4 {
-    width: 200px;
-    height: 200px;
+/* Responsive Widget Sizes - Force 4x4 stat cards */
+.widget.widget-4x4 {
+    width: 200px !important;
+    height: 200px !important;
     grid-column: span 1;
     grid-row: span 1;
+    min-height: 200px !important;
+    max-height: 200px !important;
+    box-sizing: border-box;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent flex from shrinking */
+    flex-grow: 0;   /* Prevent flex from growing */
 }
 
 /* Action buttons - responsive width */
@@ -1294,7 +1300,7 @@ input:focus, textarea:focus, select:focus {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    flex: 1;
+    height: 100%;
     padding: 0;
 }
 
