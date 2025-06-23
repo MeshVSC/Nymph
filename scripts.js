@@ -598,12 +598,31 @@ function initialize() {
     createStars();
     startMeteorShower();
     randomizePlanets();
-    
+
     // Initialize app functionality
     updateDashboard();
     updateDataTable();
     loadSavedTypographySettings();
     updatePageTitle('dashboard-section');
+
+    // Attach click handlers for navigation and action cards
+    document.querySelectorAll('[data-section]').forEach(el => {
+        el.addEventListener('click', (e) => {
+            const target = el.getAttribute('data-section');
+            showSection(target, e);
+            updatePageTitle(target);
+        });
+    });
+
+    // Attach bug form button handlers
+    const bugSubmitBtn = document.getElementById('bugSubmitBtn');
+    if (bugSubmitBtn) {
+        bugSubmitBtn.addEventListener('click', submitBugForm);
+    }
+    const bugCancelBtn = document.getElementById('bugCancelBtn');
+    if (bugCancelBtn) {
+        bugCancelBtn.addEventListener('click', clearBugForm);
+    }
     
     // Initialize form handlers
     initializeFormHandlers();
