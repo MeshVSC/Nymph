@@ -395,6 +395,32 @@ function initializeFormHandlers() {
     }
 }
 
+// Attach click handlers for action cards
+function attachActionCardHandlers() {
+    document.querySelectorAll('.action-card[data-section]').forEach(card => {
+        card.addEventListener('click', e => {
+            const target = card.getAttribute('data-section');
+            if (target) {
+                showSection(target, e);
+                updatePageTitle(target);
+            }
+        });
+    });
+}
+
+// Attach click handlers for navigation items
+function attachNavigationHandlers() {
+    document.querySelectorAll('.nav-item[data-section]').forEach(item => {
+        item.addEventListener('click', e => {
+            const target = item.getAttribute('data-section');
+            if (target) {
+                showSection(target, e);
+                updatePageTitle(target);
+            }
+        });
+    });
+}
+
 
 // Update entry priority
 function updateEntryPriority(index, newPriority) {
@@ -580,6 +606,9 @@ function initialize() {
     updateDataTable();
     loadSavedTypographySettings();
     updatePageTitle('dashboard-section');
+
+    attachActionCardHandlers();
+    attachNavigationHandlers();
     
     // Initialize form handlers
     initializeFormHandlers();
