@@ -51,7 +51,9 @@
             <!-- Action Buttons Container in Row 3, Column 4 -->
 
             <div class="action-container grid-row-3 grid-column-4">
+
                 <div class="widget action-card action-card-small" onclick="showSection('bug-section', event); updatePageTitle('bug-section');">
+
 
                     <div class="action-title">Report Bug</div>
                     <svg class="power-icon" viewBox="0 0 24 24">
@@ -59,6 +61,7 @@
                         <line x1="12" y1="2" x2="12" y2="12"/>
                     </svg>
                 </div>
+
 
 
                 <div class="widget action-card action-card-small" onclick="showSection('feature-section', event); updatePageTitle('feature-section');">
@@ -279,10 +282,10 @@
 
             <!-- Submit and Cancel Buttons -->
             <div style="grid-row: 5; grid-column: 2; width: 100px; height: 50px;">
-                <button type="button" onclick="submitBugForm();" class="submit-btn" style="width: 100%; height: 100%;">Submit</button>
+                <button type="button" id="bugSubmitBtn" class="submit-btn" style="width: 100%; height: 100%;">Submit</button>
             </div>
             <div style="grid-row: 5; grid-column: 3; width: 100px; height: 50px;">
-                <button type="button" onclick="clearBugForm();" class="reset-btn" style="width: 100%; height: 100%;">Cancel</button>
+                <button type="button" id="bugCancelBtn" class="reset-btn" style="width: 100%; height: 100%;">Cancel</button>
             </div>
         </div>
     </div>

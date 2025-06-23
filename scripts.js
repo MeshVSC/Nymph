@@ -485,15 +485,19 @@ function handleScroll() {
 }
 
 function initialize() {
+
     initBackground();
+
     updateDashboard();
     updateDataTable();
     loadSavedTypographySettings();
     updatePageTitle('dashboard-section');
 
 
+
     attachActionCardHandlers();
     attachNavigationHandlers();
+
     
     // Initialize form handlers
 
