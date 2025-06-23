@@ -1,0 +1,16 @@
+{
+  "name": "nymph-bug-tracker",
+  "version": "1.0.0",
+  "description": "A modern, space-themed bug tracking application",
+  "main": "index.html",
+  "scripts": {
+    "dev": "http-server -p 8000 -o",
+    "start": "http-server -p 8000"
+  },
+  "keywords": ["bug-tracker", "space-theme", "dashboard"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

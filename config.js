@@ -124,8 +124,8 @@ const NYMPH_CONFIG = {
     PAGES: {
         DASHBOARD: {
             id: 'dashboard-section',
-            title: 'Bug Tracker',
-            subtitle: 'Good Morning Zia!'
+            title: 'Nymph',
+            subtitle: ''
         },
         BUG_REPORT: {
             id: 'bug-section',

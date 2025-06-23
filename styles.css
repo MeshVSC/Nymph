@@ -108,7 +108,7 @@ TYPOGRAPHY CATEGORIES & EXAMPLES:
 
 1. TITLE (56px, weight 300)
    Apple examples: "Laid-back Eco Home Vibes"  
-   Our examples: "Bug Tracker", "Settings", "Report Bug"
+   Our examples: "Nymph", "Settings", "Report Bug"
    Usage: Main page titles
    
 2. SUBTITLE (28px, weight 350)
@@ -238,86 +238,32 @@ body {
     left: 50%;
     width: 50px;
     height: 50px;
-    background: 
-        /* Solar prominences (eruptions) */
-        radial-gradient(ellipse 20px 8px at 10% 50%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 69, 0, 0.8) 50%, transparent 100%),
-        radial-gradient(ellipse 15px 6px at 90% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 140, 0, 0.7) 50%, transparent 100%),
-        radial-gradient(ellipse 18px 7px at 70% 90%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 99, 71, 0.6) 50%, transparent 100%),
-        /* Solar granules (surface texture) */
-        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.4) 3%, transparent 6%),
-        radial-gradient(circle at 35% 25%, rgba(255, 215, 0, 0.5) 2%, transparent 5%),
-        radial-gradient(circle at 55% 35%, rgba(255, 255, 255, 0.3) 2.5%, transparent 5.5%),
-        radial-gradient(circle at 25% 55%, rgba(255, 165, 0, 0.4) 2%, transparent 4%),
-        radial-gradient(circle at 75% 45%, rgba(255, 255, 255, 0.5) 2%, transparent 4.5%),
-        radial-gradient(circle at 45% 75%, rgba(255, 140, 0, 0.3) 3%, transparent 6%),
-        radial-gradient(circle at 85% 75%, rgba(255, 215, 0, 0.4) 2%, transparent 4%),
-        radial-gradient(circle at 65% 15%, rgba(255, 255, 255, 0.3) 2.5%, transparent 5%),
-        /* Sunspot regions */
-        radial-gradient(circle at 60% 60%, rgba(139, 0, 0, 0.6) 4%, transparent 8%),
-        radial-gradient(circle at 30% 70%, rgba(139, 69, 19, 0.4) 3%, transparent 6%),
-        /* Core brightness layers */
-        radial-gradient(circle, 
-            rgba(255, 255, 255, 1) 0%, 
-            rgba(255, 255, 255, 0.9) 8%, 
-            #fff700 18%, 
-            #ffb347 35%, 
-            #ff8c00 55%, 
-            #ff4500 75%, 
-            #dc143c 90%,
-            #8b0000 100%);
+    background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%, 
+        rgba(255, 255, 255, 0.9) 10%, 
+        #ffeb3b 25%, 
+        #ffc107 50%, 
+        #ff8f00 75%, 
+        #ff6f00 100%);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 
-        /* Inner core glow */
-        inset 0 0 8px rgba(255, 255, 255, 0.8),
-        /* Corona layers */
-        0 0 15px rgba(255, 255, 255, 0.9),
-        0 0 30px rgba(255, 215, 0, 0.7),
-        0 0 45px rgba(255, 140, 0, 0.5),
-        0 0 60px rgba(255, 69, 0, 0.4),
-        0 0 80px rgba(255, 99, 71, 0.3),
-        0 0 120px rgba(255, 140, 0, 0.2),
-        0 0 160px rgba(255, 165, 0, 0.1),
-        /* Solar wind */
-        0 0 200px rgba(255, 215, 0, 0.05);
-    animation: solarPulse 4s ease-in-out infinite, solarRotate 25s linear infinite, solarFlare 8s ease-in-out infinite;
+        /* Core glow */
+        0 0 20px rgba(255, 235, 59, 0.8),
+        0 0 40px rgba(255, 193, 7, 0.6),
+        0 0 60px rgba(255, 143, 0, 0.4),
+        0 0 80px rgba(255, 111, 0, 0.2);
+    animation: solarPulse 4s ease-in-out infinite;
 }
 
 @keyframes solarPulse {
     0%, 100% { 
         transform: translate(-50%, -50%) scale(1);
-        filter: brightness(1) saturate(1);
+        filter: brightness(1);
     }
     50% { 
-        transform: translate(-50%, -50%) scale(1.08);
-        filter: brightness(1.2) saturate(1.1);
-    }
-}
-
-@keyframes solarRotate {
-    from { 
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
-    }
-    to { 
-        background-position: 
-            120% 60%, -80% -120%, 150% -80%, 
-            80% 120%, -120% 80%, 60% -150%, 150% 120%, -60% -80%, 120% -120%, 80% 150%, -150% -60%, 
-            100% 100%, -100% -100%, 0% 0%;
-    }
-}
-
-@keyframes solarFlare {
-    0%, 100% { 
-        filter: brightness(1) saturate(1) contrast(1);
-    }
-    25% { 
-        filter: brightness(1.3) saturate(1.2) contrast(1.1);
-    }
-    50% { 
-        filter: brightness(1.1) saturate(1.1) contrast(1.05);
-    }
-    75% { 
-        filter: brightness(1.4) saturate(1.3) contrast(1.15);
+        transform: translate(-50%, -50%) scale(1.05);
+        filter: brightness(1.1);
     }
 }
 
@@ -601,13 +547,14 @@ body {
     50% { opacity: 0.6; transform: scale(1.1); }
 }
 
-/* TITLE STYLES */
+/* TITLE STYLES - Now part of grid */
 .app-title {
-    position: absolute;
-    top: 120px;
-    left: 20px;
-    z-index: 10;
     color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 10;
 }
 
 .app-title h1 {
@@ -625,14 +572,14 @@ body {
     font-size: var(--font-size-subtitle);
     font-weight: var(--font-weight-subtitle);
     color: var(--color-text-secondary);
-    margin-top: 16px;
+    margin-top: 4px;
     letter-spacing: -0.01em;
 }
 
 /* Responsive Grid System - Base Unit = 50px */
 .widget-grid {
     position: absolute;
-    top: 260px;
+    top: 120px;
     left: 20px;
     right: 20px;
     bottom: 60px;
@@ -640,6 +587,7 @@ body {
     gap: 25px;
     padding: 20px 0;
     grid-template-rows: repeat(auto-fit, 200px);
+    grid-template-columns: repeat(4, 200px);
 }
 
 /* Responsive Breakpoints */
