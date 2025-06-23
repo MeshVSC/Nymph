@@ -607,6 +607,9 @@ function initialize() {
     
     // Initialize form handlers
     initializeFormHandlers();
+    if (typeof initializeBugFormHandlers === 'function') {
+        initializeBugFormHandlers();
+    }
     
     // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
