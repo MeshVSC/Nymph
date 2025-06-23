@@ -1,3 +1,4 @@
+
 import { updateDashboard, updateDataTable } from './dashboard.js';
 
 // Bug form submission
@@ -76,3 +77,4 @@ export function initializeFormHandlers() {
         });
     }
 }
+

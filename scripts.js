@@ -502,6 +502,8 @@ function initialize() {
     // Initialize form handlers
 
     initializeFormHandlers();
+
+
     window.addEventListener('scroll', handleScroll);
     setTimeout(updateDataTable, 100);
 }
