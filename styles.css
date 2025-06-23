@@ -629,6 +629,25 @@ body {
     }
 }
 
+/* Grid placement helpers */
+.grid-row-3 { grid-row: 3; }
+.grid-row-4 { grid-row: 4; }
+.grid-column-1 { grid-column: 1; }
+.grid-column-4 { grid-column: 4; }
+
+/* Dashboard action container */
+.action-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Compact action card */
+.action-card-small {
+    height: var(--widget-mini-height);
+    min-height: var(--widget-mini-height);
+}
+
 /* Individual Widgets */
 .widget {
     background: var(--bg-widget);
@@ -1035,6 +1054,12 @@ input:focus, textarea:focus, select:focus {
 }
 
 .power-icon {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: white;
+    stroke-width: 2;
+    margin-left: auto;
     opacity: 0.6;
     transition: all 0.3s ease;
 }
