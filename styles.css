@@ -1344,6 +1344,179 @@ input:focus, textarea:focus, select:focus {
     letter-spacing: -0.005em;
 }
 
+/* Form Validation States */
+.form-field {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.form-field input,
+.form-field textarea {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-field.invalid input,
+.form-field.invalid textarea {
+    border-color: var(--status-error);
+    box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
+}
+
+.form-field.valid input,
+.form-field.valid textarea {
+    border-color: var(--status-success);
+    box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+}
+
+.error-message {
+    font-size: 12px;
+    color: var(--status-error);
+    margin-top: 4px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    font-family: var(--font-family-text);
+}
+
+.form-field.invalid .error-message {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Toast Notification System */
+.toast-container {
+    position: fixed;
+    top: 100px;
+    right: 40px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.toast {
+    background: var(--bg-widget);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--border-widget);
+    border-radius: var(--widget-radius);
+    padding: 16px 20px;
+    color: var(--color-text-primary);
+    font-family: var(--font-family-text);
+    font-size: 14px;
+    font-weight: 400;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: all;
+    max-width: 350px;
+    position: relative;
+}
+
+.toast.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast.success {
+    border-left: 4px solid var(--status-success);
+}
+
+.toast.error {
+    border-left: 4px solid var(--status-error);
+}
+
+.toast.warning {
+    border-left: 4px solid var(--status-warning);
+}
+
+.toast.info {
+    border-left: 4px solid var(--status-info);
+}
+
+.toast-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.toast-close:hover {
+    color: var(--color-text-primary);
+}
+
+/* Tooltip System */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: var(--font-family-text);
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    margin-bottom: 8px;
+    max-width: 250px;
+    white-space: normal;
+    text-align: center;
+    line-height: 1.4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.tooltip-content::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+}
+
+.tooltip:hover .tooltip-content,
+.tooltip:focus-within .tooltip-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Enhanced Input Styles for Validation */
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+}
+
+input.required:invalid,
+textarea.required:invalid {
+    border-color: var(--status-warning);
+}
+
 /* Hide/Show Sections */
 .section {
     display: none;

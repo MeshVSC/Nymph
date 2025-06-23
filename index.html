@@ -236,46 +236,71 @@
             <!-- Feature Name Card (4×4) -->
             <div class="widget" style="grid-row: 2; grid-column: 1; width: 200px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Feature Name</div>
+                    <div class="activity-title tooltip">Feature Name
+                        <div class="tooltip-content">Enter the name of the feature where the bug occurs. Example: "Login Form", "User Dashboard"</div>
+                    </div>
                 </div>
-                <input type="text" id="bugFeatureName" placeholder="" required style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;">
+                <div class="form-field">
+                    <input type="text" id="bugFeatureName" placeholder="" required style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;">
+                    <div class="error-message" id="bugFeatureName-error"></div>
+                </div>
             </div>
 
             <!-- Expected Behaviour Card (8×4) -->
             <div class="widget" style="grid-row: 3; grid-column: 1 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Expected Behaviour</div>
+                    <div class="activity-title tooltip">Expected Behaviour
+                        <div class="tooltip-content">Describe how the feature should work correctly. What outcome did you expect?</div>
+                    </div>
                 </div>
-                <textarea id="bugExpectedBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                <div class="form-field">
+                    <textarea id="bugExpectedBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="bugExpectedBehavior-error"></div>
+                </div>
             </div>
 
             <!-- Actual/Current Behaviour Card (8×4) -->
             <div class="widget" style="grid-row: 3; grid-column: 3 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Actual/Current Behaviour</div>
+                    <div class="activity-title tooltip">Actual/Current Behaviour
+                        <div class="tooltip-content">Describe what actually happened instead. What went wrong?</div>
+                    </div>
                 </div>
-                <textarea id="bugActualBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                <div class="form-field">
+                    <textarea id="bugActualBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="bugActualBehavior-error"></div>
+                </div>
             </div>
 
             <!-- Error Code Card (8×4) -->
             <div class="widget" style="grid-row: 4; grid-column: 1 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Error Code</div>
+                    <div class="activity-title tooltip">Error Code
+                        <div class="tooltip-content">Enter any error code shown. Example: "404", "ERR_001", "500 Internal Server Error" (Optional)</div>
+                    </div>
                 </div>
-                <input type="text" id="bugErrorCode" placeholder="" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;">
+                <div class="form-field">
+                    <input type="text" id="bugErrorCode" placeholder="" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;">
+                    <div class="error-message" id="bugErrorCode-error"></div>
+                </div>
             </div>
 
             <!-- Error Message Card (8×4) -->
             <div class="widget" style="grid-row: 4; grid-column: 3 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Error Message</div>
+                    <div class="activity-title tooltip">Error Message
+                        <div class="tooltip-content">Copy the exact error message shown to the user. Include full stack traces if available (Optional)</div>
+                    </div>
                 </div>
-                <textarea id="bugErrorMessage" placeholder="" rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                <div class="form-field">
+                    <textarea id="bugErrorMessage" placeholder="" rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="bugErrorMessage-error"></div>
+                </div>
             </div>
 
             <!-- Submit and Cancel Buttons -->
             <div style="grid-row: 5; grid-column: 2; width: 100px; height: 50px;">
-                <button type="button" onclick="submitBugForm();" class="submit-btn" style="width: 100%; height: 100%;">Submit</button>
+                <button type="button" onclick="enhancedSubmitBugForm();" class="submit-btn" style="width: 100%; height: 100%;">Submit</button>
             </div>
             <div style="grid-row: 5; grid-column: 3; width: 100px; height: 50px;">
                 <button type="button" onclick="clearBugForm();" class="reset-btn" style="width: 100%; height: 100%;">Cancel</button>
@@ -425,8 +450,12 @@
         </div>
     </div>
 
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
     <!-- JavaScript -->
     <script src="config.js"></script>
+    <script src="ui-enhancements.js"></script>
     <script src="scripts.js"></script>
 </body>
 </html>

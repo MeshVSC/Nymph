@@ -421,7 +421,6 @@ function attachNavigationHandlers() {
     });
 }
 
-
 // Update entry priority
 function updateEntryPriority(index, newPriority) {
     entries[index].priority = newPriority;
