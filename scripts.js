@@ -115,7 +115,9 @@ const pageTitles = {
 
 // Navigation function
 function showSection(sectionId, sourceEvent = null) {
-    console.log('showSection called with:', sectionId, sourceEvent);
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('showSection called with:', sectionId, sourceEvent);
+    }
     
     // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
@@ -209,7 +211,9 @@ function updateGraph(total, open, resolved, features) {
 
 // Bug form submission function
 function submitBugForm() {
-    console.log('submitBugForm called');
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('submitBugForm called');
+    }
     
     // Get values
     const featureName = document.getElementById('bugFeatureName').value;
@@ -218,7 +222,9 @@ function submitBugForm() {
     const errorCode = document.getElementById('bugErrorCode').value;
     const errorMessage = document.getElementById('bugErrorMessage').value;
     
-    console.log('Form values:', { featureName, expectedBehaviour, actualBehaviour, errorCode, errorMessage });
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('Form values:', { featureName, expectedBehaviour, actualBehaviour, errorCode, errorMessage });
+    }
     
     // Check if at least feature name is filled
     if (!featureName.trim()) {
@@ -241,15 +247,21 @@ function submitBugForm() {
         date: new Date().toISOString().split('T')[0]
     };
     
-    console.log('Created entry:', entry);
-    console.log('entries before push:', entries);
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('Created entry:', entry);
+        console.log('entries before push:', entries);
+    }
     
     // Add to entries array
     entries.push(entry);
-    console.log('entries after push:', entries);
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('entries after push:', entries);
+    }
     
     localStorage.setItem(NYMPH_CONFIG.DATA.STORAGE_KEY, JSON.stringify(entries));
-    console.log('Saved to localStorage with key:', NYMPH_CONFIG.DATA.STORAGE_KEY);
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('Saved to localStorage with key:', NYMPH_CONFIG.DATA.STORAGE_KEY);
+    }
     
     // Show confirmation
     alert('Bug report submitted successfully!');
@@ -265,23 +277,33 @@ function submitBugForm() {
     updateDashboard();
     updateDataTable();
     
-    console.log('Form submission completed');
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('Form submission completed');
+    }
 }
 
 // Update data table with dropdowns  
 function updateDataTable() {
-    console.log('updateDataTableWithDropdowns called');
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('updateDataTableWithDropdowns called');
+    }
     const tableBody = document.getElementById('dataTableBody');
     if (!tableBody) {
-        console.log('tableBody not found');
+        if (NYMPH_CONFIG.DEBUG.ENABLED) {
+            console.log('tableBody not found');
+        }
         return;
     }
     
-    console.log('entries:', entries);
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('entries:', entries);
+    }
     tableBody.innerHTML = '';
     
     entries.forEach((entry, index) => {
-        console.log('Processing entry:', entry);
+        if (NYMPH_CONFIG.DEBUG.ENABLED) {
+            console.log('Processing entry:', entry);
+        }
         const row = document.createElement('tr');
         row.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
         
@@ -348,7 +370,9 @@ function updateDataTable() {
         tableBody.appendChild(row);
     });
     
-    console.log('Table updated with', entries.length, 'entries with dropdowns');
+    if (NYMPH_CONFIG.DEBUG.ENABLED) {
+        console.log('Table updated with', entries.length, 'entries with dropdowns');
+    }
 }
 
 // Clear bug form function
