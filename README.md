@@ -21,10 +21,17 @@ The codebase has been refactored from a single 2137-line HTML file into a modula
 /nymph/
 ├── index.html          # Clean HTML structure (446 lines)
 ├── styles.css          # All CSS with custom properties (1500+ lines)
-├── scripts.js          # JavaScript functionality (400+ lines)
+├── scripts.js          # Main entry point tying modules together
+├── background.js       # Space animation and background effects
+├── forms.js            # Handles bug & feature request forms
+├── dashboard.js        # Updates dashboard widgets and stats
 ├── config.js           # Centralized configuration (200+ lines)
 └── README.md           # Documentation
 ```
+
+- `background.js` handles the animated space background and visual effects.
+- `forms.js` processes bug reports and feature request submissions.
+- `dashboard.js` updates statistics and manages dashboard widgets.
 
 #### **Key Improvements:**
 - **CSS Custom Properties**: 60+ CSS variables for consistent theming
