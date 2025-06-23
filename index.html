@@ -49,8 +49,12 @@
             </div>
 
             <!-- Action Buttons Container in Row 3, Column 4 -->
+
             <div class="action-container grid-row-3 grid-column-4">
-                <div class="widget action-card action-card-small" data-section="bug-section">
+
+                <div class="widget action-card action-card-small" onclick="showSection('bug-section', event); updatePageTitle('bug-section');">
+
+
                     <div class="action-title">Report Bug</div>
                     <svg class="power-icon" viewBox="0 0 24 24">
                         <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
@@ -58,7 +62,10 @@
                     </svg>
                 </div>
 
-                <div class="widget action-card action-card-small" data-section="feature-section">
+
+
+                <div class="widget action-card action-card-small" onclick="showSection('feature-section', event); updatePageTitle('feature-section');">
+
                     <div class="action-title">Feature Request</div>
                     <svg class="power-icon" viewBox="0 0 24 24">
                         <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
@@ -427,6 +434,6 @@
 
     <!-- JavaScript -->
     <script src="config.js"></script>
-    <script src="scripts.js"></script>
+    <script type="module" src="scripts.js"></script>
 </body>
 </html>
