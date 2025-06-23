@@ -44,23 +44,23 @@
     <div class="section active" id="dashboard-section">
         <div class="widget-grid">
             <!-- App Title in Grid - No Card Background -->
-            <div class="app-title" style="grid-row: 3; grid-column: 1;">
+            <div class="app-title grid-row-3 grid-column-1">
                 <h1>Nymph</h1>
             </div>
 
             <!-- Action Buttons Container in Row 3, Column 4 -->
-            <div style="grid-row: 3; grid-column: 4; display: flex; flex-direction: column; gap: 12px;">
-                <div class="widget action-card" onclick="showSection('bug-section', event); updatePageTitle('bug-section');" style="height: 100px; min-height: 100px;">
+            <div class="action-container grid-row-3 grid-column-4">
+                <div class="widget action-card action-card-small" onclick="showSection('bug-section', event); updatePageTitle('bug-section');">
                     <div class="action-title">Report Bug</div>
-                    <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
+                    <svg class="power-icon" viewBox="0 0 24 24">
                         <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
                         <line x1="12" y1="2" x2="12" y2="12"/>
                     </svg>
                 </div>
 
-                <div class="widget action-card" onclick="showSection('feature-section', event); updatePageTitle('feature-section');" style="height: 100px; min-height: 100px;">
+                <div class="widget action-card action-card-small" onclick="showSection('feature-section', event); updatePageTitle('feature-section');">
                     <div class="action-title">Feature Request</div>
-                    <svg class="power-icon" viewBox="0 0 24 24" style="width: 32px; height: 32px; fill: none; stroke: white; stroke-width: 2; margin-left: auto;">
+                    <svg class="power-icon" viewBox="0 0 24 24">
                         <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
                         <line x1="12" y1="2" x2="12" y2="12"/>
                     </svg>
@@ -68,7 +68,7 @@
             </div>
 
             <!-- Stat Cards Row - 4×4 cards using widget-4x4 class moved down -->
-            <div class="widget widget-4x4" style="grid-row: 4;">
+            <div class="widget widget-4x4 grid-row-4">
                 <div class="activity-header">
                     <div class="activity-title">Total Bugs</div>
                     <div class="status-indicator">●</div>
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <div class="widget widget-4x4" style="grid-row: 4;">
+            <div class="widget widget-4x4 grid-row-4">
                 <div class="activity-header">
                     <div class="activity-title">Open</div>
                     <div class="status-indicator">●</div>
@@ -88,7 +88,7 @@
                 </div>
             </div>
 
-            <div class="widget widget-4x4" style="grid-row: 4;">
+            <div class="widget widget-4x4 grid-row-4">
                 <div class="activity-header">
                     <div class="activity-title">Resolved</div>
                     <div class="status-indicator">●</div>
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="widget widget-4x4" style="grid-row: 4;">
+            <div class="widget widget-4x4 grid-row-4">
                 <div class="activity-header">
                     <div class="activity-title">Feature Request</div>
                     <div class="status-indicator">●</div>
