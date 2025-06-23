@@ -5,93 +5,7 @@ NYMPH BUG TRACKER - EXTRACTED SCRIPTS
 Extracted from single HTML file for better maintainability
 */
 
-// Create enhanced twinkling stars
-function createStars() {
-    const starsContainer = document.getElementById('stars');
-    const config = NYMPH_CONFIG.ANIMATIONS.STARS;
-    
-    for (let i = 0; i < config.COUNT; i++) {
-        const star = document.createElement('div');
-        
-        // Assign random star sizes using config
-        const rand = Math.random();
-        if (rand < config.SIZES.SMALL_CHANCE) {
-            star.className = 'star small';
-        } else if (rand < config.SIZES.MEDIUM_CHANCE) {
-            star.className = 'star medium';
-        } else {
-            star.className = 'star large';
-        }
-        
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * config.TWINKLE.MAX_DELAY + 's';
-        star.style.animationDuration = (config.TWINKLE.MIN_DURATION + Math.random() * (config.TWINKLE.MAX_DURATION - config.TWINKLE.MIN_DURATION)) / 1000 + 's';
-        starsContainer.appendChild(star);
-    }
-}
-
-// Create distant galaxies
-function createGalaxies() {
-    const galaxiesContainer = document.getElementById('galaxies');
-    const config = NYMPH_CONFIG.ANIMATIONS.GALAXIES;
-    
-    for (let i = 0; i < config.COUNT; i++) {
-        const galaxy = document.createElement('div');
-        
-        // Assign random galaxy types from config
-        const type = config.TYPES[Math.floor(Math.random() * config.TYPES.length)];
-        galaxy.className = `galaxy ${type}`;
-        
-        // Random sizes using config
-        const size = config.SIZE.MIN + Math.random() * (config.SIZE.MAX - config.SIZE.MIN);
-        const heightFactor = config.SIZE.HEIGHT_FACTOR.MIN + Math.random() * (config.SIZE.HEIGHT_FACTOR.MAX - config.SIZE.HEIGHT_FACTOR.MIN);
-        galaxy.style.width = size + 'px';
-        galaxy.style.height = size * heightFactor + 'px';
-        
-        galaxy.style.left = Math.random() * 100 + '%';
-        galaxy.style.top = Math.random() * 100 + '%';
-        galaxy.style.animationDelay = Math.random() * config.PULSE_DELAY_MAX + 's';
-        galaxiesContainer.appendChild(galaxy);
-    }
-}
-
-// Create falling meteors
-function createMeteor() {
-    const meteorsContainer = document.getElementById('meteors');
-    const config = NYMPH_CONFIG.ANIMATIONS.METEORS;
-    const meteor = document.createElement('div');
-    meteor.className = 'meteor';
-    
-    // Random starting position (off-screen top-right)
-    meteor.style.left = (100 + Math.random() * 10) + '%';
-    meteor.style.top = (Math.random() * 50 - 10) + '%';
-    
-    // Animation with config-based duration
-    const duration = config.DURATION_MIN + Math.random() * (config.DURATION_MAX - config.DURATION_MIN);
-    meteor.style.animation = `meteorFall ${duration / 1000}s linear`;
-    
-    meteorsContainer.appendChild(meteor);
-    
-    // Remove meteor after animation using config
-    setTimeout(() => {
-        if (meteor.parentNode) {
-            meteor.parentNode.removeChild(meteor);
-        }
-    }, config.CLEANUP_DELAY);
-}
-
-// Start meteor shower
-function startMeteorShower() {
-    const config = NYMPH_CONFIG.ANIMATIONS.METEORS;
-    
-    // Create meteors at random intervals using config
-    setInterval(() => {
-        if (Math.random() < config.SPAWN_CHANCE) {
-            createMeteor();
-        }
-    }, config.INTERVAL);
-}
+// Background animation functions removed for performance
 
 // Page titles and subtitles from config
 const pageTitles = {
@@ -116,6 +30,15 @@ const pageTitles = {
 // Navigation function
 function showSection(sectionId, sourceEvent = null) {
     console.log('showSection called with:', sectionId, sourceEvent);
+    
+    // PIN protection for settings
+    if (sectionId === 'settings-section') {
+        const pin = prompt("Enter PIN to access settings:");
+        if (pin !== "1700") {
+            alert("Access denied");
+            return;
+        }
+    }
     
     // Hide all sections
     document.querySelectorAll('.section').forEach(section => {
@@ -164,8 +87,8 @@ function updatePageTitle(sectionId) {
     }
 }
 
-// Data storage using config
-let entries = JSON.parse(localStorage.getItem(NYMPH_CONFIG.DATA.STORAGE_KEY)) || NYMPH_CONFIG.DATA.DEFAULT_ENTRIES;
+// Data storage using config - start with empty table
+let entries = [];
 
 // Update dashboard stats
 function updateDashboard() {
@@ -594,11 +517,11 @@ function handleScroll() {
 
 // Initialize everything when DOM is loaded
 function initialize() {
-    // Initialize background elements
-    createGalaxies();
-    createStars();
-    startMeteorShower();
-    randomizePlanets();
+    // Initialize background elements - DISABLED for performance
+    // createGalaxies();
+    // createStars();
+    // startMeteorShower();
+    // randomizePlanets();
     
     // Initialize app functionality
     updateDashboard();

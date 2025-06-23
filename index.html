@@ -246,34 +246,34 @@
                 </div>
             </div>
 
-            <!-- Expected Behaviour Card (8×4) -->
-            <div class="widget" style="grid-row: 3; grid-column: 1 / span 2; width: 400px; height: 200px;">
+            <!-- Expected Behaviour Card (8×8) -->
+            <div class="widget" style="grid-row: 3; grid-column: 1 / span 2; width: 400px; height: 400px;">
                 <div class="activity-header">
                     <div class="activity-title tooltip">Expected Behaviour
-                        <div class="tooltip-content">Describe how the feature should work correctly. What outcome did you expect?</div>
+                        <div class="tooltip-content">Describe how the feature should work correctly. What outcome did you expected?</div>
                     </div>
                 </div>
                 <div class="form-field">
-                    <textarea id="bugExpectedBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <textarea id="bugExpectedBehavior" placeholder="" required rows="12" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 300px; padding: 12px; resize: none;"></textarea>
                     <div class="error-message" id="bugExpectedBehavior-error"></div>
                 </div>
             </div>
 
-            <!-- Actual/Current Behaviour Card (8×4) -->
-            <div class="widget" style="grid-row: 3; grid-column: 3 / span 2; width: 400px; height: 200px;">
+            <!-- Actual/Current Behaviour Card (8×8) -->
+            <div class="widget" style="grid-row: 3; grid-column: 3 / span 2; width: 400px; height: 400px;">
                 <div class="activity-header">
                     <div class="activity-title tooltip">Actual/Current Behaviour
                         <div class="tooltip-content">Describe what actually happened instead. What went wrong?</div>
                     </div>
                 </div>
                 <div class="form-field">
-                    <textarea id="bugActualBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <textarea id="bugActualBehavior" placeholder="" required rows="12" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 300px; padding: 12px; resize: none;"></textarea>
                     <div class="error-message" id="bugActualBehavior-error"></div>
                 </div>
             </div>
 
             <!-- Error Code Card (8×4) -->
-            <div class="widget" style="grid-row: 4; grid-column: 1 / span 2; width: 400px; height: 200px;">
+            <div class="widget" style="grid-row: 5; grid-column: 1 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
                     <div class="activity-title tooltip">Error Code
                         <div class="tooltip-content">Enter any error code shown. Example: "404", "ERR_001", "500 Internal Server Error" (Optional)</div>
@@ -286,7 +286,7 @@
             </div>
 
             <!-- Error Message Card (8×4) -->
-            <div class="widget" style="grid-row: 4; grid-column: 3 / span 2; width: 400px; height: 200px;">
+            <div class="widget" style="grid-row: 5; grid-column: 3 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
                     <div class="activity-title tooltip">Error Message
                         <div class="tooltip-content">Copy the exact error message shown to the user. Include full stack traces if available (Optional)</div>
@@ -299,10 +299,10 @@
             </div>
 
             <!-- Submit and Cancel Buttons -->
-            <div style="grid-row: 5; grid-column: 2; width: 100px; height: 50px;">
+            <div style="grid-row: 6; grid-column: 2; width: 100px; height: 50px;">
                 <button type="button" onclick="enhancedSubmitBugForm();" class="submit-btn" style="width: 100%; height: 100%;">Submit</button>
             </div>
-            <div style="grid-row: 5; grid-column: 3; width: 100px; height: 50px;">
+            <div style="grid-row: 6; grid-column: 3; width: 100px; height: 50px;">
                 <button type="button" onclick="clearBugForm();" class="reset-btn" style="width: 100%; height: 100%;">Cancel</button>
             </div>
         </div>
@@ -319,42 +319,61 @@
             <!-- Feature Name Card (spans 2 columns) -->
             <div class="widget" style="grid-row: 3; grid-column: 1 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Feature Name</div>
+                    <div class="activity-title tooltip">Feature Name
+                        <div class="tooltip-content">Enter a descriptive name for the feature you want. Example: "Dark Mode Toggle", "Advanced Search"</div>
+                    </div>
                 </div>
-                <input type="text" id="featureName" placeholder="" required style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;" form="featureForm">
+                <div class="form-field">
+                    <input type="text" id="featureName" placeholder="" required style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; padding: 12px;">
+                    <div class="error-message" id="featureName-error"></div>
+                </div>
             </div>
 
             <!-- Expected Behaviour Card (spans 2 columns) -->
             <div class="widget" style="grid-row: 3; grid-column: 3 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Expected Behaviour</div>
+                    <div class="activity-title tooltip">Expected Behaviour
+                        <div class="tooltip-content">Describe how this feature should work and what it should do for users</div>
+                    </div>
                 </div>
-                <textarea id="expectedBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;" form="featureForm"></textarea>
+                <div class="form-field">
+                    <textarea id="expectedBehavior" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="expectedBehavior-error"></div>
+                </div>
             </div>
 
             <!-- Feature Importance Card (spans 2 columns) -->
             <div class="widget" style="grid-row: 4; grid-column: 1 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Feature Importance</div>
+                    <div class="activity-title tooltip">Feature Importance
+                        <div class="tooltip-content">Explain why this feature is important and what problem it solves</div>
+                    </div>
                 </div>
-                <textarea id="featureImportance" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;" form="featureForm"></textarea>
+                <div class="form-field">
+                    <textarea id="featureImportance" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="featureImportance-error"></div>
+                </div>
             </div>
 
             <!-- Desirability Card (spans 2 columns) -->
             <div class="widget" style="grid-row: 4; grid-column: 3 / span 2; width: 400px; height: 200px;">
                 <div class="activity-header">
-                    <div class="activity-title">Desirability</div>
+                    <div class="activity-title tooltip">Desirability
+                        <div class="tooltip-content">Explain how much you want this feature and who would benefit from it</div>
+                    </div>
                 </div>
-                <textarea id="desirability" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;" form="featureForm"></textarea>
+                <div class="form-field">
+                    <textarea id="desirability" placeholder="" required rows="4" style="background: rgba(0, 0, 0, 0.3); border: none; outline: none; width: 100%; height: 120px; padding: 12px; resize: none;"></textarea>
+                    <div class="error-message" id="desirability-error"></div>
+                </div>
             </div>
 
             <!-- Submit and Cancel Buttons -->
-            <form id="featureForm"></form>
             <div style="grid-row: 5; grid-column: 1;">
-                <button type="submit" form="featureForm" class="submit-btn">Submit</button>
+                <button type="button" onclick="enhancedSubmitFeatureForm();" class="submit-btn">Submit</button>
             </div>
             <div style="grid-row: 5; grid-column: 2;">
-                <button type="button" class="reset-btn">Cancel</button>
+                <button type="button" onclick="clearFeatureForm();" class="reset-btn">Cancel</button>
             </div>
         </div>
     </div>

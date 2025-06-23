@@ -253,7 +253,7 @@ body {
         0 0 40px rgba(255, 193, 7, 0.6),
         0 0 60px rgba(255, 143, 0, 0.4),
         0 0 80px rgba(255, 111, 0, 0.2);
-    animation: solarPulse 4s ease-in-out infinite;
+    /* animation: solarPulse 4s ease-in-out infinite; */
 }
 
 @keyframes solarPulse {
@@ -277,11 +277,11 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-.orbit-1 { width: 150px; height: 150px; animation: rotate 20s linear infinite; }
-.orbit-2 { width: 220px; height: 220px; animation: rotate 30s linear infinite; }
-.orbit-3 { width: 300px; height: 300px; animation: rotate 45s linear infinite; }
-.orbit-4 { width: 400px; height: 400px; animation: rotate 60s linear infinite; }
-.orbit-5 { width: 520px; height: 520px; animation: rotate 80s linear infinite; }
+.orbit-1 { width: 150px; height: 150px; /* animation: rotate 20s linear infinite; */ }
+.orbit-2 { width: 220px; height: 220px; /* animation: rotate 30s linear infinite; */ }
+.orbit-3 { width: 300px; height: 300px; /* animation: rotate 45s linear infinite; */ }
+.orbit-4 { width: 400px; height: 400px; /* animation: rotate 60s linear infinite; */ }
+.orbit-5 { width: 520px; height: 520px; /* animation: rotate 80s linear infinite; */ }
 
 @keyframes rotate {
     from { transform: translate(-50%, -50%) rotate(0deg); }
@@ -309,7 +309,7 @@ body {
     box-shadow: 
         inset -2px -2px 4px rgba(0, 0, 0, 0.3),
         0 0 15px rgba(210, 105, 30, 0.4);
-    animation: planetRotate1 15s linear infinite;
+    /* animation: planetRotate1 15s linear infinite; */
 }
 .planet-2 { 
     width: 14px; 
@@ -326,7 +326,7 @@ body {
     box-shadow: 
         inset -3px -3px 6px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(255, 140, 0, 0.5);
-    animation: planetRotate2 18s linear infinite;
+    /* animation: planetRotate2 18s linear infinite; */
 }
 .planet-3 { 
     width: 12px; 
@@ -344,7 +344,7 @@ body {
     box-shadow: 
         inset -2px -2px 4px rgba(0, 0, 0, 0.3),
         0 0 18px rgba(30, 144, 255, 0.6);
-    animation: planetRotate3 22s linear infinite;
+    /* animation: planetRotate3 22s linear infinite; */
 }
 .planet-4 { 
     width: 16px; 
@@ -361,7 +361,7 @@ body {
     box-shadow: 
         inset -3px -3px 6px rgba(0, 0, 0, 0.4),
         0 0 25px rgba(178, 34, 34, 0.4);
-    animation: planetRotate4 25s linear infinite;
+    /* animation: planetRotate4 25s linear infinite; */
 }
 .planet-5 { 
     width: 20px; 
@@ -379,7 +379,7 @@ body {
     box-shadow: 
         inset -4px -4px 8px rgba(0, 0, 0, 0.3),
         0 0 30px rgba(218, 165, 32, 0.5);
-    animation: planetRotate5 30s linear infinite;
+    /* animation: planetRotate5 30s linear infinite; */
 }
 
 @keyframes planetRotate1 {
@@ -421,7 +421,7 @@ body {
     position: absolute;
     background: white;
     border-radius: 50%;
-    animation: twinkle 3s ease-in-out infinite alternate;
+    /* animation: twinkle 3s ease-in-out infinite alternate; */
 }
 
 .star.small {
@@ -517,7 +517,7 @@ body {
     position: absolute;
     border-radius: 50%;
     opacity: 0.6;
-    animation: galaxyPulse 20s ease-in-out infinite;
+    /* animation: galaxyPulse 20s ease-in-out infinite; */
 }
 
 .galaxy.spiral {
@@ -586,7 +586,7 @@ body {
     display: grid;
     gap: 25px;
     padding: 20px 0;
-    grid-template-rows: repeat(auto-fit, 200px);
+    grid-template-rows: repeat(auto-fit, 225px);
     grid-template-columns: repeat(4, 200px);
 }
 

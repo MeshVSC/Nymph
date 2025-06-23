@@ -309,6 +309,80 @@ function setupRealTimeValidation() {
     });
 }
 
+// Enhanced feature form submission
+function enhancedSubmitFeatureForm() {
+    try {
+        // Validate form
+        const validation = validator.validateForm('feature-form', featureFormValidation);
+        
+        if (!validation.isValid) {
+            errorHandler.handleValidationError(validation.errors);
+            return false;
+        }
+
+        // Get form values
+        const formData = {
+            featureName: document.getElementById('featureName').value.trim(),
+            expectedBehaviour: document.getElementById('expectedBehavior').value.trim(),
+            featureImportance: document.getElementById('featureImportance').value.trim(),
+            desirability: document.getElementById('desirability').value.trim()
+        };
+
+        // Create entry
+        const entry = {
+            id: Date.now(),
+            type: 'Feature Request',
+            featureName: formData.featureName,
+            expectedBehaviour: formData.expectedBehaviour,
+            actualBehaviour: '',
+            errorCode: '',
+            errorMessage: '',
+            featureImportance: formData.featureImportance,
+            desirability: formData.desirability,
+            priority: 'Normal',
+            status: 'Open',
+            date: new Date().toISOString().split('T')[0]
+        };
+
+        // Save to storage
+        const currentEntries = safeStorage.getItem(NYMPH_CONFIG.DATA.STORAGE_KEY, []);
+        currentEntries.push(entry);
+        
+        if (safeStorage.setItem(NYMPH_CONFIG.DATA.STORAGE_KEY, currentEntries)) {
+            // Update the global entries variable so other functions can see the data
+            if (typeof entries !== 'undefined') {
+                entries.push(entry);
+            }
+            // Success
+            toastSystem.success('Feature request submitted successfully!');
+            
+            // Clear form
+            Object.keys(featureFormValidation).forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.value = '';
+                    const fieldContainer = field.closest('.form-field');
+                    if (fieldContainer) {
+                        fieldContainer.classList.remove('valid', 'invalid');
+                    }
+                }
+            });
+            
+            // Update UI
+            if (typeof updateDashboard === 'function') updateDashboard();
+            if (typeof updateDataTable === 'function') updateDataTable();
+            
+            return true;
+        } else {
+            return false;
+        }
+        
+    } catch (error) {
+        errorHandler.handle(error, 'Feature Form Submission');
+        return false;
+    }
+}
+
 // Enhanced form submission
 function enhancedSubmitBugForm() {
     try {
@@ -342,10 +416,14 @@ function enhancedSubmitBugForm() {
         };
 
         // Save to storage
-        const entries = safeStorage.getItem(NYMPH_CONFIG.DATA.STORAGE_KEY, []);
-        entries.push(entry);
+        const currentEntries = safeStorage.getItem(NYMPH_CONFIG.DATA.STORAGE_KEY, []);
+        currentEntries.push(entry);
         
-        if (safeStorage.setItem(NYMPH_CONFIG.DATA.STORAGE_KEY, entries)) {
+        if (safeStorage.setItem(NYMPH_CONFIG.DATA.STORAGE_KEY, currentEntries)) {
+            // Update the global entries variable so other functions can see the data
+            if (typeof entries !== 'undefined') {
+                entries.push(entry);
+            }
             // Success
             toastSystem.success('Bug report submitted successfully!');
             
@@ -386,7 +464,30 @@ window.toastSystem = toastSystem;
 window.errorHandler = errorHandler;
 window.safeStorage = safeStorage;
 window.enhancedSubmitBugForm = enhancedSubmitBugForm;
+window.enhancedSubmitFeatureForm = enhancedSubmitFeatureForm;
 window.setupRealTimeValidation = setupRealTimeValidation;
+
+// Clear feature form function
+function clearFeatureForm() {
+    document.getElementById('featureName').value = '';
+    document.getElementById('expectedBehavior').value = '';
+    document.getElementById('featureImportance').value = '';
+    document.getElementById('desirability').value = '';
+    
+    // Clear validation states
+    Object.keys(featureFormValidation).forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            const fieldContainer = field.closest('.form-field');
+            if (fieldContainer) {
+                fieldContainer.classList.remove('valid', 'invalid');
+                const errorElement = fieldContainer.querySelector('.error-message');
+                if (errorElement) errorElement.textContent = '';
+            }
+        }
+    });
+}
+window.clearFeatureForm = clearFeatureForm;
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
