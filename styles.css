@@ -319,6 +319,8 @@ body {
     
     .title {
         font-size: 50px !important;
+        min-height: 100px !important;
+        line-height: 0.9 !important;
     }
     
     .subtitle {
@@ -327,6 +329,11 @@ body {
     
     .subtitle {
         font-size: 16px !important;
+    }
+    
+    /* Mobile stats */
+    .widget-number {
+        font-size: 30px !important;
     }
     
     /* Mobile forms */
@@ -510,6 +517,20 @@ body {
     font-weight: var(--title-weight);
     color: white;
     margin: 0;
+    line-height: 0.9;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.app-label {
+    font-family: var(--font-text);
+    font-size: 18px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 5px 0;
+    text-align: right;
+    padding-right: 80px;
 }
 
 .subtitle {
@@ -517,7 +538,8 @@ body {
     font-size: var(--subtitle-size);
     font-weight: var(--subtitle-weight);
     color: rgba(255, 255, 255, 0.9);
-    margin: -15px 0 0 0;
+    margin: 10px 0 0 0;
+    text-align: left;
 }
 
 .card-title {
@@ -951,6 +973,11 @@ body {
 .form-field.valid textarea,
 .form-field.valid select {
     border: 2px solid var(--success);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2327ae60' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px 16px;
+    padding-right: 40px;
 }
 
 .error-message {
@@ -958,6 +985,64 @@ body {
     font-size: 12px;
     margin-top: 5px;
     min-height: 16px;
+}
+
+/* File Upload Styling */
+.uploaded-files {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.file-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.file-name {
+    font-size: 14px;
+    color: white;
+    flex: 1;
+}
+
+.file-size {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 8px;
+}
+
+.btn-remove {
+    background: var(--error);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-remove:hover {
+    background: #c0392b;
 }
 
 /* Buttons */
@@ -1020,6 +1105,14 @@ body {
     background: rgba(0, 0, 0, 0.3);
     font-weight: var(--card-subtitle-weight);
     color: rgba(255, 255, 255, 0.9);
+}
+
+.table th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.table th:last-child {
+    border-top-right-radius: 12px;
 }
 
 .table td {

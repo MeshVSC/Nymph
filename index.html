@@ -71,8 +71,9 @@
         <div class="app-grid">
             <!-- App Title -->
             <div class="title-container grid-pos-1-1 span-2-cols">
+                <p class="app-label">Bug Tracker</p>
                 <h1 class="title">Nymph</h1>
-                <p class="subtitle">Bug Tracker</p>
+                <p class="subtitle">Dashboard</p>
             </div>
 
             <!-- Action Cards Container -->
@@ -291,6 +292,9 @@
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary form-button grid-pos-3-4">Submit</button>
 
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" onclick="app.uploadFile('bug')">Upload</button>
+
                 <!-- Cancel Button -->
                 <button type="button" class="btn btn-secondary form-button grid-pos-4-4" onclick="app.clearForm('bug-form')">Cancel</button>
             </form>
@@ -358,6 +362,9 @@
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-primary form-button grid-pos-3-4">Submit</button>
+
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" onclick="app.uploadFile('feature')">Upload</button>
 
                 <!-- Cancel Button -->
                 <button type="button" class="btn btn-secondary form-button grid-pos-4-4" onclick="app.clearForm('feature-form')">Cancel</button>

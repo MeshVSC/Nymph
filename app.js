@@ -7,10 +7,12 @@ Following proper design system with all features
 
 class NymphApp {
     constructor() {
+        console.log('Nymph App starting...');
         this.data = this.loadData();
         this.currentSection = 'dashboard-section';
         this.lastScrollTop = 0;
         this.init();
+        console.log('Nymph App initialized successfully');
     }
     
     init() {
@@ -43,23 +45,132 @@ class NymphApp {
         this.saveData();
         this.showToast('Entry saved successfully!', 'success');
     }
+
+    // File Upload System
+    uploadFile(formType) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.multiple = true;
+        input.accept = '.jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt,.zip';
+        
+        input.onchange = (e) => {
+            const files = Array.from(e.target.files);
+            if (files.length === 0) return;
+            
+            // Store files in localStorage (for demo purposes)
+            const fileData = [];
+            let processedFiles = 0;
+            
+            files.forEach(file => {
+                if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                    this.showToast(`File ${file.name} is too large (max 5MB)`, 'error');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    fileData.push({
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        data: event.target.result,
+                        uploadDate: new Date().toISOString()
+                    });
+                    
+                    processedFiles++;
+                    if (processedFiles === files.length) {
+                        this.saveUploadedFiles(formType, fileData);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+        
+        input.click();
+    }
+    
+    saveUploadedFiles(formType, files) {
+        const existingFiles = JSON.parse(localStorage.getItem(`nymph_files_${formType}`) || '[]');
+        existingFiles.push(...files);
+        localStorage.setItem(`nymph_files_${formType}`, JSON.stringify(existingFiles));
+        
+        const fileNames = files.map(f => f.name).join(', ');
+        this.showToast(`Uploaded ${files.length} file(s): ${fileNames}`, 'success');
+        
+        // Update file display
+        this.displayUploadedFiles(formType);
+    }
+    
+    displayUploadedFiles(formType) {
+        const files = JSON.parse(localStorage.getItem(`nymph_files_${formType}`) || '[]');
+        let container = document.getElementById(`${formType}-files`);
+        
+        if (!container) {
+            // Create file display container if it doesn't exist
+            const form = document.getElementById(`${formType}-form`);
+            const fileContainer = document.createElement('div');
+            fileContainer.id = `${formType}-files`;
+            fileContainer.className = 'uploaded-files';
+            fileContainer.innerHTML = '<div class="card-title">Uploaded Files</div>';
+            form.appendChild(fileContainer);
+            container = fileContainer;
+        }
+        
+        const fileList = document.createElement('div');
+        fileList.className = 'file-list';
+        
+        files.forEach(file => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">(${(file.size / 1024).toFixed(1)} KB)</span>
+                <button type="button" class="btn-remove" onclick="app.removeFile('${formType}', '${file.name}')">×</button>
+            `;
+            fileList.appendChild(fileItem);
+        });
+        
+        const existingList = container.querySelector('.file-list');
+        if (existingList) {
+            existingList.remove();
+        }
+        container.appendChild(fileList);
+    }
+    
+    removeFile(formType, fileName) {
+        const files = JSON.parse(localStorage.getItem(`nymph_files_${formType}`) || '[]');
+        const updatedFiles = files.filter(f => f.name !== fileName);
+        localStorage.setItem(`nymph_files_${formType}`, JSON.stringify(updatedFiles));
+        this.displayUploadedFiles(formType);
+        this.showToast(`Removed ${fileName}`, 'success');
+    }
     
     // Navigation System
     setupNavigation() {
+        console.log('Setting up navigation...');
+        
         // Top navigation
-        document.querySelectorAll('.top-nav .nav-item').forEach(btn => {
+        const topNavItems = document.querySelectorAll('.top-nav .nav-item');
+        console.log('Found top nav items:', topNavItems.length);
+        
+        topNavItems.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = btn.dataset.section;
+                console.log('Top nav clicked:', section);
                 this.handleNavigation(section);
             });
         });
         
         // Side navigation
-        document.querySelectorAll('.side-nav .nav-item').forEach(btn => {
+        const sideNavItems = document.querySelectorAll('.side-nav .nav-item');
+        console.log('Found side nav items:', sideNavItems.length);
+        
+        sideNavItems.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = btn.dataset.section;
+                console.log('Side nav clicked:', section);
                 this.handleNavigation(section);
             });
         });
@@ -89,9 +200,13 @@ class NymphApp {
     }
     
     setupActionCards() {
-        document.querySelectorAll('.action-card').forEach(card => {
+        const actionCards = document.querySelectorAll('.action-card');
+        console.log('Found action cards:', actionCards.length);
+        
+        actionCards.forEach(card => {
             card.addEventListener('click', (e) => {
                 const section = card.dataset.section;
+                console.log('Action card clicked:', section);
                 if (section) {
                     this.handleNavigation(section);
                 }
