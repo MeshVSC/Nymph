@@ -455,6 +455,12 @@ body {
     grid-row: span 4;
 }
 
+.widget-full-width {
+    width: 900px;
+    height: var(--widget-4x4);
+    grid-column: span 4;
+}
+
 .form-button {
     width: var(--widget-4x4);
     height: 50px;
@@ -947,7 +953,7 @@ body {
 .form-field select {
     width: 100%;
     padding: 12px;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.15);
     border: none;
     border-radius: 12px;
     color: white;
@@ -960,7 +966,7 @@ body {
 .form-field textarea:focus,
 .form-field select:focus {
     outline: none;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.25);
 }
 
 .form-field.error input,
@@ -1045,6 +1051,81 @@ body {
     background: #c0392b;
 }
 
+/* File Manager in Settings */
+.file-manager {
+    margin-top: 15px;
+    height: calc(100% - 50px);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.file-manager-split {
+    flex-direction: row;
+    gap: 30px;
+}
+
+.file-section-half {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-section h4 {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.file-list-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.file-list-settings .file-item {
+    padding: 6px 10px;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.file-list-settings .file-name {
+    font-size: 13px;
+}
+
+.file-list-settings .file-size {
+    font-size: 11px;
+}
+
+.file-list-settings .btn-remove {
+    width: 16px;
+    height: 16px;
+    font-size: 12px;
+}
+
+.btn-download {
+    background: var(--primary);
+    color: black;
+    border: none;
+    border-radius: 4px;
+    width: 60px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    transition: background 0.3s ease;
+}
+
+.btn-download:hover {
+    background: #00dd77;
+}
+
 /* Buttons */
 .btn {
     padding: 12px 32px;
@@ -1079,6 +1160,20 @@ body {
 
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-danger:hover {
+    background: var(--error) !important;
+    border-color: var(--error) !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
 }
 
 /* Table */
@@ -1164,6 +1259,90 @@ body {
 
 .toast.warning {
     border-left-color: var(--warning);
+}
+
+/* PIN Modal */
+.pin-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pin-modal-overlay.show {
+    opacity: 1;
+}
+
+.pin-modal {
+    transform: scale(0.8) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pin-modal-overlay.show .pin-modal {
+    transform: scale(1) translateY(0);
+}
+
+.pin-modal-content {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: var(--radius);
+    padding: 30px;
+    min-width: 400px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.pin-modal-title {
+    font-family: var(--font-display);
+    font-size: var(--card-title-size);
+    font-weight: var(--card-title-weight);
+    color: white;
+    margin: 0 0 20px 0;
+}
+
+.pin-input {
+    width: 200px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    font-family: var(--font-text);
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.pin-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.pin-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: normal;
+}
+
+.pin-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.pin-modal-buttons .btn {
+    min-width: 100px;
 }
 
 /* Section Management */

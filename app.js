@@ -142,7 +142,73 @@ class NymphApp {
         const updatedFiles = files.filter(f => f.name !== fileName);
         localStorage.setItem(`nymph_files_${formType}`, JSON.stringify(updatedFiles));
         this.displayUploadedFiles(formType);
+        if (this.currentSection === 'settings-section') {
+            this.displaySettingsFiles();
+        }
         this.showToast(`Removed ${fileName}`, 'success');
+    }
+
+    displaySettingsFiles() {
+        this.displaySettingsFileSection('bug');
+        this.displaySettingsFileSection('feature');
+    }
+
+    displaySettingsFileSection(formType) {
+        const files = JSON.parse(localStorage.getItem(`nymph_files_${formType}`) || '[]');
+        const container = document.getElementById(`settings-${formType}-files`);
+        
+        if (!container) return;
+        
+        container.innerHTML = '';
+        
+        if (files.length === 0) {
+            container.innerHTML = '<div style="color: rgba(255,255,255,0.5); font-size: 12px;">No files uploaded</div>';
+            return;
+        }
+        
+        files.forEach(file => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                <span class="file-name">${file.name}</span>
+                <span class="file-size">(${(file.size / 1024).toFixed(1)} KB)</span>
+                <button type="button" class="btn-download" onclick="app.downloadFile('${formType}', '${file.name}')">Download</button>
+                <button type="button" class="btn-remove" onclick="app.removeFile('${formType}', '${file.name}')">×</button>
+            `;
+            container.appendChild(fileItem);
+        });
+    }
+
+    downloadFile(formType, fileName) {
+        const files = JSON.parse(localStorage.getItem(`nymph_files_${formType}`) || '[]');
+        const file = files.find(f => f.name === fileName);
+        
+        if (!file) {
+            this.showToast('File not found', 'error');
+            return;
+        }
+        
+        const link = document.createElement('a');
+        link.href = file.data;
+        link.download = file.name;
+        link.click();
+        
+        this.showToast(`Downloaded ${fileName}`, 'success');
+    }
+
+    clearAllFiles() {
+        if (confirm('⚠️ WARNING: This will permanently delete ALL uploaded files (images, documents, etc.).\n\nAre you absolutely sure you want to continue?')) {
+            const pin = prompt('Enter PIN to confirm file deletion:');
+            if (pin !== NYMPH.PIN) {
+                this.showToast('Access denied', 'error');
+                return;
+            }
+            
+            localStorage.removeItem('nymph_files_bug');
+            localStorage.removeItem('nymph_files_feature');
+            this.displaySettingsFiles();
+            this.showToast('All files cleared', 'success');
+        }
     }
     
     // Navigation System
@@ -214,10 +280,13 @@ class NymphApp {
         });
     }
     
-    handleNavigation(sectionName) {
+    async handleNavigation(sectionName) {
         // PIN protection for settings
-        if (sectionName === 'settings-section' && !this.checkPin()) {
-            return;
+        if (sectionName === 'settings-section') {
+            const pinValid = await this.checkPin();
+            if (!pinValid) {
+                return;
+            }
         }
         
         this.showSection(sectionName);
@@ -239,16 +308,87 @@ class NymphApp {
         // Load section-specific data
         if (sectionName === 'reports-section' || sectionName === 'settings-section') {
             this.renderTable();
+            if (sectionName === 'settings-section') {
+                this.displaySettingsFiles();
+            }
         }
     }
     
     checkPin() {
-        const pin = prompt('Enter PIN to access settings:');
-        if (pin !== NYMPH.PIN) {
-            this.showToast('Access denied', 'error');
-            return false;
-        }
-        return true;
+        return new Promise((resolve) => {
+            this.showPinModal('Enter PIN to access settings:', (pin) => {
+                if (pin === NYMPH.PIN) {
+                    resolve(true);
+                } else {
+                    this.showToast('Access denied', 'error');
+                    resolve(false);
+                }
+            });
+        });
+    }
+
+    showPinModal(message, callback) {
+        // Create modal overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'pin-modal-overlay';
+        
+        // Create modal
+        const modal = document.createElement('div');
+        modal.className = 'pin-modal';
+        modal.innerHTML = `
+            <div class="pin-modal-content">
+                <h3 class="pin-modal-title">${message}</h3>
+                <input type="password" class="pin-input" placeholder="Enter PIN" maxlength="4">
+                <div class="pin-modal-buttons">
+                    <button class="btn btn-secondary pin-cancel">Cancel</button>
+                    <button class="btn btn-primary pin-confirm">Confirm</button>
+                </div>
+            </div>
+        `;
+        
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+        
+        // Focus input
+        const input = modal.querySelector('.pin-input');
+        input.focus();
+        
+        // Handle events
+        const cleanup = () => {
+            overlay.remove();
+        };
+        
+        modal.querySelector('.pin-cancel').onclick = () => {
+            cleanup();
+            callback(null);
+        };
+        
+        modal.querySelector('.pin-confirm').onclick = () => {
+            const pin = input.value;
+            cleanup();
+            callback(pin);
+        };
+        
+        input.onkeyup = (e) => {
+            if (e.key === 'Enter') {
+                const pin = input.value;
+                cleanup();
+                callback(pin);
+            } else if (e.key === 'Escape') {
+                cleanup();
+                callback(null);
+            }
+        };
+        
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                cleanup();
+                callback(null);
+            }
+        };
+        
+        // Show animation
+        setTimeout(() => overlay.classList.add('show'), 10);
     }
     
     // Forms
@@ -598,9 +738,16 @@ class NymphApp {
     
     // Settings
     clearAllData() {
-        if (confirm('Are you sure? This will delete all bug reports and feature requests.')) {
+        if (confirm('⚠️ WARNING: This will permanently delete ALL bug reports and feature requests.\n\nAre you absolutely sure you want to continue?')) {
+            const pin = prompt('Enter PIN to confirm data deletion:');
+            if (pin !== NYMPH.PIN) {
+                this.showToast('Access denied', 'error');
+                return;
+            }
+            
             this.data = [];
             this.saveData();
+            this.renderTable();
             this.showToast('All data cleared', 'success');
         }
     }

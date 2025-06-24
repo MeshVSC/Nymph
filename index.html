@@ -438,10 +438,26 @@
                 </div>
             </div>
 
+            <!-- File Manager -->
+            <div class="widget widget-full-width grid-pos-1-2 span-4-cols">
+                <div class="card-title">Uploaded Files</div>
+                <div class="file-manager file-manager-split">
+                    <div class="file-section file-section-half">
+                        <h4>Bug Report Files</h4>
+                        <div id="settings-bug-files" class="file-list-settings"></div>
+                    </div>
+                    <div class="file-section file-section-half">
+                        <h4>Feature Request Files</h4>
+                        <div id="settings-feature-files" class="file-list-settings"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Buttons -->
             <div class="button-container grid-pos-4-1">
                 <button class="btn btn-secondary" onclick="app.exportData()">Export Data</button>
-                <button class="btn btn-secondary" onclick="app.clearAllData()" style="background: var(--error); color: white;">Clear Data</button>
+                <button class="btn btn-secondary btn-danger" onclick="app.clearAllData()">Clear Data</button>
+                <button class="btn btn-secondary btn-danger" onclick="app.clearAllFiles()">Clear Files</button>
             </div>
         </div>
     </section>
