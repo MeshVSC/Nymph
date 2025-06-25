@@ -8,42 +8,260 @@ Following proper design system with all features
 class NymphApp {
     constructor() {
         console.log('Nymph App starting...');
-        this.data = this.loadData();
+        
+        // Initialize Supabase client
+        this.supabase = supabase.createClient(NYMPH.SUPABASE.URL, NYMPH.SUPABASE.ANON_KEY);
+        console.log('Supabase client initialized');
+        
+        this.data = [];
         this.currentSection = 'dashboard-section';
         this.lastScrollTop = 0;
         this.init();
         console.log('Nymph App initialized successfully');
     }
     
-    init() {
+    async init() {
         this.setupNavigation();
         this.setupScrollNavigation();
         this.setupForms();
         this.setupActionCards();
         this.showSection('dashboard-section');
+        
+        // Load data from Supabase
+        this.data = await this.loadData();
         this.updateDashboard();
         this.updateActivityFeed();
     }
     
     // Data Management
-    loadData() {
-        const stored = localStorage.getItem(NYMPH.STORAGE_KEY);
-        return stored ? JSON.parse(stored) : [];
+    async loadData() {
+        try {
+            // Load from Supabase
+            const [bugReports, featureRequests] = await Promise.all([
+                this.supabase.from('bug_reports').select('*').order('created_at', { ascending: false }),
+                this.supabase.from('feature_requests').select('*').order('created_at', { ascending: false })
+            ]);
+
+            let data = [];
+
+            if (bugReports.data) {
+                data = data.concat(bugReports.data.map(bug => ({
+                    id: bug.id,
+                    type: 'bug',
+                    featureName: bug.feature_name,
+                    expectedBehavior: bug.expected_behavior,
+                    actualBehavior: bug.actual_behavior,
+                    errorCode: bug.error_code,
+                    errorMessage: bug.error_message,
+                    priority: bug.priority,
+                    status: bug.status,
+                    date: bug.created_at.split('T')[0]
+                })));
+            }
+
+            if (featureRequests.data) {
+                data = data.concat(featureRequests.data.map(feature => ({
+                    id: feature.id,
+                    type: 'feature',
+                    featureName: feature.feature_name,
+                    expectedBehavior: feature.expected_behavior,
+                    featureImportance: feature.feature_importance,
+                    desirability: feature.desirability,
+                    priority: feature.priority,
+                    status: feature.status,
+                    date: feature.created_at.split('T')[0]
+                })));
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error loading data from Supabase:', error);
+            // Fallback to localStorage
+            const stored = localStorage.getItem(NYMPH.STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
     }
     
-    saveData() {
-        localStorage.setItem(NYMPH.STORAGE_KEY, JSON.stringify(this.data));
+    async saveData() {
+        // No longer needed - data is saved directly to Supabase in addEntry
         this.updateDashboard();
         this.updateActivityFeed();
     }
     
-    addEntry(entry) {
-        entry.id = Date.now();
-        entry.date = new Date().toISOString().split('T')[0];
-        entry.status = 'Open';
-        this.data.push(entry);
-        this.saveData();
-        this.showToast('Entry saved successfully!', 'success');
+    async addEntry(entry) {
+        try {
+            entry.status = 'Open';
+            
+            if (entry.type === 'bug') {
+                const { data, error } = await this.supabase
+                    .from('bug_reports')
+                    .insert({
+                        feature_name: entry.featureName,
+                        expected_behavior: entry.expectedBehavior,
+                        actual_behavior: entry.actualBehavior,
+                        error_code: entry.errorCode || null,
+                        error_message: entry.errorMessage || null,
+                        priority: entry.priority || 'Normal',
+                        status: entry.status
+                    })
+                    .select()
+                    .single();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                // Add to local data array
+                this.data.unshift({
+                    id: data.id,
+                    type: 'bug',
+                    featureName: data.feature_name,
+                    expectedBehavior: data.expected_behavior,
+                    actualBehavior: data.actual_behavior,
+                    errorCode: data.error_code,
+                    errorMessage: data.error_message,
+                    priority: data.priority,
+                    status: data.status,
+                    date: data.created_at.split('T')[0]
+                });
+                
+            } else if (entry.type === 'feature') {
+                const { data, error } = await this.supabase
+                    .from('feature_requests')
+                    .insert({
+                        feature_name: entry.featureName,
+                        expected_behavior: entry.expectedBehavior,
+                        feature_importance: parseInt(entry.featureImportance) || 5,
+                        desirability: parseInt(entry.desirability) || 5,
+                        priority: entry.priority || 'Normal',
+                        status: entry.status
+                    })
+                    .select()
+                    .single();
+                
+                if (error) {
+                    throw error;
+                }
+                
+                // Add to local data array
+                this.data.unshift({
+                    id: data.id,
+                    type: 'feature',
+                    featureName: data.feature_name,
+                    expectedBehavior: data.expected_behavior,
+                    featureImportance: data.feature_importance,
+                    desirability: data.desirability,
+                    priority: data.priority,
+                    status: data.status,
+                    date: data.created_at.split('T')[0]
+                });
+            }
+            
+            this.updateDashboard();
+            this.updateActivityFeed();
+            this.showToast('Entry saved successfully!', 'success');
+            
+        } catch (error) {
+            console.error('Error saving entry:', error);
+            this.showToast(`Error saving entry: ${error.message}`, 'error');
+        }
+    }
+
+    // Migration Functions - Extract localStorage data and upload to Supabase
+    async migrateLocalStorageToSupabase() {
+        try {
+            const localData = localStorage.getItem(NYMPH.STORAGE_KEY);
+            if (!localData) {
+                this.showToast('No local data found to migrate', 'warning');
+                return;
+            }
+
+            const entries = JSON.parse(localData);
+            if (!Array.isArray(entries) || entries.length === 0) {
+                this.showToast('No entries found in local storage', 'warning');
+                return;
+            }
+
+            this.showToast('Starting migration...', 'info');
+            
+            let bugReports = [];
+            let featureRequests = [];
+
+            // Separate entries by type
+            entries.forEach(entry => {
+                if (entry.type === 'bug') {
+                    bugReports.push({
+                        feature_name: entry.featureName,
+                        expected_behavior: entry.expectedBehavior,
+                        actual_behavior: entry.actualBehavior,
+                        error_code: entry.errorCode || null,
+                        error_message: entry.errorMessage || null,
+                        priority: entry.priority || 'Normal',
+                        status: entry.status || 'Open'
+                    });
+                } else if (entry.type === 'feature') {
+                    featureRequests.push({
+                        feature_name: entry.featureName,
+                        expected_behavior: entry.expectedBehavior,
+                        feature_importance: parseInt(entry.featureImportance) || 5,
+                        desirability: parseInt(entry.desirability) || 5,
+                        priority: entry.priority || 'Normal',
+                        status: entry.status || 'Open'
+                    });
+                }
+            });
+
+            // Upload bug reports
+            if (bugReports.length > 0) {
+                const { error: bugError } = await this.supabase
+                    .from('bug_reports')
+                    .insert(bugReports);
+                
+                if (bugError) {
+                    console.error('Bug reports migration error:', bugError);
+                    this.showToast(`Error migrating bug reports: ${bugError.message}`, 'error');
+                    return;
+                }
+            }
+
+            // Upload feature requests
+            if (featureRequests.length > 0) {
+                const { error: featureError } = await this.supabase
+                    .from('feature_requests')
+                    .insert(featureRequests);
+                
+                if (featureError) {
+                    console.error('Feature requests migration error:', featureError);
+                    this.showToast(`Error migrating feature requests: ${featureError.message}`, 'error');
+                    return;
+                }
+            }
+
+            this.showToast(`Successfully migrated ${bugReports.length} bug reports and ${featureRequests.length} feature requests!`, 'success');
+            
+        } catch (error) {
+            console.error('Migration error:', error);
+            this.showToast(`Migration failed: ${error.message}`, 'error');
+        }
+    }
+
+    // Export localStorage data for manual transfer
+    exportLocalStorageData() {
+        const localData = localStorage.getItem(NYMPH.STORAGE_KEY);
+        if (!localData) {
+            this.showToast('No local data found to export', 'warning');
+            return;
+        }
+
+        const blob = new Blob([localData], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `nymph-localStorage-backup-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        this.showToast('Local data exported successfully!', 'success');
     }
 
     // File Upload System
@@ -478,7 +696,7 @@ class NymphApp {
         return isValid;
     }
     
-    submitBugForm() {
+    async submitBugForm() {
         // Set current section to ensure proper validation  
         this.currentSection = 'bug-section';
         if (!this.validateForm(NYMPH.VALIDATION.REQUIRED.BUG)) {
@@ -488,7 +706,7 @@ class NymphApp {
         
         const formData = new FormData(document.getElementById('bug-form'));
         const entry = {
-            type: 'Bug',
+            type: 'bug',
             featureName: formData.get('featureName'),
             expectedBehavior: formData.get('expectedBehavior'),
             actualBehavior: formData.get('actualBehavior'),
@@ -499,11 +717,11 @@ class NymphApp {
             desirability: ''
         };
         
-        this.addEntry(entry);
+        await this.addEntry(entry);
         this.clearForm('bug-form');
     }
     
-    submitFeatureForm() {
+    async submitFeatureForm() {
         // Simple validation check for feature form
         const form = document.getElementById('feature-form');
         const requiredFields = ['featureName', 'expectedBehavior', 'featureImportance', 'desirability'];
@@ -526,7 +744,7 @@ class NymphApp {
         
         const formData = new FormData(document.getElementById('feature-form'));
         const entry = {
-            type: 'Feature Request',
+            type: 'feature',
             featureName: formData.get('featureName'),
             expectedBehavior: formData.get('expectedBehavior'),
             priority: formData.get('priority'),
@@ -537,7 +755,7 @@ class NymphApp {
             desirability: formData.get('desirability')
         };
         
-        this.addEntry(entry);
+        await this.addEntry(entry);
         this.clearForm('feature-form');
     }
     
