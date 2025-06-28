@@ -771,8 +771,8 @@ class NymphApp {
     
     // Dashboard Stats & Charts
     updateDashboard() {
-        const bugs = this.data.filter(entry => entry.type === 'Bug');
-        const features = this.data.filter(entry => entry.type === 'Feature Request');
+        const bugs = this.data.filter(entry => entry.type === 'bug');
+        const features = this.data.filter(entry => entry.type === 'feature');
         const openBugs = bugs.filter(bug => bug.status === 'Open');
         const resolvedBugs = bugs.filter(bug => bug.status === 'Resolved');
         
@@ -846,7 +846,7 @@ class NymphApp {
         }
         
         recentEntries.forEach(entry => {
-            const avatar = entry.type === 'Bug' ? 'B' : 'F';
+            const avatar = entry.type === 'bug' ? 'B' : 'F';
             const timeAgo = this.getTimeAgo(entry.date);
             
             const activityEntry = document.createElement('div');
