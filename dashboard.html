@@ -470,28 +470,65 @@
     <section id="settings-section" class="section">
         <div class="app-grid">
             <!-- Settings Title -->
-            <div class="title-container grid-pos-1-1">
+            <div class="title-container grid-pos-1-1 span-2-cols">
+                <p class="app-label">System</p>
                 <h1 class="title">Settings</h1>
+                <p class="subtitle">Data & Configuration</p>
+            </div>
+
+            <!-- Cloud Management Card -->
+            <div class="widget widget-4x4 grid-pos-1-2">
+                <div class="card-title">Cloud Sync</div>
+                <div style="padding: 10px 0;">
+                    <button class="btn btn-primary" onclick="app.migrateLocalStorageToSupabase()" style="width: 100%; margin-bottom: 10px;">Migrate to Cloud</button>
+                    <button class="btn btn-secondary" onclick="app.exportLocalStorageData()" style="width: 100%;">Export Local Data</button>
+                </div>
+            </div>
+
+            <!-- Data Management Card -->
+            <div class="widget widget-4x4 grid-pos-2-2">
+                <div class="card-title">Data Control</div>
+                <div style="padding: 10px 0;">
+                    <button class="btn btn-secondary" onclick="app.exportData()" style="width: 100%; margin-bottom: 10px;">Export Data</button>
+                    <button class="btn btn-secondary btn-danger" onclick="app.clearAllData()" style="width: 100%;">Clear All Data</button>
+                </div>
+            </div>
+
+            <!-- File Management Card -->
+            <div class="widget widget-4x4 grid-pos-3-2">
+                <div class="card-title">File Control</div>
+                <div style="padding: 10px 0;">
+                    <button class="btn btn-secondary btn-danger" onclick="app.clearAllFiles()" style="width: 100%;">Clear All Files</button>
+                </div>
+            </div>
+
+            <!-- File Display -->
+            <div class="widget widget-8x8 grid-pos-1-3 span-2-cols span-2-rows">
+                <div class="card-title">Uploaded Files</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 10px 0;">
+                    <div>
+                        <h4 style="color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 10px;">Bug Report Files</h4>
+                        <div id="settings-bug-files" class="file-list-settings"></div>
+                    </div>
+                    <div>
+                        <h4 style="color: rgba(255,255,255,0.8); font-size: 14px; margin-bottom: 10px;">Feature Request Files</h4>
+                        <div id="settings-feature-files" class="file-list-settings"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Data Table -->
-            <div class="widget widget-16x16 grid-pos-1-3 span-4-cols span-4-rows">
+            <div class="widget widget-8x8 grid-pos-3-3 span-2-cols span-2-rows">
                 <div class="card-title">All Reports</div>
-                <div class="table-container">
+                <div class="table-container" style="max-height: 300px; overflow-y: auto;">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th>Type</th>
                                 <th>Feature</th>
-                                <th>Expected</th>
-                                <th>Actual</th>
-                                <th>Error Code</th>
-                                <th>Error Message</th>
-                                <th>Importance</th>
-                                <th>Desirability</th>
                                 <th>Priority</th>
-                                <th>Date</th>
                                 <th>Status</th>
+                                <th>Date</th>
                             </tr>
                         </thead>
                         <tbody id="settings-tbody">
@@ -499,35 +536,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <!-- File Manager -->
-            <div class="widget widget-full-width grid-pos-1-2 span-4-cols">
-                <div class="card-title">Uploaded Files</div>
-                <div class="file-manager file-manager-split">
-                    <div class="file-section file-section-half">
-                        <h4>Bug Report Files</h4>
-                        <div id="settings-bug-files" class="file-list-settings"></div>
-                    </div>
-                    <div class="file-section file-section-half">
-                        <h4>Feature Request Files</h4>
-                        <div id="settings-feature-files" class="file-list-settings"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Management Buttons -->
-            <div class="button-container grid-pos-4-1">
-                <button class="btn btn-primary" onclick="app.migrateLocalStorageToSupabase()">Migrate to Cloud</button>
-                <button class="btn btn-secondary" onclick="app.exportLocalStorageData()">Export Local Data</button>
-                <button class="btn btn-secondary btn-danger" onclick="app.clearAllFiles()">Clear Files</button>
-            </div>
-
-            <!-- Data Management Buttons -->
-            <div class="button-container grid-pos-4-2">
-                <h4>Data Management</h4>
-                <button class="btn btn-secondary" onclick="app.exportData()">Export Data</button>
-                <button class="btn btn-secondary btn-danger" onclick="app.clearAllData()">Clear Data</button>
             </div>
         </div>
     </section>
