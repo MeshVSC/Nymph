@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nymph - Bug Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Wave Background -->
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <!-- Top Navigation - Fixed at top -->
+    <nav class="top-nav" id="topNav">
+        <button class="nav-item active" data-section="dashboard-section">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+            <span class="nav-text">Dashboard</span>
+        </button>
+        <button class="nav-item" data-section="bug-section">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
+            </svg>
+            <span class="nav-text">Bug Report</span>
+        </button>
+        <button class="nav-item" data-section="feature-section">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
+            </svg>
+            <span class="nav-text">Features</span>
+        </button>
+        <button class="nav-item" data-section="settings-section">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </svg>
+            <span class="nav-text">Settings</span>
+        </button>
+    </nav>
+
+    <!-- Side Navigation - Vertical floating -->
+    <nav class="side-nav" id="sideNav">
+        <button class="nav-item" data-section="dashboard-section" title="Dashboard">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+            </svg>
+        </button>
+        <button class="nav-item" data-section="bug-section" title="Bug Report">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
+            </svg>
+        </button>
+        <button class="nav-item" data-section="feature-section" title="Features">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
+            </svg>
+        </button>
+        <button class="nav-item" data-section="settings-section" title="Settings">
+            <svg class="nav-icon" viewBox="0 0 24 24">
+                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard-section" class="section active">
+        <div class="app-grid">
+            <!-- App Title -->
+            <div class="title-container grid-pos-1-1 span-2-cols">
+                <p class="app-label">Bug Tracker</p>
+                <h1 class="title" onclick="window.location.href = 'index.html'" style="cursor: pointer;">Nymph</h1>
+                <p class="subtitle">Dashboard</p>
+            </div>
+
+            <!-- Action Cards Container -->
+            <div class="action-card-container grid-pos-4-1">
+                <div class="widget widget-4x2 action-card" data-section="bug-section">
+                    <div class="action-title">Report Bug</div>
+                    <svg class="power-icon" viewBox="0 0 24 24">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                        <line x1="12" y1="2" x2="12" y2="12"/>
+                    </svg>
+                </div>
+
+                <div class="widget widget-4x2 action-card" data-section="feature-section">
+                    <div class="action-title">New Feature</div>
+                    <svg class="power-icon" viewBox="0 0 24 24">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                        <line x1="12" y1="2" x2="12" y2="12"/>
+                    </svg>
+                </div>
+
+                <div class="widget widget-4x2 action-card" onclick="window.location.href='bug-reports.html'">
+                    <div class="action-title">View Bug Reports</div>
+                    <svg class="power-icon" viewBox="0 0 24 24">
+                        <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
+                    </svg>
+                </div>
+
+                <div class="widget widget-4x2 action-card" onclick="window.location.href='feature-requests.html'">
+                    <div class="action-title">View Features</div>
+                    <svg class="power-icon" viewBox="0 0 24 24">
+                        <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Stat Cards Row -->
+            <div class="widget widget-4x4 grid-pos-1-2" onclick="window.location.href='bug-reports.html'" style="cursor: pointer;">
+                <div class="activity-header">
+                    <div class="card-title">Total Bugs</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="totalBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget widget-4x4 grid-pos-2-2" onclick="window.location.href='bug-reports.html'" style="cursor: pointer;">
+                <div class="activity-header">
+                    <div class="card-title">Open</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="openBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget widget-4x4 grid-pos-3-2" onclick="window.location.href='bug-reports.html'" style="cursor: pointer;">
+                <div class="activity-header">
+                    <div class="card-title">Resolved</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="resolvedBugs">0</div>
+                </div>
+            </div>
+
+            <div class="widget widget-4x4 grid-pos-4-2" onclick="window.location.href='feature-requests.html'" style="cursor: pointer;">
+                <div class="activity-header">
+                    <div class="card-title">New Features</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stat-display">
+                    <div class="widget-number" id="featureRequests">0</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="widget widget-8x8 grid-pos-1-3 span-2-cols span-2-rows">
+                <div class="activity-header">
+                    <div class="card-title">Recent Activity</div>
+                    <div class="activity-more">⋯</div>
+                </div>
+                <div class="activity-list" id="recentActivity">
+                    <!-- Dynamic content will be populated here -->
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="widget widget-8x12 grid-pos-3-3 span-2-cols span-3-rows">
+                <div class="activity-header">
+                    <div class="card-title">Notifications</div>
+                    <div class="notification-count" id="notificationCount">3</div>
+                </div>
+                <div class="notifications-list" id="notificationsList">
+                    <div class="notification-item unread" onclick="navigateToList('bug')" style="cursor: pointer;">
+                        <span class="notification-icon error">!</span>
+                        <span class="notification-title">Bug Report #1247 - Unable to verify</span>
+                        <button class="notification-btn" onclick="event.stopPropagation(); markAsRead(this)">✓</button>
+                        <button class="notification-btn" onclick="event.stopPropagation(); dismissNotification(this)">✕</button>
+                        <span class="notification-message">Please provide more information about the login issue</span>
+                        <span class="notification-time">2 minutes ago</span>
+                    </div>
+                    <div class="notification-item unread" onclick="navigateToList('feature')" style="cursor: pointer;">
+                        <span class="notification-icon warning">⚠</span>
+                        <span class="notification-title">Feature Request #892 - Needs clarification</span>
+                        <button class="notification-btn" onclick="event.stopPropagation(); markAsRead(this)">✓</button>
+                        <button class="notification-btn" onclick="event.stopPropagation(); dismissNotification(this)">✕</button>
+                        <span class="notification-message">The feature description is unclear, please elaborate</span>
+                        <span class="notification-time">15 minutes ago</span>
+                    </div>
+                    <div class="notification-item" onclick="navigateToList('bug')" style="cursor: pointer;">
+                        <span class="notification-icon success">✓</span>
+                        <span class="notification-title">Bug Report #1234 - Resolved</span>
+                        <button class="notification-btn" onclick="event.stopPropagation(); dismissNotification(this)">✕</button>
+                        <span class="notification-message">Your login bug has been fixed in version 2.1.3</span>
+                        <span class="notification-time">1 hour ago</span>
+                    </div>
+                </div>
+                <div class="notifications-footer">
+                    <button class="notifications-clear-btn" onclick="clearAllNotifications()">Clear All</button>
+                </div>
+            </div>
+
+            <!-- System Status -->
+            <div class="widget widget-8x8 grid-pos-3-6 span-2-cols span-2-rows">
+                <div class="activity-header">
+                    <div class="card-title">System Status</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="system-stats">
+                    <div class="system-row">
+                        <span class="system-label">Database</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 85%;"></div>
+                        </div>
+                        <span class="system-value">85%</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Storage</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 42%;"></div>
+                        </div>
+                        <span class="system-value">42%</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">Memory</span>
+                        <div class="system-bar">
+                            <div class="system-fill" style="width: 67%;"></div>
+                        </div>
+                        <span class="system-value">67%</span>
+                    </div>
+                </div>
+                <div class="system-footer">
+                    <span style="opacity: 0.6; font-size: 12px;">Last updated: Just now</span>
+                </div>
+            </div>
+
+            <!-- Stats Graph -->
+            <div class="widget widget-8x8 grid-pos-1-5 span-2-cols span-2-rows">
+                <div class="activity-header">
+                    <div class="card-title">Stats</div>
+                    <div class="status-indicator">●</div>
+                </div>
+                <div class="stats-graph">
+                    <div class="stat-bar">
+                        <div class="stat-label">Total</div>
+                        <div class="bar-container">
+                            <div class="bar-fill total-bar" id="totalBar" style="height: 0%;"></div>
+                        </div>
+                        <div class="stat-value" id="totalValue">0</div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-label">Open</div>
+                        <div class="bar-container">
+                            <div class="bar-fill open-bar" id="openBar" style="height: 0%;"></div>
+                        </div>
+                        <div class="stat-value" id="openValue">0</div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-label">Resolved</div>
+                        <div class="bar-container">
+                            <div class="bar-fill resolved-bar" id="resolvedBar" style="height: 0%;"></div>
+                        </div>
+                        <div class="stat-value" id="resolvedValue">0</div>
+                    </div>
+                    <div class="stat-bar">
+                        <div class="stat-label">Features</div>
+                        <div class="bar-container">
+                            <div class="bar-fill feature-bar" id="featureBar" style="height: 0%;"></div>
+                        </div>
+                        <div class="stat-value" id="featureValue">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bug Report Section -->
+    <section id="bug-section" class="section">
+        <div class="app-grid">
+            <!-- Bug Report Title -->
+            <div class="title-container grid-pos-1-1">
+                <h1 class="title">Bug Report</h1>
+            </div>
+
+            <form id="bug-form" style="display: contents;">
+                <!-- Feature Name -->
+                <div class="widget widget-large-width grid-pos-1-2">
+                    <div class="card-title">Feature Name *</div>
+                    <div class="form-field">
+                        <input type="text" id="bug-feature-name" name="featureName" required>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="widget widget-4x4 grid-pos-3-2">
+                    <div class="card-title">Priority</div>
+                    <div class="form-field">
+                        <select id="bug-priority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="widget widget-4x4 grid-pos-4-2">
+                    <div class="card-title">Status</div>
+                    <div class="form-field">
+                        <select id="bug-status" name="status" onchange="handleStatusChange(this)">
+                            <option value="Open" selected>Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Needs Verification">Needs Verification</option>
+                            <option value="Resolved">Resolved</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Expected Behavior -->
+                <div class="widget widget-large-width-200h grid-pos-1-3">
+                    <div class="card-title">Expected Behavior *</div>
+                    <div class="form-field">
+                        <textarea id="bug-expected" name="expectedBehavior" rows="4" required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Actual Behavior -->
+                <div class="widget widget-large-width-200h grid-pos-3-3">
+                    <div class="card-title">Actual Behavior *</div>
+                    <div class="form-field">
+                        <textarea id="bug-actual" name="actualBehavior" rows="4" required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Error Code -->
+                <div class="widget widget-4x4 grid-pos-1-4">
+                    <div class="card-title">Error Code</div>
+                    <div class="form-field">
+                        <input type="text" id="bug-error-code" name="errorCode">
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div class="widget widget-large-width grid-pos-3-4">
+                    <div class="card-title">Error Message</div>
+                    <div class="form-field">
+                        <textarea id="bug-error-message" name="errorMessage" rows="3"></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary form-button grid-pos-3-5">Submit</button>
+
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-1-5" onclick="app.uploadFile('bug')">Upload</button>
+
+                <!-- Cancel Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-5" onclick="app.clearForm('bug-form')">Cancel</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Feature Request Section -->
+    <section id="feature-section" class="section">
+        <div class="app-grid">
+            <!-- New Feature Title -->
+            <div class="title-container grid-pos-1-1">
+                <h1 class="title">New Feature</h1>
+            </div>
+
+            <form id="feature-form" style="display: contents;">
+                <!-- Feature Name -->
+                <div class="widget widget-large-width grid-pos-1-2">
+                    <div class="card-title">Feature Name *</div>
+                    <div class="form-field">
+                        <input type="text" id="feature-name" name="featureName" required>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Priority -->
+                <div class="widget widget-4x4 grid-pos-3-2">
+                    <div class="card-title">Priority</div>
+                    <div class="form-field">
+                        <select id="feature-priority" name="priority">
+                            <option value="Low">Low</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Expected Behavior -->
+                <div class="widget widget-large-width-200h grid-pos-1-3">
+                    <div class="card-title">Expected Behavior *</div>
+                    <div class="form-field">
+                        <textarea id="feature-expected" name="expectedBehavior" rows="4" required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Feature Importance -->
+                <div class="widget widget-large-width-200h grid-pos-3-3">
+                    <div class="card-title">Feature Importance *</div>
+                    <div class="form-field">
+                        <textarea id="feature-importance" name="featureImportance" rows="4" required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Desirability -->
+                <div class="widget widget-large-width grid-pos-1-4">
+                    <div class="card-title">Desirability *</div>
+                    <div class="form-field">
+                        <textarea id="feature-desirability" name="desirability" rows="3" required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary form-button grid-pos-3-4">Submit</button>
+
+                <!-- Upload Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" onclick="app.uploadFile('feature')">Upload</button>
+
+                <!-- Cancel Button -->
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-4" onclick="app.clearForm('feature-form')">Cancel</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- All Reports Section -->
+    <section id="reports-section" class="section">
+        <div class="app-grid">
+            <div class="widget widget-8x8" style="grid-column: 1 / -1; width: 100%;">
+                <div class="card-title">All Reports</div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Feature</th>
+                                <th>Expected</th>
+                                <th>Actual</th>
+                                <th>Error Code</th>
+                                <th>Error Message</th>
+                                <th>Importance</th>
+                                <th>Desirability</th>
+                                <th>Priority</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-tbody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings-section" class="section">
+        <div class="app-grid">
+            <!-- Settings Title -->
+            <div class="title-container grid-pos-1-1">
+                <h1 class="title">Settings</h1>
+            </div>
+
+            <!-- Data Table -->
+            <div class="widget widget-16x16 grid-pos-1-3 span-4-cols span-4-rows">
+                <div class="card-title">All Reports</div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Feature</th>
+                                <th>Expected</th>
+                                <th>Actual</th>
+                                <th>Error Code</th>
+                                <th>Error Message</th>
+                                <th>Importance</th>
+                                <th>Desirability</th>
+                                <th>Priority</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="settings-tbody">
+                            <!-- Dynamic content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- File Manager -->
+            <div class="widget widget-full-width grid-pos-1-2 span-4-cols">
+                <div class="card-title">Uploaded Files</div>
+                <div class="file-manager file-manager-split">
+                    <div class="file-section file-section-half">
+                        <h4>Bug Report Files</h4>
+                        <div id="settings-bug-files" class="file-list-settings"></div>
+                    </div>
+                    <div class="file-section file-section-half">
+                        <h4>Feature Request Files</h4>
+                        <div id="settings-feature-files" class="file-list-settings"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Buttons -->
+            <div class="button-container grid-pos-4-1">
+                <button class="btn btn-primary" onclick="app.migrateLocalStorageToSupabase()">Migrate to Cloud</button>
+                <button class="btn btn-secondary" onclick="app.exportLocalStorageData()">Export Local Data</button>
+                <button class="btn btn-secondary btn-danger" onclick="app.clearAllFiles()">Clear Files</button>
+            </div>
+
+            <!-- Data Management Buttons -->
+            <div class="button-container grid-pos-4-2">
+                <h4>Data Management</h4>
+                <button class="btn btn-secondary" onclick="app.exportData()">Export Data</button>
+                <button class="btn btn-secondary btn-danger" onclick="app.clearAllData()">Clear Data</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Notifications System
+        function markAsRead(button) {
+            const notificationItem = button.closest('.notification-item');
+            notificationItem.classList.remove('unread');
+            updateNotificationCount();
+        }
+
+        function dismissNotification(button) {
+            const notificationItem = button.closest('.notification-item');
+            notificationItem.style.transform = 'translateX(100%)';
+            notificationItem.style.opacity = '0';
+            
+            setTimeout(() => {
+                notificationItem.remove();
+                updateNotificationCount();
+            }, 300);
+        }
+
+        function clearAllNotifications() {
+            const notificationsList = document.getElementById('notificationsList');
+            const notifications = notificationsList.querySelectorAll('.notification-item');
+            
+            notifications.forEach((notification, index) => {
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    notification.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                        if (index === notifications.length - 1) {
+                            updateNotificationCount();
+                        }
+                    }, 300);
+                }, index * 100);
+            });
+        }
+
+        function updateNotificationCount() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            const countElement = document.getElementById('notificationCount');
+            
+            if (unreadCount > 0) {
+                countElement.textContent = unreadCount;
+                countElement.style.display = 'block';
+            } else {
+                countElement.style.display = 'none';
+            }
+        }
+
+        function navigateToList(type) {
+            if (type === 'bug') {
+                window.location.href = 'bug-reports.html';
+            } else if (type === 'feature') {
+                window.location.href = 'feature-requests.html';
+            }
+        }
+
+        function addNotification(type, title, message) {
+            const notificationsList = document.getElementById('notificationsList');
+            const notificationItem = document.createElement('div');
+            notificationItem.className = 'notification-item unread';
+            notificationItem.style.cursor = 'pointer';
+            
+            // Determine notification type for navigation
+            const notificationType = title.toLowerCase().includes('bug') ? 'bug' : 'feature';
+            notificationItem.onclick = () => navigateToList(notificationType);
+            
+            const iconMap = {
+                'error': '!',
+                'warning': '⚠',
+                'success': '✓',
+                'info': 'i'
+            };
+            
+            const now = new Date();
+            const timeText = 'Just now';
+            
+            notificationItem.innerHTML = `
+                <span class="notification-icon ${type}">${iconMap[type] || 'i'}</span>
+                <span class="notification-title">${title}</span>
+                <button class="notification-btn" onclick="event.stopPropagation(); markAsRead(this)">✓</button>
+                <button class="notification-btn" onclick="event.stopPropagation(); dismissNotification(this)">✕</button>
+                <span class="notification-message">${message}</span>
+                <span class="notification-time">${timeText}</span>
+            `;
+            
+            notificationsList.insertBefore(notificationItem, notificationsList.firstChild);
+            updateNotificationCount();
+        }
+
+        // Example: Add notification when bug report is submitted
+        function onBugReportSubmitted() {
+            addNotification('success', 'Bug Report Submitted', 'Your bug report has been received and is being reviewed');
+        }
+
+        // Example: Add notification for verification issues
+        function onVerificationNeeded() {
+            addNotification('error', 'Unable to verify - Provide more info', 'Please provide additional details about your issue');
+        }
+
+        // Handle status change - manual trigger for verification
+        function handleStatusChange(selectElement) {
+            const selectedStatus = selectElement.value;
+            
+            if (selectedStatus === 'Needs Verification') {
+                // Get form data for context
+                const form = selectElement.closest('form');
+                const featureName = form.querySelector('[name="featureName"]').value;
+                const bugId = Date.now(); // Temporary ID for demo
+                
+                // Trigger verification notification immediately
+                setTimeout(() => {
+                    addNotification(
+                        'warning',
+                        `Bug Report #${bugId} - Verification Required`,
+                        `"${featureName}" has been marked as needing verification. Please provide additional information.`
+                    );
+                }, 500);
+                
+                // Optional: Show a confirmation
+                if (featureName) {
+                    alert(`Bug report "${featureName}" marked as needing verification. A notification will be sent.`);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

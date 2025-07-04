@@ -32,6 +32,38 @@ class NymphApp {
         this.updateDashboard();
         this.updateActivityFeed();
     }
+
+    // Verification Logic
+    checkVerificationNeeded(bugData) {
+        const issues = [];
+        
+        // Check for missing or insufficient information
+        if (!bugData.error_code && bugData.priority === 'High') {
+            issues.push('High priority bugs require error codes');
+        }
+        
+        if (!bugData.error_message && (bugData.expected_behavior.length < 20 || bugData.actual_behavior.length < 20)) {
+            issues.push('Insufficient detail in behavior descriptions');
+        }
+        
+        if (bugData.expected_behavior.toLowerCase().includes('doesn\'t work') || 
+            bugData.actual_behavior.toLowerCase().includes('broken')) {
+            issues.push('Vague descriptions need more specific details');
+        }
+        
+        // Trigger verification notification if issues found
+        if (issues.length > 0) {
+            setTimeout(() => {
+                if (typeof addNotification === 'function') {
+                    addNotification(
+                        'error', 
+                        `Bug Report #${bugData.id} - Unable to verify`,
+                        `Please provide more information: ${issues.join(', ')}`
+                    );
+                }
+            }, 2000); // Delay to show after success message
+        }
+    }
     
     // Data Management
     async loadData() {
@@ -90,7 +122,10 @@ class NymphApp {
     
     async addEntry(entry) {
         try {
-            entry.status = 'Open';
+            // Use the status from the form, default to 'Open' if not provided
+            if (!entry.status) {
+                entry.status = 'Open';
+            }
             
             if (entry.type === 'bug') {
                 const { data, error } = await this.supabase
@@ -124,6 +159,9 @@ class NymphApp {
                     status: data.status,
                     date: data.created_at.split('T')[0]
                 });
+
+                // Check if verification is needed
+                this.checkVerificationNeeded(data);
                 
             } else if (entry.type === 'feature') {
                 const { data, error } = await this.supabase
@@ -711,6 +749,7 @@ class NymphApp {
             expectedBehavior: formData.get('expectedBehavior'),
             actualBehavior: formData.get('actualBehavior'),
             priority: formData.get('priority'),
+            status: formData.get('status') || 'Open',
             errorCode: formData.get('errorCode') || '',
             errorMessage: formData.get('errorMessage') || '',
             featureImportance: '',

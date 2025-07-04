@@ -3,479 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nymph - Bug Tracker</title>
+    <title>Nymph - App Selection</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, rgba(101,0,94,1) 1%, rgba(60,132,206,1) 25%, rgba(58,180,170,1) 75%, rgba(236,72,153,1) 98%);
+            animation: gradient 15s ease forwards;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 200px);
+            grid-template-rows: repeat(12, 200px);
+            gap: 25px;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .app-card {
+            transform-origin: center;
+            opacity: 0;
+            transform: scale(0.1);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .app-card.animate {
+            opacity: 1;
+        }
+
+        .app-card.animate.loaded {
+            transition: transform 0.3s ease;
+        }
+
+        .app-card.animate.loaded:hover {
+            transform: scale(1.1) !important;
+            z-index: 10;
+        }
+
+        /* Text animations */
+        .text-element {
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .text-element.animate {
+            opacity: 1;
+            transform: translate(0, 0);
+        }
+
+        .text-from-below {
+            transform: translateY(30px);
+        }
+
+        .text-from-right {
+            transform: translateX(30px);
+        }
+
+        .text-from-above {
+            transform: translateY(-30px);
+        }
+
+
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+        }
+
+        .popup-content {
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.show .popup-content {
+            transform: scale(1);
+        }
+
+    </style>
 </head>
 <body>
-    <!-- Animated Wave Background -->
-    <div class="wave-container">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
+
+    <!-- Horizontal Waves for Landing -->
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <div class="app-grid">
+        <!-- Nymph title at 2c 2r with bottom padding to move it down half a square -->
+        <div style="grid-column: 2; grid-row: 2; display: flex; align-items: flex-end; justify-content: flex-start; padding: 0 0 100px 0; margin: 0; height: 100%;">
+            <h1 class="text-element text-from-below" style="font-size: 100px; font-weight: 300; color: white; margin: 0; padding: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; margin-left: 5px; line-height: 1;">Nymph</h1>
+        </div>
+        
+        <!-- Track your nymphs text at 2c 3r -->
+        <div style="grid-column: 2; grid-row: 3; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; padding: 5px 5px 200px 5px; height: 100%;">
+            <p class="text-element text-from-right" style="font-size: 28px; font-weight: 350; color: rgba(255, 255, 255, 0.8); margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.2; white-space: nowrap; margin-bottom: 20px;">Track your nymphs<br>before they become bugs</p>
+        </div>
+        
+        <!-- Advanced bug tracking text at 2c 3r (moved up from 4r) -->
+        <div style="grid-column: 2; grid-row: 3; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; padding: 5px; height: 100%;">
+            <p class="text-element text-from-above" style="font-size: 16px; font-weight: 300; color: rgba(255, 255, 255, 0.7); margin: 0; font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.4; white-space: nowrap;">Advanced bug tracking and feature management system<br>for modern development teams. Choose your application to<br>start monitoring, reporting, and resolving issues with precision.</p>
+        </div>
+
+        <!-- App Cards Subgrid in 5c-6c area -->
+        <div style="grid-column: 5 / 7; grid-row: 3; position: relative; display: flex; align-items: flex-end; justify-content: flex-start;">
+            <!-- Subgrid container extending to accommodate 3 cards in bottom row -->
+            <div class="cards-container" style="display: grid; grid-template-columns: 150px 25px 175px 25px 150px; grid-template-rows: 150px 25px 175px 25px 150px; width: 500px; height: 525px; position: absolute; bottom: 0; left: 0;">
+                
+                <!-- Top Row Cards -->
+
+                <div style="grid-column: 5; grid-row: 1; transform: translateY(25px);">
+                    <div class="app-card spark" style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; cursor: pointer;" onclick="showAccessDenied()">
+                        <div style="position: absolute; top: 15px; right: 15px; padding: 4px 8px; background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.4); border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Alpha</div>
+                        <div></div>
+                        <div style="margin-top: auto;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 8px 0; line-height: 1.3; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Project tool</p>
+                            <h3 style="color: white; font-size: 18px; font-weight: 600; margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Spark</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Row Cards -->
+                <div style="grid-column: 1; grid-row: 3; transform: translateY(25px);">
+                    <div class="app-card stocksentry" style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; cursor: pointer;" onclick="selectApp('dashboard.html')">
+                        <div style="position: absolute; top: 15px; right: 15px; padding: 4px 8px; background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Live</div>
+                        <div></div>
+                        <div style="margin-top: auto;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 8px 0; line-height: 1.3; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Stock monitoring & bug tracking</p>
+                            <h3 style="color: white; font-size: 18px; font-weight: 600; margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">StockSentry</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="grid-column: 3; grid-row: 3;">
+                    <div class="app-card littleart" style="width: 175px; height: 175px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; cursor: pointer;" onclick="showAccessDenied()">
+                        <div style="position: absolute; top: 15px; right: 15px; padding: 4px 8px; background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.4); border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Beta</div>
+                        <div></div>
+                        <div style="margin-top: auto;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 8px 0; line-height: 1.3; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Creative portfolio platform</p>
+                            <h3 style="color: white; font-size: 18px; font-weight: 600; margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Little Art Corner</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BizSentry - 3rd card in bottom row -->
+                <div style="grid-column: 5; grid-row: 3; transform: translateY(25px);">
+                    <div class="app-card bizsentry" style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: relative; cursor: pointer;" onclick="showAccessDenied()">
+                        <div style="position: absolute; top: 15px; right: 15px; padding: 4px 8px; background: rgba(149, 165, 166, 0.2); color: #95a5a6; border: 1px solid rgba(149, 165, 166, 0.4); border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Coming Soon</div>
+                        <div></div>
+                        <div style="margin-top: auto;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 8px 0; line-height: 1.3; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Business analytics</p>
+                            <h3 style="color: white; font-size: 18px; font-weight: 600; margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">BizSentry</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JstCode - below Little Art Corner -->
+                <div style="grid-column: 3; grid-row: 5; position: relative;">
+                    <div class="app-card jstcode" style="width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; position: absolute; right: 0; cursor: pointer;" onclick="showAccessDenied()">
+                        <div style="position: absolute; top: 15px; right: 15px; padding: 4px 8px; background: rgba(52, 152, 219, 0.2); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.4); border-radius: 8px; font-size: 10px; font-weight: 600; text-transform: uppercase;">Beta</div>
+                        <div></div>
+                        <div style="margin-top: auto;">
+                            <p style="color: rgba(255, 255, 255, 0.7); font-size: 12px; margin: 0 0 8px 0; line-height: 1.3; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Code editor</p>
+                            <h3 style="color: white; font-size: 18px; font-weight: 600; margin: 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">JstCode</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Top Navigation - Fixed at top -->
-    <nav class="top-nav" id="topNav">
-        <button class="nav-item active" data-section="dashboard-section">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-            <span class="nav-text">Dashboard</span>
-        </button>
-        <button class="nav-item" data-section="bug-section">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
-            </svg>
-            <span class="nav-text">Bug Report</span>
-        </button>
-        <button class="nav-item" data-section="feature-section">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
-            </svg>
-            <span class="nav-text">Features</span>
-        </button>
-        <button class="nav-item" data-section="settings-section">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-            </svg>
-            <span class="nav-text">Settings</span>
-        </button>
-    </nav>
-
-    <!-- Side Navigation - Vertical floating -->
-    <nav class="side-nav" id="sideNav">
-        <button class="nav-item" data-section="dashboard-section" title="Dashboard">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-            </svg>
-        </button>
-        <button class="nav-item" data-section="bug-section" title="Bug Report">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M14,12H10V10H14V12M14,16H10V14H14V16M20,8H17.19C16.74,7.22 16.12,6.55 15.37,6.04L17,4.41L15.59,3L13.42,5.17C12.96,5.06 12.5,5 12,5C11.5,5 11.04,5.06 10.59,5.17L8.41,3L7,4.41L8.62,6.04C7.88,6.55 7.26,7.22 6.81,8H4V10H6.09C6.04,10.33 6,10.66 6,11V12H4V14H6V15C6,15.34 6.04,15.67 6.09,16H4V18H6.81C7.85,19.79 9.78,21 12,21C14.22,21 16.15,19.79 17.19,18H20V16H17.91C17.96,15.67 18,15.34 18,15V14H20V12H18V11C18,10.66 17.96,10.33 17.91,10H20V8Z"/>
-            </svg>
-        </button>
-        <button class="nav-item" data-section="feature-section" title="Features">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M9,22A1,1 0 0,1 8,21V18H4A2,2 0 0,1 2,16V4C2,2.89 2.9,2 4,2H20A2,2 0 0,1 22,4V16A2,2 0 0,1 20,18H13.9L10.2,21.71C10,21.9 9.75,22 9.5,22V22H9M10,16V19.08L13.08,16H20V4H4V16H10Z"/>
-            </svg>
-        </button>
-        <button class="nav-item" data-section="settings-section" title="Settings">
-            <svg class="nav-icon" viewBox="0 0 24 24">
-                <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-            </svg>
-        </button>
-    </nav>
-
-    <!-- Dashboard Section -->
-    <section id="dashboard-section" class="section active">
-        <div class="app-grid">
-            <!-- App Title -->
-            <div class="title-container grid-pos-1-1 span-2-cols">
-                <p class="app-label">Bug Tracker</p>
-                <h1 class="title">Nymph</h1>
-                <p class="subtitle">Dashboard</p>
-            </div>
-
-            <!-- Action Cards Container -->
-            <div class="action-card-container grid-pos-4-1">
-                <div class="widget widget-4x2 action-card" data-section="bug-section">
-                    <div class="action-title">Report Bug</div>
-                    <svg class="power-icon" viewBox="0 0 24 24">
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
-                        <line x1="12" y1="2" x2="12" y2="12"/>
-                    </svg>
-                </div>
-
-                <div class="widget widget-4x2 action-card" data-section="feature-section">
-                    <div class="action-title">New Feature</div>
-                    <svg class="power-icon" viewBox="0 0 24 24">
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
-                        <line x1="12" y1="2" x2="12" y2="12"/>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- Stat Cards Row -->
-            <div class="widget widget-4x4 grid-pos-1-2">
-                <div class="activity-header">
-                    <div class="card-title">Total Bugs</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="stat-display">
-                    <div class="widget-number" id="totalBugs">0</div>
-                </div>
-            </div>
-
-            <div class="widget widget-4x4 grid-pos-2-2">
-                <div class="activity-header">
-                    <div class="card-title">Open</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="stat-display">
-                    <div class="widget-number" id="openBugs">0</div>
-                </div>
-            </div>
-
-            <div class="widget widget-4x4 grid-pos-3-2">
-                <div class="activity-header">
-                    <div class="card-title">Resolved</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="stat-display">
-                    <div class="widget-number" id="resolvedBugs">0</div>
-                </div>
-            </div>
-
-            <div class="widget widget-4x4 grid-pos-4-2">
-                <div class="activity-header">
-                    <div class="card-title">New Features</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="stat-display">
-                    <div class="widget-number" id="featureRequests">0</div>
-                </div>
-            </div>
-
-            <!-- Recent Activity -->
-            <div class="widget widget-8x8 grid-pos-1-3 span-2-cols span-2-rows">
-                <div class="activity-header">
-                    <div class="card-title">Recent Activity</div>
-                    <div class="activity-more">⋯</div>
-                </div>
-                <div class="activity-list" id="recentActivity">
-                    <!-- Dynamic content will be populated here -->
-                </div>
-            </div>
-
-            <!-- System Status -->
-            <div class="widget widget-8x8 grid-pos-3-3 span-2-cols span-2-rows">
-                <div class="activity-header">
-                    <div class="card-title">System Status</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="system-stats">
-                    <div class="system-row">
-                        <span class="system-label">Database</span>
-                        <div class="system-bar">
-                            <div class="system-fill" style="width: 85%;"></div>
-                        </div>
-                        <span class="system-value">85%</span>
-                    </div>
-                    <div class="system-row">
-                        <span class="system-label">Storage</span>
-                        <div class="system-bar">
-                            <div class="system-fill" style="width: 42%;"></div>
-                        </div>
-                        <span class="system-value">42%</span>
-                    </div>
-                    <div class="system-row">
-                        <span class="system-label">Memory</span>
-                        <div class="system-bar">
-                            <div class="system-fill" style="width: 67%;"></div>
-                        </div>
-                        <span class="system-value">67%</span>
-                    </div>
-                </div>
-                <div class="system-footer">
-                    <span style="opacity: 0.6; font-size: 12px;">Last updated: Just now</span>
-                </div>
-            </div>
-
-            <!-- Stats Graph -->
-            <div class="widget widget-8x8 grid-pos-1-5 span-2-cols span-2-rows">
-                <div class="activity-header">
-                    <div class="card-title">Stats</div>
-                    <div class="status-indicator">●</div>
-                </div>
-                <div class="stats-graph">
-                    <div class="stat-bar">
-                        <div class="stat-label">Total</div>
-                        <div class="bar-container">
-                            <div class="bar-fill total-bar" id="totalBar" style="height: 0%;"></div>
-                        </div>
-                        <div class="stat-value" id="totalValue">0</div>
-                    </div>
-                    <div class="stat-bar">
-                        <div class="stat-label">Open</div>
-                        <div class="bar-container">
-                            <div class="bar-fill open-bar" id="openBar" style="height: 0%;"></div>
-                        </div>
-                        <div class="stat-value" id="openValue">0</div>
-                    </div>
-                    <div class="stat-bar">
-                        <div class="stat-label">Resolved</div>
-                        <div class="bar-container">
-                            <div class="bar-fill resolved-bar" id="resolvedBar" style="height: 0%;"></div>
-                        </div>
-                        <div class="stat-value" id="resolvedValue">0</div>
-                    </div>
-                    <div class="stat-bar">
-                        <div class="stat-label">Features</div>
-                        <div class="bar-container">
-                            <div class="bar-fill feature-bar" id="featureBar" style="height: 0%;"></div>
-                        </div>
-                        <div class="stat-value" id="featureValue">0</div>
-                    </div>
-                </div>
-            </div>
+    <!-- Access Denied Popup -->
+    <div id="accessDeniedPopup" class="popup-overlay" style="display: none;">
+        <div class="popup-content" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 20px; padding: 30px; max-width: 400px; text-align: center;">
+            <h3 style="color: white; font-size: 24px; font-weight: 300; margin: 0 0 20px 0; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;">Access Denied</h3>
+            <p style="color: rgba(255, 255, 255, 0.8); font-size: 16px; font-weight: 300; margin: 0 0 30px 0; font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.5;">You don't have access to this application. If you think this is a mistake, please contact the administrator.</p>
+            <button onclick="closeAccessDenied()" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: white; padding: 12px 24px; border-radius: 12px; font-size: 16px; font-weight: 500; cursor: pointer; font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif; transition: all 0.3s ease;">Close</button>
         </div>
-    </section>
+    </div>
 
-    <!-- Bug Report Section -->
-    <section id="bug-section" class="section">
-        <div class="app-grid">
-            <!-- Bug Request Title -->
-            <div class="title-container grid-pos-1-1">
-                <h1 class="title">Bug Request</h1>
-            </div>
+    <script>
+        function selectApp(url) {
+            if (url === '#') return; // Don't navigate for placeholder apps
+            
+            // Make all other cards disappear
+            const cards = document.querySelectorAll('.app-card');
+            const clickedCard = event.target.closest('.app-card');
+            
+            cards.forEach(card => {
+                if (card !== clickedCard) {
+                    card.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+                    card.style.transform = 'scale(0.1)';
+                    card.style.opacity = '0';
+                }
+            });
+            
+            // Navigate after animation
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        }
 
-            <form id="bug-form" style="display: contents;">
-                <!-- Feature Name -->
-                <div class="widget widget-large-width grid-pos-1-2">
-                    <div class="card-title">Feature Name *</div>
-                    <div class="form-field">
-                        <input type="text" id="bug-feature-name" name="featureName" required>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
+        function showAccessDenied() {
+            const popup = document.getElementById('accessDeniedPopup');
+            popup.style.display = 'flex';
+            
+            // Trigger animation
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 10);
+        }
 
-                <!-- Priority -->
-                <div class="widget widget-4x4 grid-pos-3-2">
-                    <div class="card-title">Priority</div>
-                    <div class="form-field">
-                        <select id="bug-priority" name="priority">
-                            <option value="Low">Low</option>
-                            <option value="Normal" selected>Normal</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
-                        </select>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
+        function closeAccessDenied() {
+            const popup = document.getElementById('accessDeniedPopup');
+            popup.classList.remove('show');
+            
+            // Hide after animation
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 300);
+        }
 
-                <!-- Error Code -->
-                <div class="widget widget-4x4 grid-pos-4-2">
-                    <div class="card-title">Error Code</div>
-                    <div class="form-field">
-                        <input type="text" id="bug-error-code" name="errorCode">
-                        <div class="error-message"></div>
-                    </div>
-                </div>
+        // Animate cards in random staggered order with zoom-in effect
+        function animateCards() {
+            const cards = document.querySelectorAll('.app-card');
+            const cardArray = Array.from(cards);
+            
+            // Shuffle array for random order
+            for (let i = cardArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cardArray[i], cardArray[j]] = [cardArray[j], cardArray[i]];
+            }
+            
+            // Start after text animations (1200ms) + extra delay, then stagger randomly
+            cardArray.forEach((card, index) => {
+                const randomDelay = Math.random() * 600; // Random delay up to 600ms
+                const baseDelay = 1400; // Start after text animations
+                const totalDelay = baseDelay + (index * 200) + randomDelay;
+                
+                setTimeout(() => {
+                    // Set final transform based on card positioning
+                    const isPositioned = card.classList.contains('spark') || 
+                                       card.classList.contains('stocksentry') || 
+                                       card.classList.contains('bizsentry');
+                    
+                    if (isPositioned) {
+                        card.style.transform = 'scale(1) translateY(25px)';
+                    } else {
+                        card.style.transform = 'scale(1)';
+                    }
+                    
+                    card.classList.add('animate');
+                    
+                    // Add loaded class after animation completes
+                    setTimeout(() => {
+                        card.classList.add('loaded');
+                    }, 400); // After animation duration
+                }, totalDelay);
+            });
+        }
 
-                <!-- Expected Behavior -->
-                <div class="widget widget-large-width-200h grid-pos-1-3">
-                    <div class="card-title">Expected Behavior *</div>
-                    <div class="form-field">
-                        <textarea id="bug-expected" name="expectedBehavior" rows="4" required></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
+        // Card hover effects
+        function setupCardHoverEffects() {
+            const cards = document.querySelectorAll('.app-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    // Reset all cards first
+                    cards.forEach(c => {
+                        c.style.transform = '';
+                        c.style.zIndex = '';
+                    });
+                    
+                    // Scale up the hovered card
+                    const isPositioned = card.classList.contains('spark') || 
+                                       card.classList.contains('stocksentry') || 
+                                       card.classList.contains('bizsentry');
+                    
+                    if (isPositioned) {
+                        card.style.transform = 'scale(1.1) translateY(25px)';
+                    } else {
+                        card.style.transform = 'scale(1.1)';
+                    }
+                    card.style.zIndex = '10';
+                    
+                    // Randomly scale down other cards
+                    const otherCards = Array.from(cards).filter(c => c !== card);
+                    otherCards.forEach(otherCard => {
+                        const shouldScale = Math.random() < 0.7; // 70% chance to scale down
+                        if (shouldScale) {
+                            const isOtherPositioned = otherCard.classList.contains('spark') || 
+                                                    otherCard.classList.contains('stocksentry') || 
+                                                    otherCard.classList.contains('bizsentry');
+                            
+                            if (isOtherPositioned) {
+                                otherCard.style.transform = 'scale(0.78) translateY(25px)';
+                            } else {
+                                otherCard.style.transform = 'scale(0.78)';
+                            }
+                        } else {
+                            // Keep original positioning for non-scaled cards
+                            const isOtherPositioned = otherCard.classList.contains('spark') || 
+                                                    otherCard.classList.contains('stocksentry') || 
+                                                    otherCard.classList.contains('bizsentry');
+                            
+                            if (isOtherPositioned) {
+                                otherCard.style.transform = 'scale(1) translateY(25px)';
+                            } else {
+                                otherCard.style.transform = 'scale(1)';
+                            }
+                        }
+                    });
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    // Reset all cards to normal
+                    cards.forEach(c => {
+                        const isPositioned = c.classList.contains('spark') || 
+                                           c.classList.contains('stocksentry') || 
+                                           c.classList.contains('bizsentry');
+                        
+                        if (isPositioned) {
+                            c.style.transform = 'scale(1) translateY(25px)';
+                        } else {
+                            c.style.transform = 'scale(1)';
+                        }
+                        c.style.zIndex = '';
+                    });
+                });
+            });
+        }
 
-                <!-- Actual Behavior -->
-                <div class="widget widget-large-width-200h grid-pos-3-3">
-                    <div class="card-title">Actual Behavior *</div>
-                    <div class="form-field">
-                        <textarea id="bug-actual" name="actualBehavior" rows="4" required></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
+        // Text entrance animations
+        function animateText() {
+            const textElements = document.querySelectorAll('.text-element');
+            
+            textElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('animate');
+                }, index * 400); // Stagger by 400ms
+            });
+        }
 
-                <!-- Error Message -->
-                <div class="widget widget-large-width grid-pos-1-4">
-                    <div class="card-title">Error Message</div>
-                    <div class="form-field">
-                        <textarea id="bug-error-message" name="errorMessage" rows="3"></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary form-button grid-pos-3-4">Submit</button>
-
-                <!-- Upload Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" onclick="app.uploadFile('bug')">Upload</button>
-
-                <!-- Cancel Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-4" onclick="app.clearForm('bug-form')">Cancel</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Feature Request Section -->
-    <section id="feature-section" class="section">
-        <div class="app-grid">
-            <!-- New Feature Title -->
-            <div class="title-container grid-pos-1-1">
-                <h1 class="title">New Feature</h1>
-            </div>
-
-            <form id="feature-form" style="display: contents;">
-                <!-- Feature Name -->
-                <div class="widget widget-large-width grid-pos-1-2">
-                    <div class="card-title">Feature Name *</div>
-                    <div class="form-field">
-                        <input type="text" id="feature-name" name="featureName" required>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Priority -->
-                <div class="widget widget-4x4 grid-pos-3-2">
-                    <div class="card-title">Priority</div>
-                    <div class="form-field">
-                        <select id="feature-priority" name="priority">
-                            <option value="Low">Low</option>
-                            <option value="Normal" selected>Normal</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
-                        </select>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Expected Behavior -->
-                <div class="widget widget-large-width-200h grid-pos-1-3">
-                    <div class="card-title">Expected Behavior *</div>
-                    <div class="form-field">
-                        <textarea id="feature-expected" name="expectedBehavior" rows="4" required></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Feature Importance -->
-                <div class="widget widget-large-width-200h grid-pos-3-3">
-                    <div class="card-title">Feature Importance *</div>
-                    <div class="form-field">
-                        <textarea id="feature-importance" name="featureImportance" rows="4" required></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Desirability -->
-                <div class="widget widget-large-width grid-pos-1-4">
-                    <div class="card-title">Desirability *</div>
-                    <div class="form-field">
-                        <textarea id="feature-desirability" name="desirability" rows="3" required></textarea>
-                        <div class="error-message"></div>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-primary form-button grid-pos-3-4">Submit</button>
-
-                <!-- Upload Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" onclick="app.uploadFile('feature')">Upload</button>
-
-                <!-- Cancel Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-4" onclick="app.clearForm('feature-form')">Cancel</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- All Reports Section -->
-    <section id="reports-section" class="section">
-        <div class="app-grid">
-            <div class="widget widget-8x8" style="grid-column: 1 / -1; width: 100%;">
-                <div class="card-title">All Reports</div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Feature</th>
-                                <th>Expected</th>
-                                <th>Actual</th>
-                                <th>Error Code</th>
-                                <th>Error Message</th>
-                                <th>Importance</th>
-                                <th>Desirability</th>
-                                <th>Priority</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reports-tbody">
-                            <!-- Dynamic content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Settings Section -->
-    <section id="settings-section" class="section">
-        <div class="app-grid">
-            <!-- Settings Title -->
-            <div class="title-container grid-pos-1-1">
-                <h1 class="title">Settings</h1>
-            </div>
-
-            <!-- Data Table -->
-            <div class="widget widget-16x16 grid-pos-1-3 span-4-cols span-4-rows">
-                <div class="card-title">All Reports</div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Feature</th>
-                                <th>Expected</th>
-                                <th>Actual</th>
-                                <th>Error Code</th>
-                                <th>Error Message</th>
-                                <th>Importance</th>
-                                <th>Desirability</th>
-                                <th>Priority</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="settings-tbody">
-                            <!-- Dynamic content -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- File Manager -->
-            <div class="widget widget-full-width grid-pos-1-2 span-4-cols">
-                <div class="card-title">Uploaded Files</div>
-                <div class="file-manager file-manager-split">
-                    <div class="file-section file-section-half">
-                        <h4>Bug Report Files</h4>
-                        <div id="settings-bug-files" class="file-list-settings"></div>
-                    </div>
-                    <div class="file-section file-section-half">
-                        <h4>Feature Request Files</h4>
-                        <div id="settings-feature-files" class="file-list-settings"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Migration Buttons -->
-            <div class="button-container grid-pos-4-1">
-                <h4>Data Migration</h4>
-                <button class="btn btn-primary" onclick="app.migrateLocalStorageToSupabase()">Migrate to Cloud</button>
-                <button class="btn btn-secondary" onclick="app.exportLocalStorageData()">Export Local Data</button>
-            </div>
-
-            <!-- Original Buttons -->
-            <div class="button-container grid-pos-4-2">
-                <h4>Data Management</h4>
-                <button class="btn btn-secondary" onclick="app.exportData()">Export Data</button>
-                <button class="btn btn-secondary btn-danger" onclick="app.clearAllData()">Clear Data</button>
-                <button class="btn btn-secondary btn-danger" onclick="app.clearAllFiles()">Clear Files</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Toast Container -->
-    <div id="toast-container" class="toast-container"></div>
-
-    <!-- Scripts -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script src="config.js"></script>
-    <script src="app.js"></script>
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            animateText();
+            animateCards();
+            setupCardHoverEffects();
+        });
+    </script>
 </body>
 </html>

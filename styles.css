@@ -55,7 +55,7 @@ body {
     font-family: var(--font-text);
     overflow: auto;
     background: linear-gradient(135deg, rgba(101,0,94,1) 1%, rgba(60,132,206,1) 25%, rgba(58,180,170,1) 75%, rgba(236,72,153,1) 98%);
-    animation: gradient 15s ease infinite;
+    animation: gradient 15s ease forwards;
     background-size: 400% 400%;
     background-attachment: fixed;
     color: white;
@@ -148,6 +148,55 @@ body {
 
     100% {
         transform: translateX(1);
+    }
+}
+
+/* Vertical Waves for Dashboard */
+.wave-container .wave {
+    background: rgb(255 255 255 / 25%);
+    border-radius: 1000% 0 0 1000%;
+    position: fixed;
+    width: 12em;
+    height: 200%;
+    animation: verticalWave 15s -3s linear infinite;
+    transform: translate3d(0, 0, 0);
+    opacity: 0.8;
+    top: 0;
+    right: 0;
+    z-index: -1;
+}
+
+.wave-container .wave:nth-of-type(2) {
+    right: -1.25em;
+    animation: verticalWave 22s linear reverse infinite;
+    opacity: 0.6;
+}
+
+.wave-container .wave:nth-of-type(3) {
+    right: -2.5em;
+    animation: verticalWave 18s -1s reverse infinite;
+    opacity: 0.7;
+}
+
+@keyframes verticalWave {
+    2% {
+        transform: translateY(1);
+    }
+
+    25% {
+        transform: translateY(-25%);
+    }
+
+    50% {
+        transform: translateY(-50%);
+    }
+
+    75% {
+        transform: translateY(-25%);
+    }
+
+    100% {
+        transform: translateY(1);
     }
 }
 
@@ -436,6 +485,13 @@ body {
     grid-row: span 2;
 }
 
+.widget-8x12 {
+    width: var(--widget-large-width);
+    height: calc(var(--widget-8x4) + var(--widget-4x4) + var(--gap));
+    grid-column: span 2;
+    grid-row: span 3;
+}
+
 .widget-large-width {
     width: var(--widget-large-width);
     height: var(--widget-4x4);
@@ -475,6 +531,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    align-items: flex-end;
 }
 
 /* Action Card Container */
@@ -1377,3 +1434,199 @@ body {
 /* Span utilities */
 .span-2-cols { grid-column: span 2; }
 .span-2-rows { grid-row: span 2; }
+.span-3-rows { grid-row: span 3; }
+.span-4-cols { grid-column: span 4; }
+.span-4-rows { grid-row: span 4; }
+
+/* Notifications System */
+.notification-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--error);
+    color: white;
+    border-radius: 12px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+}
+
+.notifications-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: calc(100% - 80px);
+    overflow-y: auto;
+    padding: 8px 0;
+    margin-top: 40px;
+}
+
+.notification-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-rows: auto auto;
+    gap: 8px 6px;
+    padding: 12px 0 12px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid transparent;
+    transition: all 0.3s ease;
+    align-items: center;
+    grid-template-areas:
+        "icon title btn1 btn2"
+        "icon message time .";
+}
+
+.notification-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.notification-item.unread {
+    border-left-color: var(--primary);
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.notification-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.notification-icon {
+    grid-area: icon;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.notification-icon.error {
+    background: linear-gradient(135deg, var(--error), #c0392b);
+    color: white;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
+
+.notification-icon.warning {
+    background: linear-gradient(135deg, var(--warning), #d68910);
+    color: white;
+    box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4);
+}
+
+.notification-icon.success {
+    background: linear-gradient(135deg, var(--success), #1e8449);
+    color: white;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+}
+
+.notification-title {
+    grid-area: title;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    line-height: 1.3;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    margin: 0;
+}
+
+.notification-message {
+    grid-area: message;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    font-weight: 400;
+    margin: 0;
+}
+
+.notification-time {
+    grid-area: time;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.notification-btn:nth-of-type(1) {
+    grid-area: btn1;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+    justify-self: end;
+    margin-right: 5px;
+}
+
+.notification-btn:nth-of-type(2) {
+    grid-area: btn2;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+    justify-self: end;
+    margin-right: 5px;
+}
+
+.notification-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
+}
+
+.notification-btn:active {
+    transform: scale(0.95);
+}
+
+.notifications-footer {
+    padding: 12px 0 0 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.notifications-clear-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.notifications-clear-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
