@@ -204,6 +204,7 @@ body {
 .app-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, var(--widget-4x4));
+    grid-auto-rows: var(--widget-4x4);
     gap: var(--gap);
     padding: var(--gap);
     justify-content: center;

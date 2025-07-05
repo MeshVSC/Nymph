@@ -8,7 +8,7 @@ Clean, minimal configuration
 const NYMPH = {
     // Core Settings
     APP_NAME: 'Nymph',
-    PIN: '1700',
+    PIN: '1986',
     STORAGE_KEY: 'nymphBugTracker',
     
     // Supabase Configuration

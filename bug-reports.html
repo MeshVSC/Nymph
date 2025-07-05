@@ -6,7 +6,7 @@
     <title>Nymph - Bug Reports</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body id="bug-reports-page">
     <!-- Horizontal Waves -->
     <div class="wave"></div>
     <div class="wave"></div>
@@ -74,8 +74,8 @@
         </div>
 
         <!-- Row 3+: Tables -->
-        <!-- Open Bugs Table (Row 3, Column 1) -->
-        <div class="widget reports-widget grid-pos-1-3 span-2-cols span-3-rows">
+        <!-- Open Bugs Table (Row 3, Column 1-2) -->
+        <div class="widget reports-widget" style="grid-column: 1 / 3; grid-row: 3 / 6;">
             <div class="activity-header">
                 <div class="card-title">Open Bugs</div>
                 <div class="notification-count" id="openBugsCount">0</div>
@@ -85,7 +85,7 @@
             </div>
         </div>
 
-        <!-- Resolved Bugs Table (Row 3, Column 3) -->
+        <!-- Resolved Bugs Table (Row 3, Column 3-4) -->
         <div class="widget reports-widget" style="grid-column: 3 / 5; grid-row: 3 / 6;">
             <div class="activity-header">
                 <div class="card-title">Resolved Bugs</div>
@@ -118,113 +118,30 @@
             border-radius: var(--radius);
             padding: 20px;
         }
+
+        .notification-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+            margin-bottom: 4px;
+        }
+
+        .notification-status {
+            font-size: 12px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .notification-desc {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.3;
+        }
     </style>
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
-    <script src="app.js"></script>
-    <script>
-        // Load and display bug reports
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Wait for app to be available
-            let attempts = 0;
-            while (typeof app === 'undefined' && attempts < 50) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                attempts++;
-            }
-            
-            if (typeof app === 'undefined') {
-                console.error('App not available after 5 seconds');
-                displayEmptyState();
-                return;
-            }
-            
-            // Wait for app data to be loaded (max 5 seconds)
-            attempts = 0;
-            while (!app.data && attempts < 50) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                attempts++;
-            }
-            
-            displayBugReports();
-        });
-
-        function displayEmptyState() {
-            document.getElementById('openBugsList').innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">Loading...</div>';
-            document.getElementById('resolvedBugsList').innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">Loading...</div>';
-        }
-
-        function displayBugReports() {
-            if (!app) {
-                console.log('App not available yet');
-                displayEmptyState();
-                return;
-            }
-
-            // Initialize data as empty array if not available
-            if (!app.data) {
-                app.data = [];
-            }
-
-            const openBugs = app.data.filter(item => item.type === 'bug' && item.status === 'Open');
-            const resolvedBugs = app.data.filter(item => item.type === 'bug' && (item.status === 'Resolved' || item.status === 'Closed'));
-
-            displayBugList('openBugsList', openBugs);
-            displayBugList('resolvedBugsList', resolvedBugs);
-
-            document.getElementById('openBugsCount').textContent = openBugs.length;
-            document.getElementById('resolvedBugsCount').textContent = resolvedBugs.length;
-        }
-
-        function displayBugList(containerId, bugs) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-
-            bugs.forEach(bug => {
-                const bugItem = document.createElement('div');
-                bugItem.className = 'notification-item';
-                
-                const priorityIcon = bug.priority === 'Critical' ? '🔴' : 
-                                   bug.priority === 'High' ? '🟠' : 
-                                   bug.priority === 'Normal' ? '🟡' : '🟢';
-
-                bugItem.innerHTML = `
-                    <span class="notification-icon ${bug.priority.toLowerCase()}">${priorityIcon}</span>
-                    <span class="notification-title">${bug.featureName}</span>
-                    <span class="notification-message">${bug.expectedBehavior}</span>
-                    <span class="notification-time">${bug.date || 'No date'}</span>
-                `;
-
-                container.appendChild(bugItem);
-            });
-
-            if (bugs.length === 0) {
-                container.innerHTML = '<div style="text-align: center; color: rgba(255,255,255,0.5); padding: 20px;">No bugs found</div>';
-            }
-        }
-
-        // Setup scroll navigation behavior
-        let lastScrollTop = 0;
-        window.addEventListener('scroll', () => {
-            const topNav = document.getElementById('topNav');
-            const sideNav = document.getElementById('sideNav');
-            
-            if (!topNav || !sideNav) return;
-            
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollTop > 100) {
-                // User scrolled down - hide top nav, show side nav
-                topNav.classList.add('hidden');
-                sideNav.classList.add('visible');
-            } else {
-                // User at top - show top nav, hide side nav
-                topNav.classList.remove('hidden');
-                sideNav.classList.remove('visible');
-            }
-            
-            lastScrollTop = scrollTop;
-        });
-    </script>
+    <script src="reports.js"></script>
 </body>
 </html>
