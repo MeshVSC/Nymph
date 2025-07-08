@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nymph - App Selection</title>
     <link rel="stylesheet" href="styles.css">
     <style>
@@ -36,11 +36,52 @@
             min-height: 100vh;
         }
 
+        /* Mobile responsive for landing page */
+        @media (max-width: 768px) {
+            .app-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 20px !important;
+                gap: 20px !important;
+                align-items: center !important;
+                justify-content: center !important;
+                min-height: 100vh !important;
+            }
+
+            .app-card {
+                width: 150px !important;
+                height: 150px !important;
+                margin: 10px !important;
+            }
+
+            .text-element {
+                text-align: center !important;
+                margin: 20px 0 !important;
+            }
+
+            .nymph-title {
+                font-size: 60px !important;
+            }
+
+            .track-nymphs {
+                font-size: 20px !important;
+            }
+
+            .description {
+                font-size: 14px !important;
+                padding: 0 20px !important;
+            }
+        }
+
         .app-card {
             transform-origin: center;
             opacity: 0;
             transform: scale(0.1);
             transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Optimize for mobile performance */
+            will-change: transform, opacity;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(255, 255, 255, 0.1);
         }
 
         .app-card.animate {

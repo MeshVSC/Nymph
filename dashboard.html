@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Nymph - Bug Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -282,7 +282,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="widget widget-4x4 grid-pos-4-2">
+                <div class="widget widget-4x4 grid-pos-2-4">
                     <div class="card-title">Status</div>
                     <div class="form-field">
                         <select id="bug-status" name="status" data-action="handle-status-change">
@@ -332,14 +332,21 @@
                     </div>
                 </div>
 
+                <!-- Form Error Message -->
+                <div class="widget grid-pos-4-2" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <div class="form-error-message" style="color: #ef4444; font-size: 14px; text-align: center; padding: 10px;">
+                        <!-- Error messages will appear here -->
+                    </div>
+                </div>
+
                 <!-- Upload Button -->
                 <button type="button" class="btn btn-secondary form-button grid-pos-1-5" data-action="upload-file" data-form-type="bug">Upload</button>
 
                 <!-- Submit Button -->
-                <button type="submit" class="btn btn-secondary form-button grid-pos-3-10">Submit</button>
+                <button type="submit" class="btn btn-secondary form-button grid-pos-4-4">Submit</button>
 
                 <!-- Cancel Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-10" data-action="clear-form" data-form-id="bug-form">Cancel</button>
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-4" data-action="clear-form" data-form-id="bug-form">Cancel</button>
             </form>
         </div>
     </section>
@@ -458,7 +465,7 @@
 
             <!-- Settings Buttons -->
             <div class="button-container grid-pos-4-2" style="gap: 10px; justify-content: flex-end;">
-                <button class="btn btn-secondary" data-action="compose-message" style="width: 100%;">Send Message to User</button>
+                <button class="btn btn-secondary" data-action="compose-message" style="width: 100%;">Send Notification</button>
                 <button class="btn btn-secondary" data-action="migrate-to-supabase" style="width: 100%;">Migrate</button>
                 <button class="btn btn-secondary" data-action="export-local-data" style="width: 100%;">Export Local</button>
                 <button class="btn btn-secondary" data-action="export-data" style="width: 100%;">Export All</button>
