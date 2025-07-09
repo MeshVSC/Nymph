@@ -14,7 +14,7 @@ const NYMPH = {
     // Supabase Configuration
     SUPABASE: {
         URL: 'https://supbaincqxpxklccstqa.supabase.co',
-        ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1cGJhaW5jcXhweGtsY2NzdHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA4ODY1NDcsImV4cCI6MjA2NjQ2MjU0N30.HWt_8OSURp0b-j-jVyXUlI66fRxt3Cr1JAyMI9WAkEw'
+        ANON_KEY: process.env.SUPABASE_ANON_KEY || '***REMOVED***'
     },
     
     // Grid System - Responsive & Proportional
