@@ -1,0 +1,5 @@
+# Environment Variables for Nymph
+# Copy this file to .env and fill in your actual values
+
+# Supabase Configuration
+SUPABASE_ANON_KEY=***REMOVED***
