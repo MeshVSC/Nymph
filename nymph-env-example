@@ -1,0 +1,5 @@
+# Environment Variables for Nymph
+# Copy this file to .env and fill in your actual values
+
+# Supabase Configuration
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1cGJhaW5jcXhweGtsY2NzdHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwNzQwMjAsImV4cCI6MjA2NzY1MDAyMH0.YgmNdFc19Ek47MQzankflmosVO2YgbVlrNxkUB9VopY
