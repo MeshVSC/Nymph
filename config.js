@@ -14,7 +14,7 @@ const NYMPH = {
     // Supabase Configuration
     SUPABASE: {
         URL: 'https://supbaincqxpxklccstqa.supabase.co',
-        ANON_KEY: process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1cGJhaW5jcXhweGtsY2NzdHFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwNzQwMjAsImV4cCI6MjA2NzY1MDAyMH0.YgmNdFc19Ek47MQzankflmosVO2YgbVlrNxkUB9VopY'
+        ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY
     },
     
     // Grid System - Responsive & Proportional
@@ -57,3 +57,6 @@ const NYMPH = {
 
 // Freeze config
 Object.freeze(NYMPH);
+
+// Make NYMPH available globally
+window.NYMPH = NYMPH;
