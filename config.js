@@ -14,7 +14,7 @@ const NYMPH = {
     // Supabase Configuration
     SUPABASE: {
         URL: 'https://supbaincqxpxklccstqa.supabase.co',
-        ANON_KEY: process.env.SUPABASE_ANON_KEY || '***REMOVED***'
+        ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY
     },
     
     // Grid System - Responsive & Proportional
@@ -57,3 +57,6 @@ const NYMPH = {
 
 // Freeze config
 Object.freeze(NYMPH);
+
+// Make NYMPH available globally
+window.NYMPH = NYMPH;
