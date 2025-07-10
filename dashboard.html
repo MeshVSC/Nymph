@@ -282,7 +282,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="widget widget-4x4 grid-pos-2-4">
+                <div class="widget widget-4x4 grid-pos-4-2">
                     <div class="card-title">Status</div>
                     <div class="form-field">
                         <select id="bug-status" name="status" data-action="handle-status-change">
@@ -324,7 +324,7 @@
                 </div>
 
                 <!-- Error Message -->
-                <div class="widget widget-large-width grid-pos-3-4">
+                <div class="widget widget-large-width grid-pos-2-4">
                     <div class="card-title">Error Message</div>
                     <div class="form-field">
                         <textarea id="bug-error-message" name="errorMessage" rows="3"></textarea>
@@ -333,20 +333,20 @@
                 </div>
 
                 <!-- Form Error Message -->
-                <div class="widget grid-pos-4-2" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3);">
+                <div class="widget grid-pos-4-2" id="bug-form-error" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); display: none;">
                     <div class="form-error-message" style="color: #ef4444; font-size: 14px; text-align: center; padding: 10px;">
                         <!-- Error messages will appear here -->
                     </div>
                 </div>
 
                 <!-- Upload Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-1-5" data-action="upload-file" data-form-type="bug">Upload</button>
+                <button type="button" class="btn btn-secondary form-button grid-pos-4-1" data-action="upload-file" data-form-type="bug">Upload</button>
 
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-secondary form-button grid-pos-4-4">Submit</button>
-
-                <!-- Cancel Button -->
-                <button type="button" class="btn btn-secondary form-button grid-pos-4-4" data-action="clear-form" data-form-id="bug-form">Cancel</button>
+                <!-- Submit and Cancel Buttons Container -->
+                <div class="widget grid-pos-4-4" style="display: flex; flex-direction: column; gap: 10px; padding: 15px;">
+                    <button type="submit" class="btn btn-secondary" style="width: 100%; height: auto;">Submit</button>
+                    <button type="button" class="btn btn-secondary" data-action="clear-form" data-form-id="bug-form" style="width: 100%; height: auto;">Cancel</button>
+                </div>
             </form>
         </div>
     </section>
