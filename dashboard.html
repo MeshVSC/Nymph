@@ -466,7 +466,6 @@
             <!-- Settings Buttons -->
             <div class="button-container grid-pos-4-2" style="gap: 10px; justify-content: flex-end;">
                 <button class="btn btn-secondary" data-action="compose-message" style="width: 100%;">Send Notification</button>
-                <button class="btn btn-secondary" data-action="migrate-to-supabase" style="width: 100%;">Migrate</button>
                 <button class="btn btn-secondary" data-action="export-local-data" style="width: 100%;">Export Local</button>
                 <button class="btn btn-secondary" data-action="export-data" style="width: 100%;">Export All</button>
                 <button class="btn btn-secondary btn-danger" data-action="clear-all-data" style="width: 100%;">Clear All Data</button>
@@ -564,6 +563,23 @@
             <span class="notification-time"></span>
         </div>
     </template>
+
+    <!-- Welcome Tooltips -->
+    <div id="bugReportTooltip" class="in-app-tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-content">
+            <p>Use <strong>Bug Report</strong> for anything that is showing an incorrect behavior</p>
+            <button class="btn btn-primary btn-small" onclick="nextTooltip()">Okay</button>
+        </div>
+    </div>
+
+    <div id="featureTooltip" class="in-app-tooltip">
+        <div class="tooltip-arrow"></div>
+        <div class="tooltip-content">
+            <p>Use <strong>New Feature</strong> for any new features that you would like to request</p>
+            <button class="btn btn-primary btn-small" onclick="closeTooltips()">Got it!</button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script type="module" src="/main.js"></script>

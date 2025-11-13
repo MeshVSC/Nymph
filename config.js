@@ -10,13 +10,18 @@ const NYMPH = {
     APP_NAME: 'Nymph',
     PIN: '1986',
     STORAGE_KEY: 'nymphBugTracker',
-    
-    // Supabase Configuration
-    SUPABASE: {
-        URL: 'https://supbaincqxpxklccstqa.supabase.co',
-        ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY
+
+    // Firebase Configuration
+    FIREBASE: {
+        apiKey: "AIzaSyCEktFroOCSKbbDtjaXzSb7Sm-d8GmZLa8",
+        authDomain: "nymph-ab9ab.firebaseapp.com",
+        projectId: "nymph-ab9ab",
+        storageBucket: "nymph-ab9ab.firebasestorage.app",
+        messagingSenderId: "660407592874",
+        appId: "1:660407592874:web:2af8d87993ee7aee536dd3",
+        measurementId: "G-N4RP38WZ4S"
     },
-    
+
     // Grid System - Responsive & Proportional
     GRID: {
         BASE_UNIT: 50,        // 1 grid unit = 50px (used everywhere)

@@ -42,7 +42,7 @@ A modern, responsive bug tracking application with beautiful animated background
 The current click behavior on the landing page is a **TEMPORARY SIMULATION** and must be removed/modified in the future:
 
 - **StockSentry Card**: Currently the only functional card - clicking it makes other cards disappear and navigates to dashboard.html
-- **Other Cards** (Spark, JstCode, Little Art Corner, BizSentry): Show an "Access Denied" popup when clicked
+- **Other Cards** (Spark, JstNotch, Little Art Corner, BizSentry): Show an "Access Denied" popup when clicked
 - **This behavior is NOT permanent** - it's only implemented to simulate a working application while other components are being developed
 - **Future Implementation**: All cards should navigate to their respective applications when those are built
 
@@ -204,7 +204,7 @@ Nymph/
 ### Card Details
 - **StockSentry**: 150x150px, positioned at grid 1/3 with 25px translateY
 - **Little Art Corner**: 175x175px, positioned at grid 3/3 (largest card)
-- **JstCode**: 150x150px, positioned at grid 3/5, right-aligned
+- **JstNotch**: 150x150px, positioned at grid 3/5, right-aligned
 - **Spark**: 150x150px, positioned at grid 5/1 with 25px translateY
 - **BizSentry**: 150x150px, positioned at grid 5/3 with 25px translateY
 

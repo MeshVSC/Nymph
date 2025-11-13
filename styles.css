@@ -874,6 +874,7 @@ body {
     font-weight: var(--button-weight);
     color: white;
     flex: 1;
+    white-space: nowrap;
 }
 
 .power-icon {
@@ -1760,4 +1761,98 @@ body {
 .notifications-clear-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+}
+
+/* In-App Tooltips */
+.in-app-tooltip {
+    position: fixed;
+    display: none;
+    z-index: 10000;
+    pointer-events: none;
+}
+
+.in-app-tooltip.show {
+    display: block;
+    animation: tooltipFadeIn 0.3s ease;
+    pointer-events: auto;
+}
+
+#bugReportTooltip {
+    top: 80px;
+    left: 160px;
+}
+
+#featureTooltip {
+    top: 80px;
+    left: 280px;
+}
+
+.tooltip-content {
+    background: var(--bg-glass);
+    backdrop-filter: blur(40px);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 280px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.tooltip-arrow {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--border-glass);
+    position: absolute;
+    top: -10px;
+    left: 20px;
+}
+
+.tooltip-content p {
+    font-family: var(--font-text);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.5;
+    margin: 0 0 15px 0;
+}
+
+.tooltip-content strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 13px;
+    width: 100%;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    #bugReportTooltip,
+    #featureTooltip {
+        top: auto;
+        left: 50%;
+        bottom: 100px;
+        transform: translateX(-50%);
+    }
+
+    .tooltip-arrow {
+        left: 50%;
+        transform: translateX(-50%);
+        top: auto;
+        bottom: -10px;
+        border-bottom: none;
+        border-top: 10px solid var(--border-glass);
+    }
 }

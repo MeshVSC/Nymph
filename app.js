@@ -1,26 +1,32 @@
-/* 
+/*
 =======================================================
-NYMPH v2 - APPLICATION (CORRECTED IMPLEMENTATION)
+NYMPH v2 - APPLICATION (FIREBASE IMPLEMENTATION)
 =======================================================
-Following proper design system with all features
+Following proper design system with Firebase Firestore
 */
+
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, deleteDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
 
 (function() {
     class NymphApp {
         constructor() {
             console.log('Nymph App starting...');
-            
-            // Initialize Supabase client
-            this.supabase = supabase.createClient(NYMPH.SUPABASE.URL, NYMPH.SUPABASE.ANON_KEY);
-            console.log('Supabase client initialized');
-            
+
+            // Initialize Firebase
+            this.app = initializeApp(NYMPH.FIREBASE);
+            this.db = getFirestore(this.app);
+            this.analytics = getAnalytics(this.app);
+            console.log('Firebase initialized');
+
             this.data = [];
             this.currentSection = 'dashboard-section';
             this.lastScrollTop = 0;
             this.init();
             console.log('Nymph App initialized successfully');
         }
-        
+
         async init() {
             this.setupEventListeners();
             this.setupNavigation();
@@ -28,12 +34,15 @@ Following proper design system with all features
             this.setupForms();
             this.setupActionCards();
             this.showSection('dashboard-section');
-            
-            // Load data from Supabase
+
+            // Load data from Firestore
             this.data = await this.loadData();
             this.updateDashboard();
             this.updateActivityFeed();
             this.updateCommunications();
+
+            // Show welcome tooltip on first visit
+            this.showWelcomeTooltip();
         }
 
         setupEventListeners() {
@@ -155,219 +164,108 @@ Following proper design system with all features
         // Data Management
         async loadData() {
             try {
-                // Load from Supabase
-                const [bugReports, featureRequests] = await Promise.all([
-                    this.supabase.from('bug_reports').select('*').order('created_at', { ascending: false }),
-                    this.supabase.from('feature_requests').select('*').order('created_at', { ascending: false })
-                ]);
+                const data = [];
 
-                let data = [];
-
-                if (bugReports.data) {
-                    data = data.concat(bugReports.data.map(bug => ({
-                        id: bug.id,
+                // Load bug reports
+                const bugsQuery = query(collection(this.db, 'bug_reports'), orderBy('createdAt', 'desc'));
+                const bugsSnapshot = await getDocs(bugsQuery);
+                bugsSnapshot.forEach((doc) => {
+                    const bugData = doc.data();
+                    data.push({
+                        id: doc.id,
                         type: 'bug',
-                        featureName: bug.feature_name,
-                        expectedBehavior: bug.expected_behavior,
-                        actualBehavior: bug.actual_behavior,
-                        errorCode: bug.error_code,
-                        errorMessage: bug.error_message,
-                        priority: bug.priority,
-                        status: bug.status,
-                        date: bug.created_at.split('T')[0]
-                    })));
-                }
+                        featureName: bugData.featureName,
+                        expectedBehavior: bugData.expectedBehavior,
+                        actualBehavior: bugData.actualBehavior,
+                        errorCode: bugData.errorCode,
+                        errorMessage: bugData.errorMessage,
+                        priority: bugData.priority,
+                        status: bugData.status,
+                        date: bugData.createdAt ? new Date(bugData.createdAt.seconds * 1000).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+                    });
+                });
 
-                if (featureRequests.data) {
-                    data = data.concat(featureRequests.data.map(feature => ({
-                        id: feature.id,
+                // Load feature requests
+                const featuresQuery = query(collection(this.db, 'feature_requests'), orderBy('createdAt', 'desc'));
+                const featuresSnapshot = await getDocs(featuresQuery);
+                featuresSnapshot.forEach((doc) => {
+                    const featureData = doc.data();
+                    data.push({
+                        id: doc.id,
                         type: 'feature',
-                        featureName: feature.feature_name,
-                        expectedBehavior: feature.expected_behavior,
-                        featureImportance: feature.feature_importance,
-                        desirability: feature.desirability,
-                        priority: feature.priority,
-                        status: feature.status,
-                        date: feature.created_at.split('T')[0]
-                    })));
-                }
+                        featureName: featureData.featureName,
+                        expectedBehavior: featureData.expectedBehavior,
+                        featureImportance: featureData.featureImportance,
+                        desirability: featureData.desirability,
+                        priority: featureData.priority,
+                        status: featureData.status,
+                        date: featureData.createdAt ? new Date(featureData.createdAt.seconds * 1000).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+                    });
+                });
 
                 return data;
             } catch (error) {
-                console.error('Error loading data from Supabase:', error);
-                // Fallback to localStorage
-                const stored = localStorage.getItem(NYMPH.STORAGE_KEY);
-                return stored ? JSON.parse(stored) : [];
+                console.error('Error loading data from Firestore:', error);
+                return [];
             }
         }
-        
-        async saveData() {
-            // No longer needed - data is saved directly to Supabase in addEntry
+
+        saveData() {
+            // Not needed - data saves directly to Firestore
             this.updateDashboard();
             this.updateActivityFeed();
         }
-        
+
         async addEntry(entry) {
             try {
                 // Use the status from the form, default to 'Open' if not provided
                 if (!entry.status) {
                     entry.status = 'Open';
                 }
-                
-                if (entry.type === 'bug') {
-                    const { data, error } = await this.supabase
-                        .from('bug_reports')
-                        .insert({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            actual_behavior: entry.actualBehavior,
-                            error_code: entry.errorCode || null,
-                            error_message: entry.errorMessage || null,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status
-                        })
-                        .select()
-                        .single();
-                    
-                    if (error) {
-                        throw error;
-                    }
-                    
-                    // Add to local data array
-                    this.data.unshift({
-                        id: data.id,
-                        type: 'bug',
-                        featureName: data.feature_name,
-                        expectedBehavior: data.expected_behavior,
-                        actualBehavior: data.actual_behavior,
-                        errorCode: data.error_code,
-                        errorMessage: data.error_message,
-                        priority: data.priority,
-                        status: data.status,
-                        date: data.created_at.split('T')[0]
-                    });
 
-                    // Check if verification is needed
-                    this.checkVerificationNeeded(data);
-                    
+                const collectionName = entry.type === 'bug' ? 'bug_reports' : 'feature_requests';
+                const docData = {
+                    featureName: entry.featureName,
+                    expectedBehavior: entry.expectedBehavior,
+                    priority: entry.priority || 'Normal',
+                    status: entry.status,
+                    createdAt: new Date()
+                };
+
+                if (entry.type === 'bug') {
+                    docData.actualBehavior = entry.actualBehavior;
+                    docData.errorCode = entry.errorCode || '';
+                    docData.errorMessage = entry.errorMessage || '';
                 } else if (entry.type === 'feature') {
-                    const { data, error } = await this.supabase
-                        .from('feature_requests')
-                        .insert({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            feature_importance: parseInt(entry.featureImportance) || 5,
-                            desirability: parseInt(entry.desirability) || 5,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status
-                        })
-                        .select()
-                        .single();
-                    
-                    if (error) {
-                        throw error;
-                    }
-                    
-                    // Add to local data array
-                    this.data.unshift({
-                        id: data.id,
-                        type: 'feature',
-                        featureName: data.feature_name,
-                        expectedBehavior: data.expected_behavior,
-                        featureImportance: data.feature_importance,
-                        desirability: data.desirability,
-                        priority: data.priority,
-                        status: data.status,
-                        date: data.created_at.split('T')[0]
-                    });
+                    docData.featureImportance = parseInt(entry.featureImportance) || 5;
+                    docData.desirability = parseInt(entry.desirability) || 5;
                 }
-                
+
+                // Add to Firestore
+                const docRef = await addDoc(collection(this.db, collectionName), docData);
+
+                // Add to local data array
+                const newEntry = {
+                    id: docRef.id,
+                    type: entry.type,
+                    ...docData,
+                    date: new Date().toISOString().split('T')[0]
+                };
+
+                this.data.unshift(newEntry);
                 this.updateDashboard();
                 this.updateActivityFeed();
                 this.showToast('Entry saved successfully!', 'success');
-                
+
             } catch (error) {
                 console.error('Error saving entry:', error);
                 this.showToast(`Error saving entry: ${error.message}`, 'error');
             }
         }
 
-        // Migration Functions - Extract localStorage data and upload to Supabase
-        async migrateLocalStorageToSupabase() {
-            try {
-                const localData = localStorage.getItem(NYMPH.STORAGE_KEY);
-                if (!localData) {
-                    this.showToast('No local data found to migrate', 'warning');
-                    return;
-                }
-
-                const entries = JSON.parse(localData);
-                if (!Array.isArray(entries) || entries.length === 0) {
-                    this.showToast('No entries found in local storage', 'warning');
-                    return;
-                }
-
-                this.showToast('Starting migration...', 'info');
-                
-                let bugReports = [];
-                let featureRequests = [];
-
-                // Separate entries by type
-                entries.forEach(entry => {
-                    if (entry.type === 'bug') {
-                        bugReports.push({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            actual_behavior: entry.actualBehavior,
-                            error_code: entry.errorCode || null,
-                            error_message: entry.errorMessage || null,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status || 'Open'
-                        });
-                    } else if (entry.type === 'feature') {
-                        featureRequests.push({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            feature_importance: parseInt(entry.featureImportance) || 5,
-                            desirability: parseInt(entry.desirability) || 5,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status || 'Open'
-                        });
-                    }
-                });
-
-                // Upload bug reports
-                if (bugReports.length > 0) {
-                    const { error: bugError } = await this.supabase
-                        .from('bug_reports')
-                        .insert(bugReports);
-                    
-                    if (bugError) {
-                        console.error('Bug reports migration error:', bugError);
-                        this.showToast(`Error migrating bug reports: ${bugError.message}`, 'error');
-                        return;
-                    }
-                }
-
-                // Upload feature requests
-                if (featureRequests.length > 0) {
-                    const { error: featureError } = await this.supabase
-                        .from('feature_requests')
-                        .insert(featureRequests);
-                    
-                    if (featureError) {
-                        console.error('Feature requests migration error:', featureError);
-                        this.showToast(`Error migrating feature requests: ${featureError.message}`, 'error');
-                        return;
-                    }
-                }
-
-                this.showToast(`Successfully migrated ${bugReports.length} bug reports and ${featureRequests.length} feature requests!`, 'success');
-                
-            } catch (error) {
-                console.error('Migration error:', error);
-                this.showToast(`Migration failed: ${error.message}`, 'error');
-            }
+        // Migration no longer needed - using Firebase
+        migrateLocalStorageToSupabase() {
+            this.showToast('Migration not available - app uses Firebase Firestore', 'info');
         }
 
         // Export localStorage data for manual transfer
@@ -1073,112 +971,88 @@ Following proper design system with all features
         async updateEntryType(index, newType) {
             const entry = this.data[index];
             const oldType = entry.type;
-            
+
             if (oldType === newType) return; // No change needed
-            
+
             try {
                 console.log(`Converting ${oldType} to ${newType} for entry:`, entry.featureName);
-                
-                // Update in Supabase database
+
+                // Update in Firestore database
                 if (oldType === 'bug' && newType === 'feature') {
-                    // Move from bug_reports to feature_requests
-                    
-                    // Insert into feature_requests
-                    const { data: newFeature, error: insertError } = await this.supabase
-                        .from('feature_requests')
-                        .insert({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            feature_importance: entry.featureImportance || 5,
-                            desirability: entry.desirability || 5,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status || 'Open'
-                        })
-                        .select()
-                        .single();
-                    
-                    if (insertError) throw insertError;
-                    
-                    // Delete from bug_reports
-                    const { error: deleteError } = await this.supabase
-                        .from('bug_reports')
-                        .delete()
-                        .eq('id', entry.id);
-                    
-                    if (deleteError) throw deleteError;
-                    
+                    // Add to feature_requests collection
+                    const docRef = await addDoc(collection(this.db, 'feature_requests'), {
+                        featureName: entry.featureName,
+                        expectedBehavior: entry.expectedBehavior,
+                        featureImportance: entry.featureImportance || 5,
+                        desirability: entry.desirability || 5,
+                        priority: entry.priority || 'Normal',
+                        status: entry.status || 'Open',
+                        createdAt: new Date()
+                    });
+
+                    // Delete from bug_reports collection
+                    await deleteDoc(doc(this.db, 'bug_reports', entry.id));
+
                     // Update local data
                     this.data[index] = {
-                        id: newFeature.id,
+                        id: docRef.id,
                         type: 'feature',
-                        featureName: newFeature.feature_name,
-                        expectedBehavior: newFeature.expected_behavior,
+                        featureName: entry.featureName,
+                        expectedBehavior: entry.expectedBehavior,
                         actualBehavior: '',
                         errorCode: '',
                         errorMessage: '',
-                        featureImportance: newFeature.feature_importance,
-                        desirability: newFeature.desirability,
-                        priority: newFeature.priority,
-                        status: newFeature.status,
-                        date: newFeature.created_at.split('T')[0]
+                        featureImportance: entry.featureImportance || 5,
+                        desirability: entry.desirability || 5,
+                        priority: entry.priority,
+                        status: entry.status,
+                        date: new Date().toISOString().split('T')[0]
                     };
-                    
+
                 } else if (oldType === 'feature' && newType === 'bug') {
-                    // Move from feature_requests to bug_reports
-                    
-                    // Insert into bug_reports
-                    const { data: newBug, error: insertError } = await this.supabase
-                        .from('bug_reports')
-                        .insert({
-                            feature_name: entry.featureName,
-                            expected_behavior: entry.expectedBehavior,
-                            actual_behavior: entry.actualBehavior || 'Not working as expected',
-                            error_code: entry.errorCode || null,
-                            error_message: entry.errorMessage || null,
-                            priority: entry.priority || 'Normal',
-                            status: entry.status || 'Open'
-                        })
-                        .select()
-                        .single();
-                    
-                    if (insertError) throw insertError;
-                    
-                    // Delete from feature_requests
-                    const { error: deleteError } = await this.supabase
-                        .from('feature_requests')
-                        .delete()
-                        .eq('id', entry.id);
-                    
-                    if (deleteError) throw deleteError;
-                    
+                    // Add to bug_reports collection
+                    const docRef = await addDoc(collection(this.db, 'bug_reports'), {
+                        featureName: entry.featureName,
+                        expectedBehavior: entry.expectedBehavior,
+                        actualBehavior: entry.actualBehavior || 'Not working as expected',
+                        errorCode: entry.errorCode || '',
+                        errorMessage: entry.errorMessage || '',
+                        priority: entry.priority || 'Normal',
+                        status: entry.status || 'Open',
+                        createdAt: new Date()
+                    });
+
+                    // Delete from feature_requests collection
+                    await deleteDoc(doc(this.db, 'feature_requests', entry.id));
+
                     // Update local data
                     this.data[index] = {
-                        id: newBug.id,
+                        id: docRef.id,
                         type: 'bug',
-                        featureName: newBug.feature_name,
-                        expectedBehavior: newBug.expected_behavior,
-                        actualBehavior: newBug.actual_behavior,
-                        errorCode: newBug.error_code,
-                        errorMessage: newBug.error_message,
+                        featureName: entry.featureName,
+                        expectedBehavior: entry.expectedBehavior,
+                        actualBehavior: entry.actualBehavior || 'Not working as expected',
+                        errorCode: entry.errorCode || '',
+                        errorMessage: entry.errorMessage || '',
                         featureImportance: '',
                         desirability: '',
-                        priority: newBug.priority,
-                        status: newBug.status,
-                        date: newBug.created_at.split('T')[0]
+                        priority: entry.priority,
+                        status: entry.status,
+                        date: new Date().toISOString().split('T')[0]
                     };
                 }
-                
+
                 // Update UI
                 this.updateDashboard();
                 this.updateActivityFeed();
                 this.renderTable();
-                
+
                 this.showToast(`Successfully converted ${oldType} to ${newType}: ${entry.featureName}`, 'success');
-                
+
             } catch (error) {
                 console.error('Error updating entry type:', error);
                 this.showToast(`Error converting entry type: ${error.message}`, 'error');
-                
+
                 // Revert the dropdown selection
                 const row = document.querySelector(`tr[data-index="${index}"]`);
                 if (row) {
@@ -1218,66 +1092,34 @@ Following proper design system with all features
         // Settings
         async clearAllData() {
             console.log('clearAllData method called!');
-            if (confirm('⚠️ WARNING: This will permanently delete ALL bug reports and feature requests from both local storage AND the database.\n\nAre you absolutely sure you want to continue?')) {
+            if (confirm('⚠️ WARNING: This will permanently delete ALL bug reports and feature requests from the database.\n\nAre you absolutely sure you want to continue?')) {
                 const pin = prompt('Enter PIN to confirm data deletion:');
                 if (pin !== NYMPH.PIN) {
                     this.showToast('Access denied', 'error');
                     return;
                 }
-                
+
                 try {
-                    // Clear from Supabase database - first get all records, then delete them
-                    const { data: bugData } = await this.supabase
-                        .from('bug_reports')
-                        .select('id');
-                    
-                    const { data: featureData } = await this.supabase
-                        .from('feature_requests')
-                        .select('id');
-                    
-                    let bugError = null;
-                    let featureError = null;
-                    
-                    // Delete bug reports if any exist
-                    if (bugData && bugData.length > 0) {
-                        console.log(`Found ${bugData.length} bug reports to delete`);
-                        const bugIds = bugData.map(item => item.id);
-                        const { error, count } = await this.supabase
-                            .from('bug_reports')
-                            .delete()
-                            .in('id', bugIds);
-                        console.log(`Deleted ${count} bug reports`);
-                        bugError = error;
-                    } else {
-                        console.log('No bug reports found to delete');
+                    // Clear from Firestore database
+                    const bugsSnapshot = await getDocs(collection(this.db, 'bug_reports'));
+                    const featuresSnapshot = await getDocs(collection(this.db, 'feature_requests'));
+
+                    let deleteCount = 0;
+
+                    // Delete all bug reports
+                    for (const document of bugsSnapshot.docs) {
+                        await deleteDoc(doc(this.db, 'bug_reports', document.id));
+                        deleteCount++;
                     }
-                    
-                    // Delete feature requests if any exist
-                    if (featureData && featureData.length > 0) {
-                        console.log(`Found ${featureData.length} feature requests to delete`);
-                        const featureIds = featureData.map(item => item.id);
-                        const { error, count } = await this.supabase
-                            .from('feature_requests')
-                            .delete()
-                            .in('id', featureIds);
-                        console.log(`Deleted ${count} feature requests`);
-                        featureError = error;
-                    } else {
-                        console.log('No feature requests found to delete');
+                    console.log(`Deleted ${bugsSnapshot.size} bug reports`);
+
+                    // Delete all feature requests
+                    for (const document of featuresSnapshot.docs) {
+                        await deleteDoc(doc(this.db, 'feature_requests', document.id));
+                        deleteCount++;
                     }
-                    
-                    if (bugError) {
-                        console.error('Error clearing bug reports:', bugError);
-                        this.showToast(`Error clearing bug reports: ${bugError.message}`, 'error');
-                        return;
-                    }
-                    
-                    if (featureError) {
-                        console.error('Error clearing feature requests:', featureError);
-                        this.showToast(`Error clearing feature requests: ${featureError.message}`, 'error');
-                        return;
-                    }
-                    
+                    console.log(`Deleted ${featuresSnapshot.size} feature requests`);
+
                     // Clear local data
                     this.data = [];
                     localStorage.removeItem(NYMPH.STORAGE_KEY);
@@ -1340,17 +1182,18 @@ Following proper design system with all features
         // Communication System
         async loadCommunications() {
             try {
-                const { data, error } = await this.supabase
-                    .from('user_communications')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+                const commQuery = query(collection(this.db, 'user_communications'), orderBy('created_at', 'desc'));
+                const snapshot = await getDocs(commQuery);
 
-                if (error) {
-                    console.error('Error loading communications:', error);
-                    return [];
-                }
+                const communications = [];
+                snapshot.forEach((doc) => {
+                    communications.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
 
-                return data || [];
+                return communications;
             } catch (error) {
                 console.error('Error loading communications:', error);
                 return [];
@@ -1586,22 +1429,17 @@ Following proper design system with all features
             }
 
             try {
-                const { error } = await this.supabase
-                    .from('user_communications')
-                    .insert({
-                        item_type: itemType,
-                        item_id: itemId,
-                        message_type: messageType,
-                        subject: subject,
-                        message: content,
-                        priority: priority,
-                        from_admin: true,
-                        is_read: false
-                    });
-
-                if (error) {
-                    throw error;
-                }
+                await addDoc(collection(this.db, 'user_communications'), {
+                    item_type: itemType,
+                    item_id: itemId,
+                    message_type: messageType,
+                    subject: subject,
+                    message: content,
+                    priority: priority,
+                    from_admin: true,
+                    is_read: false,
+                    created_at: new Date()
+                });
 
                 this.showToast('Message sent successfully!', 'success');
                 this.updateCommunications();
@@ -1616,15 +1454,10 @@ Following proper design system with all features
             if (!messageId) return;
 
             try {
-                const { error } = await this.supabase
-                    .from('user_communications')
-                    .update({ 
-                        is_read: true,
-                        read_at: new Date().toISOString()
-                    })
-                    .eq('id', messageId);
-
-                if (error) throw error;
+                await updateDoc(doc(this.db, 'user_communications', messageId), {
+                    is_read: true,
+                    read_at: new Date()
+                });
 
                 this.updateCommunications();
                 this.showToast('Message marked as read', 'success');
@@ -1641,12 +1474,7 @@ Following proper design system with all features
             if (!confirm('Are you sure you want to delete this message?')) return;
 
             try {
-                const { error } = await this.supabase
-                    .from('user_communications')
-                    .delete()
-                    .eq('id', messageId);
-
-                if (error) throw error;
+                await deleteDoc(doc(this.db, 'user_communications', messageId));
 
                 this.updateCommunications();
                 this.showToast('Message deleted', 'success');
@@ -1656,7 +1484,46 @@ Following proper design system with all features
             }
         }
 
+        // Welcome Tooltips
+        showWelcomeTooltip() {
+            const hasSeenWelcome = localStorage.getItem('nymphWelcomeSeen');
+            if (!hasSeenWelcome) {
+                const bugTooltip = document.getElementById('bugReportTooltip');
+                if (bugTooltip) {
+                    setTimeout(() => {
+                        bugTooltip.classList.add('show');
+                    }, 800);
+                }
+            }
+        }
+
     }
+
+    // Global functions for tooltip navigation
+    window.nextTooltip = function() {
+        const bugTooltip = document.getElementById('bugReportTooltip');
+        const featureTooltip = document.getElementById('featureTooltip');
+
+        if (bugTooltip) {
+            bugTooltip.classList.remove('show');
+        }
+
+        if (featureTooltip) {
+            setTimeout(() => {
+                featureTooltip.classList.add('show');
+            }, 300);
+        }
+    };
+
+    window.closeTooltips = function() {
+        const bugTooltip = document.getElementById('bugReportTooltip');
+        const featureTooltip = document.getElementById('featureTooltip');
+
+        if (bugTooltip) bugTooltip.classList.remove('show');
+        if (featureTooltip) featureTooltip.classList.remove('show');
+
+        localStorage.setItem('nymphWelcomeSeen', 'true');
+    };
 
     // Initialize app when DOM is ready
     if (document.readyState === 'loading') {
