@@ -226,7 +226,7 @@ body {
     grid-template-columns: repeat(auto-fit, var(--widget-4x4));
     grid-auto-rows: var(--widget-4x4);
     gap: var(--gap);
-    padding: var(--gap);
+    padding: 0;
     justify-content: center;
     min-height: 100vh;
     max-width: 100vw;
